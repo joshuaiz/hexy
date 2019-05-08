@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import SwatchList from './components/SwatchList'
+import Home from './components/Home'
 import Favorites from './components/Favorites'
 import {
     getRandomColors,
@@ -209,67 +211,62 @@ const App = () => {
     }
 
     return (
-        <div className="App">
-            <Header
-                handleSearch={handleSearch}
-                handleSearchInput={handleSearchInput}
-                handleSidebarToggle={handleSidebarToggle}
-                isSidebarVisible={isSidebarVisible}
-                searchInput={searchInput}
-            />
+        <Router>
+            <div className="App">
+                <Header
+                    handleSearch={handleSearch}
+                    handleSearchInput={handleSearchInput}
+                    handleSidebarToggle={handleSidebarToggle}
+                    isSidebarVisible={isSidebarVisible}
+                    searchInput={searchInput}
+                />
 
-            <div
-                className={`content ${
-                    isSidebarVisible ? 'sidebar' : 'no-sidebar'
-                }`}
-            >
-                <div className="colors">
-                    <div className="colors-header">
-                        {!searchInput && (
-                            <div className="colors-header-text">
-                                <p>
-                                    Showing 1000 random colors.{' '}
-                                    <a href="/" onClick={handleReload}>
-                                        Reload
-                                    </a>{' '}
-                                    for a new set.{' '}
-                                </p>
-                            </div>
-                        )}
-                        <div className="sort-input">
-                            <input
-                                type="checkbox"
-                                onChange={handleBright}
-                                checked={sortBright}
-                            />
-                            <label>Sort by brightness (perceptual)</label>
-                        </div>
-                    </div>
-                    <SwatchList
-                        colors={colors}
-                        handleFavorites={handleFavorites}
-                        removeFavorite={removeFavorite}
-                        favorites={favorites}
-                        favoriteSwatches={favoriteSwatches}
-                        setFavoriteSwatches={setFavoriteSwatches}
-                    />
-                </div>
-                <DragDropContext
-                    onDragStart={onDragStart}
-                    onDragEnd={onDragEnd}
+                <div
+                    className={`content ${
+                        isSidebarVisible ? 'sidebar' : 'no-sidebar'
+                    }`}
                 >
-                    <Favorites
-                        favorites={favorites}
-                        removeFavorite={removeFavorite}
-                        clearFavorites={clearFavorites}
-                        setFavorites={setFavorites}
-                        getFavorites={getFavorites}
-                        isSidebarVisible={isSidebarVisible}
-                        dragEnded={dragEnded}
-                    />
-                </DragDropContext>
+                    <Switch>
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <Home
+                                    colors={colors}
+                                    searchInput={searchInput}
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    favorites={favorites}
+                                    favoriteSwatches={favoriteSwatches}
+                                    setFavoriteSwatches={setFavoriteSwatches}
+                                    handleBright={handleBright}
+                                    sortBright={sortBright}
+                                />
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/color/:color"
+                            render={props => null}
+                        />
+                    </Switch>
+                    <DragDropContext
+                        onDragStart={onDragStart}
+                        onDragEnd={onDragEnd}
+                    >
+                        <Favorites
+                            favorites={favorites}
+                            removeFavorite={removeFavorite}
+                            clearFavorites={clearFavorites}
+                            setFavorites={setFavorites}
+                            getFavorites={getFavorites}
+                            isSidebarVisible={isSidebarVisible}
+                            dragEnded={dragEnded}
+                        />
+                    </DragDropContext>
+                </div>
             </div>
-        </div>
+        </Router>
     )
 }
 

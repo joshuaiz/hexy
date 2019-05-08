@@ -11,6 +11,7 @@
     "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.2",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-switch": "^5.0.0",
     "react-tooltip": "^3.10.0",
