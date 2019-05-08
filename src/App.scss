@@ -1,0 +1,50 @@
+.App {
+    .content {
+        .colors {
+            padding: 1.5em;
+            .sort-input {
+                margin: 12px 0 6px;
+                padding: 0 4px;
+                text-align: right;
+                font-size: 14px;
+            }
+        }
+        .favorites {
+        }
+    }
+    .content.sidebar {
+        display: flex;
+        .colors {
+            width: 80%;
+        }
+        .favorites {
+            min-width: 400px;
+            width: 20%;
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            .favorites-toolbar {
+            }
+        }
+    }
+    .content.no-sidebar {
+        .favorites {
+            // width: 0;
+        }
+        .colors {
+        
+        }
+    }
+    
+}
+
+@media only screen and (max-width : 899px) {
+    .sidebar-toggle {
+        display: none;
+    }
+    .content.sidebar {
+        .favorites {
+            display: none;
+        }
+    }
+}

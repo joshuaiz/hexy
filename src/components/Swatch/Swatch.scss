@@ -1,0 +1,84 @@
+.swatch {
+    .swatch-color {
+        // width: 198px;
+        // height: 80px;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        .tooltip {
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            opacity: 0.8;
+            border-radius: 4px;
+            position: absolute;
+            display: none;
+        }
+        @-webkit-keyframes fadeIn {
+           0% {opacity: 0;}
+           100% {opacity: 0.8;}
+        }
+        @keyframes fadeIn {
+           0% {opacity: 0;}
+           100% {opacity: 0.8;}
+        }
+        @-webkit-keyframes fadeOut {
+           0% {opacity: 0.8;}
+           100% {opacity: 0;}
+        }
+        @keyframes fadeOut {
+           0% {opacity: 0.8;}
+           100% {opacity: 0;}
+        }
+        .tooltip.show {
+            display: block;
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+            -webkit-animation-duration: 0.2s;animation-duration: 0.2s;
+            -webkit-animation-fill-mode: both;animation-fill-mode: both;
+        }
+        .tooltip.hide {
+            -webkit-animation-name: fadeOut;
+            animation-name: fadeOut;
+            -webkit-animation-duration: 0.5s;animation-duration: 0.5s;
+            -webkit-animation-fill-mode: both;animation-fill-mode: both;
+        }
+        .add-favorite, .remove-favorite {
+            display: none;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer !important;
+            z-index: 99;
+            &:focus {
+                outline: none;
+            }
+            svg {
+                width: 18px;
+                height: 18px;
+                circle {
+                    fill: transparent;
+                }
+            }
+        }
+        &:hover {
+            .add-favorite, .remove-favorite {
+                display: block;
+            }
+        }
+        .favorite-heart {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 18px;
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+}
