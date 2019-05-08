@@ -75,6 +75,7 @@ const App = () => {
         const filterList = filterColorsBySearchText(text)
 
         if (text && text.length) {
+            // if we have a search, reset brightness sort
             setSortBright(false)
             setColors(filterList)
             sessionStorage.setItem(
@@ -92,6 +93,7 @@ const App = () => {
 
     const handleFavorites = color => {
         if (favorites && favorites.length) {
+            // check if color is already a favorite
             found = favorites.some(el => el.hex === color.hex)
         }
         if (!found && !favorites.length) {
@@ -145,6 +147,9 @@ const App = () => {
 
     const onDragStart = () => {
         setDragEnded(false)
+
+        // disable auto-scrolling of body when dragging
+        document.body.style.overflow = 'hidden'
     }
 
     const onDragEnd = result => {
@@ -163,15 +168,21 @@ const App = () => {
         // copy our current favorites array
         const faves = [...favorites]
 
+        let id = ''
+        // split off extra chars from favorite squares draggableId if necessary
+        if (draggableId.length === 7) {
+            id = draggableId
+        } else {
+            id = draggableId.substring(0, draggableId.indexOf('-'))
+        }
+
         // match dragged favorite with favorite in array
         let foundFave = favorites.filter(el => {
-            if (el.hex === draggableId) {
+            if (el.hex === id) {
                 return el
             }
             return null
         })
-
-        // console.log(foundFave)
 
         // from dragged element, create object to insert back in array
         let movedObj = {
@@ -188,6 +199,9 @@ const App = () => {
         localStorage.setItem('hexy_favorites', JSON.stringify(faves))
 
         setDragEnded(true)
+
+        // resume normal body scroll behavior
+        document.body.style.overflow = 'scroll'
     }
 
     const handleReload = () => {
@@ -201,6 +215,7 @@ const App = () => {
                 handleSearchInput={handleSearchInput}
                 handleSidebarToggle={handleSidebarToggle}
                 isSidebarVisible={isSidebarVisible}
+                searchInput={searchInput}
             />
 
             <div

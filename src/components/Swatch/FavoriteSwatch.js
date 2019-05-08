@@ -10,18 +10,30 @@ const FavoriteSwatch = ({
     index,
     handleFavorites,
     isFavorite,
-    removeFavorite
+    removeFavorite,
+    isSquare
 }) => {
     const readableColor = getReadableColor(color)
+
+    let key = ''
+    if (!isSquare) {
+        key = color.hex + '-favorite'
+    } else {
+        key = color.hex + '-square'
+    }
+
     return (
-        <Draggable draggableId={color.hex} index={index}>
+        <Draggable
+            draggableId={isSquare ? color.hex + '-square' : color.hex}
+            index={index}
+        >
             {provided => (
                 <li
-                    className={`swatch ${isFavorite ? 'favorite' : ''}`}
+                    className={`swatch favorite ${isSquare ? 'square' : ''}`}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
-                    key={color.hex + isFavorite ? '-favorite' : null}
+                    key={key}
                 >
                     <div
                         className="swatch-color"

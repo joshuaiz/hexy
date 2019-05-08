@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Heart } from '../../images/heart.svg'
