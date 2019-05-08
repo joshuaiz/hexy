@@ -1,9 +1,27 @@
 .App {
+    a {
+        text-decoration: none;
+        &:hover, &:focus {
+            padding-bottom: 2px;
+            border-bottom: 1px solid #0088cc;
+        }
+    }
     .content {
         .colors {
             padding: 1.5em;
+            .colors-header {
+                display: flex;
+                align-items: center;
+                .colors-header-text {
+                    margin-left: 8px;
+                    font-size: 14px;
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
             .sort-input {
-                margin: 12px 0 6px;
+                margin: 12px 0 6px auto;
                 padding: 0 4px;
                 text-align: right;
                 font-size: 14px;

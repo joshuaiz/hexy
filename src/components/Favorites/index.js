@@ -12,6 +12,7 @@ const Favorites = ({
     removeFavorite,
     clearFavorites,
     setFavorites,
+    getFavorites,
     isSidebarVisible,
     dragEnded
 }) => {
@@ -26,6 +27,7 @@ const Favorites = ({
             const cachedOriginals = localStorage.getItem('original_favorites')
             const parsedOriginals = JSON.parse(cachedOriginals)
             setFavorites(parsedOriginals)
+            getFavorites()
         }
         setIsBright(!isBright)
     }
