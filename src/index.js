@@ -1,10 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const RouterApp = () => {
+    return (
+        <Router>
+            <App />
+        </Router>
+    )
+}
+
+export default withRouter(RouterApp)
+
+ReactDOM.render(<RouterApp />, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

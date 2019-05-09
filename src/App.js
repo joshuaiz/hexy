@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import {
+    BrowserRouter as Router,
+    Route,
+    Link,
+    Switch,
+    Redirect,
+    withRouter
+} from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import SwatchList from './components/SwatchList'
+import Wrapper from './components/Wrapper'
 import Home from './components/Home'
+import Colors from './components/Colors'
 import Favorites from './components/Favorites'
 import {
     getRandomColors,
@@ -17,7 +26,7 @@ if (process.env.NODE_ENV !== 'production') {
     whyDidYouRender(React)
 }
 
-const App = () => {
+const App = ({ history, location }) => {
     const [colors, setColors] = useState()
     const [sortBright, setSortBright] = useState(false)
     const [searchInput, setSearchInput] = useState('')
@@ -72,6 +81,7 @@ const App = () => {
 
     // handle returning search results and updating color list
     const handleSearch = event => {
+        console.log('in handleSearch')
         event.preventDefault()
         let text = searchInput.toLowerCase()
         const filterList = filterColorsBySearchText(text)
@@ -84,6 +94,7 @@ const App = () => {
                 'hexy_searchColors',
                 JSON.stringify(filterList)
             )
+            history.push('/colors')
         } else {
             setSortBright(false)
             getRandoms()
@@ -136,6 +147,7 @@ const App = () => {
 
     const clearFavorites = () => {
         setFavorites([])
+        setFavoriteSwatches([])
         localStorage.removeItem('hexy_favorites')
     }
 
@@ -206,13 +218,13 @@ const App = () => {
         document.body.style.overflow = 'scroll'
     }
 
-    const handleReload = () => {
-        window.location.reload(false)
-    }
+    // console.log(window.location)
+
+    useEffect(() => {}, [])
 
     return (
-        <Router>
-            <div className="App">
+        <div className="App">
+            <Wrapper>
                 <Header
                     handleSearch={handleSearch}
                     handleSearchInput={handleSearchInput}
@@ -230,8 +242,14 @@ const App = () => {
                         <Route
                             exact
                             path="/"
-                            render={() => (
-                                <Home
+                            render={props => <Home key={props.location.href} />}
+                        />
+                        <Route
+                            exact
+                            path="/colors"
+                            render={props => (
+                                <Colors
+                                    key={props.location.href}
                                     colors={colors}
                                     searchInput={searchInput}
                                     handleFavorites={handleFavorites}
@@ -265,9 +283,9 @@ const App = () => {
                         />
                     </DragDropContext>
                 </div>
-            </div>
-        </Router>
+            </Wrapper>
+        </div>
     )
 }
 
-export default App
+export default withRouter(App)
