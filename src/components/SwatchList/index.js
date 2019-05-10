@@ -8,7 +8,8 @@ const SwatchList = ({
     removeFavorite,
     favorites,
     favoriteSwatches,
-    setFavoriteSwatches
+    setFavoriteSwatches,
+    searchSubmitted
 }) => {
     useMemo(() => {
         if (colors && colors.length && favorites && favorites.length) {
@@ -23,7 +24,11 @@ const SwatchList = ({
     }, [colors, favorites, setFavoriteSwatches])
 
     return (
-        <ul className="nostyle swatch-list">
+        <ul
+            className={`nostyle swatch-list ${
+                searchSubmitted ? 'search-results' : ''
+            }`}
+        >
             {colors &&
                 colors.map((color, index) => {
                     let isFavorite

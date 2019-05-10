@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Switch from 'react-switch'
 import SearchBox from './SearchBox'
 import { getNumberOfNamedColors } from '../../utils/helpers'
@@ -44,7 +45,9 @@ const Header = ({
                         </svg>
                     </div>
                     <div className="site-title">
-                        <h1>hexy</h1>
+                        <Link to="/">
+                            <h1>hexy</h1>
+                        </Link>
                     </div>
                     <div className="header-text">
                         Explore and discover {num ? num : '18,000+'} named hex

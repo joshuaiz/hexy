@@ -5,7 +5,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 600px;
+        height: 500px;
         text-align: center;
         .hero-content {
             display: flex;
@@ -20,8 +20,14 @@
                 color: #fff;
                 font-size: 3em;
                 font-weight: 700;
-                .x0 {
+                font-family: -apple-system,
+                BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+                'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                .x0, .c0 {
                     font-weight: 900;
+                }
+                .c0 {
+                    color: #fff601;
                 }
                 .c1 {
                     color: #ffa64f;
@@ -54,9 +60,9 @@
                 &:hover, &:focus {
                     // background: #262b2f;
                     // color: #9bddff;
-                    color: #191f45;
+                    color: #b2ffff;
                     // text-decoration: none;
-                    // border-bottom: none;
+                    border-bottom: 2px solid #b2ffff;
                 }
             }
         }

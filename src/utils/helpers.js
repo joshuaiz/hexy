@@ -11,12 +11,15 @@ function numberWithCommas(x) {
 }
 
 export function getReadableColor(color) {
-    const readableColor = tinycolor
-        .mostReadable(color.hex, ['#FFF', '#000'], {
-            includeFallbackColors: true
-        })
-        .toHexString()
-    return readableColor
+    if (color) {
+        const readableColor = tinycolor
+            .mostReadable(color.hex, ['#FFF', '#000'], {
+                includeFallbackColors: true
+            })
+            .toHexString()
+        return readableColor
+    }
+    return false
 }
 
 export function generateRandoms(min, max, numOfRandoms, unique) {
@@ -37,8 +40,8 @@ export function generateRandoms(min, max, numOfRandoms, unique) {
     return randoms
 }
 
-export function getRandomColors() {
-    const randoms = generateRandoms(0, namedColors.length, 1000, true)
+export function getRandomColors(num) {
+    const randoms = generateRandoms(0, namedColors.length, num, true)
     const randomColors = namedColors.filter((d, i) => randoms.indexOf(i) !== -1)
 
     return randomColors

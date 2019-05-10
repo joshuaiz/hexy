@@ -8,6 +8,14 @@
         justify-content: center;
         text-align: center;
         position: relative;
+        .swatch-content {
+            a {
+                color: inherit;
+                &:hover, &:focus {
+                    color: inherit;
+                }
+            }
+        }
         .tooltip {
             padding: 10px;
             background: #000;

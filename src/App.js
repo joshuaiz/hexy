@@ -13,6 +13,7 @@ import Wrapper from './components/Wrapper'
 import Home from './components/Home'
 import Colors from './components/Colors'
 import Favorites from './components/Favorites'
+import Color from './components/Color'
 import {
     getRandomColors,
     sortLightness,
@@ -30,6 +31,7 @@ const App = ({ history, location }) => {
     const [colors, setColors] = useState()
     const [sortBright, setSortBright] = useState(false)
     const [searchInput, setSearchInput] = useState('')
+    const [searchSubmitted, setSearchSubmitted] = useState(false)
     const [favorites, setFavorites] = useState([])
     const [favoriteSwatches, setFavoriteSwatches] = useState([])
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
@@ -39,7 +41,7 @@ const App = ({ history, location }) => {
     const getRandoms = () => {
         const cachedRandoms = sessionStorage.getItem('hexy_randoms')
         if (!cachedRandoms) {
-            const randoms = getRandomColors()
+            const randoms = getRandomColors(1000)
             setColors(randoms)
             sessionStorage.setItem('hexy_randoms', JSON.stringify(randoms))
         } else {
@@ -76,12 +78,12 @@ const App = ({ history, location }) => {
 
     // SearchBox input is a controlled component
     const handleSearchInput = event => {
+        setSearchSubmitted(false)
         setSearchInput(event.target.value)
     }
 
     // handle returning search results and updating color list
     const handleSearch = event => {
-        console.log('in handleSearch')
         event.preventDefault()
         let text = searchInput.toLowerCase()
         const filterList = filterColorsBySearchText(text)
@@ -94,9 +96,12 @@ const App = ({ history, location }) => {
                 'hexy_searchColors',
                 JSON.stringify(filterList)
             )
+            setSearchSubmitted(true)
+            // if not on colors page, go there to see search results
             history.push('/colors')
         } else {
             setSortBright(false)
+            setSearchSubmitted(false)
             getRandoms()
         }
     }
@@ -242,7 +247,16 @@ const App = ({ history, location }) => {
                         <Route
                             exact
                             path="/"
-                            render={props => <Home key={props.location.href} />}
+                            render={props => (
+                                <Home
+                                    key={props.location.href}
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    favorites={favorites}
+                                    favoriteSwatches={favoriteSwatches}
+                                    setFavoriteSwatches={setFavoriteSwatches}
+                                />
+                            )}
                         />
                         <Route
                             exact
@@ -252,6 +266,7 @@ const App = ({ history, location }) => {
                                     key={props.location.href}
                                     colors={colors}
                                     searchInput={searchInput}
+                                    searchSubmitted={searchSubmitted}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
@@ -265,7 +280,17 @@ const App = ({ history, location }) => {
                         <Route
                             exact
                             path="/color/:color"
-                            render={props => null}
+                            render={props => (
+                                <Color
+                                    key={props.location.href}
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    favorites={favorites}
+                                    favoriteSwatches={favoriteSwatches}
+                                    setFavoriteSwatches={setFavoriteSwatches}
+                                    {...props}
+                                />
+                            )}
                         />
                     </Switch>
                     <DragDropContext

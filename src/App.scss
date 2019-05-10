@@ -1,9 +1,45 @@
+body {
+    font-size: 16px;
+    line-height: 1.41;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'SF Compact Display', 'SF Pro Display', -apple-system,
+        BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+        'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
 .App {
     a {
         text-decoration: none;
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
             padding-bottom: 2px;
             border-bottom: 1px solid #0088cc;
+        }
+        &:active {
+            color: #0088cc;
+        }
+    }
+    .nostyle {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .svg-icon {
+        svg {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            // top: 2px;
+            circle {
+                fill: transparent;
+            }
         }
     }
     .content {
@@ -17,6 +53,11 @@
                     font-size: 14px;
                     p {
                         margin: 0;
+                    }
+                    .search-term {
+                        padding: 4px 8px;
+                        background: #f2f3ce;
+                        font-weight: 700;
                     }
                 }
             }
@@ -50,7 +91,6 @@
             // width: 0;
         }
         .colors {
-        
         }
     }
 }
@@ -68,18 +108,26 @@
             width: 100%;
         }
     }
-    .favorites, .sidebar-toggle {
+    .favorites,
+    .sidebar-toggle {
         display: none;
     }
 }
 
-@media only screen and (max-width : 899px) {
+@media only screen and (max-width: 899px) {
     .sidebar-toggle {
         display: none;
     }
-    .content.sidebar {
-        .favorites {
-            display: none;
+    .App {
+        .colors-page {
+            .content.sidebar {
+                .colors {
+                    width: 100%;
+                }
+                .favorites {
+                    display: none;
+                }
+            }
         }
     }
 }

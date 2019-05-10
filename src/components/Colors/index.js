@@ -5,6 +5,7 @@ import SwatchList from '../SwatchList'
 const Colors = ({
     colors,
     searchInput,
+    searchSubmitted,
     handleFavorites,
     removeFavorite,
     favorites,
@@ -18,13 +19,11 @@ const Colors = ({
         window.location.reload(false)
     }
 
-    console.log('in Colors', history)
-
     return (
         <div className="colors">
             <div className="colors-header">
-                {!searchInput && (
-                    <div className="colors-header-text">
+                <div className="colors-header-text">
+                    {!searchInput && !searchSubmitted ? (
                         <p>
                             Showing 1000 random colors.{' '}
                             <a href="/" onClick={handleReload}>
@@ -32,8 +31,14 @@ const Colors = ({
                             </a>{' '}
                             for a new set.{' '}
                         </p>
-                    </div>
-                )}
+                    ) : searchSubmitted ? (
+                        <p>
+                            Search results for{' '}
+                            <span className="search-term">{searchInput}</span>:
+                        </p>
+                    ) : null}
+                </div>
+
                 <div className="sort-input">
                     <input
                         type="checkbox"
@@ -50,6 +55,7 @@ const Colors = ({
                 favorites={favorites}
                 favoriteSwatches={favoriteSwatches}
                 setFavoriteSwatches={setFavoriteSwatches}
+                searchSubmitted={searchSubmitted}
             />
         </div>
     )
