@@ -22,6 +22,27 @@ export function getReadableColor(color) {
     return false
 }
 
+export function getColorByHex(hex) {
+    let namedColor = namedColors.filter((item, index) => {
+        if (hex !== '' && item.hex.toLowerCase().includes(hex)) {
+            return item
+        }
+        return null
+    })
+    return namedColor
+}
+
+export function getNamedColor(color) {
+    let namedColor = namedColors.filter((item, index) => {
+        if (color.hex !== '' && item.hex.toLowerCase().includes(color.hex)) {
+            return item
+        }
+
+        return null
+    })
+    return namedColor
+}
+
 export function generateRandoms(min, max, numOfRandoms, unique) {
     /* min is the smallest possible generated number */
     /* max is the largest possible generated number */
@@ -69,4 +90,29 @@ export function filterColorsBySearchText(text) {
         }
     })
     return filterList
+}
+
+export function getTintsShades(adjustment, color) {
+    const adj = adjustment
+    // console.log('in getTintsShades', adjustment, color)
+    const colors = [{ name: '', hex: color }]
+    let shade, tint
+    for (let i = 0, n = 10; i < 5; i++, n += 20) {
+        // console.log(n)
+        if (adj === 'darken') {
+            shade = tinycolor.mix(color, 'black', n).toHexString()
+            if (!colors.includes(shade)) {
+                colors.push({ name: '', hex: shade })
+            }
+        } else if (adj === 'lighten') {
+            tint = tinycolor.mix(color, 'white', n).toHexString()
+            // console.log(tint)
+            if (!colors.includes(tint)) {
+                colors.push({ name: '', hex: tint })
+            }
+        } else {
+            return []
+        }
+    }
+    return colors
 }

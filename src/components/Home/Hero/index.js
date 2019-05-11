@@ -4,14 +4,22 @@ import TextLoop from 'react-text-loop'
 import './Hero.scss'
 
 const Hero = () => {
-    const [isLooping, setIsLooping] = useState(true)
+    const [isLooping, setIsLooping] = useState()
 
     useEffect(() => {
+        const seen = sessionStorage.getItem('animation_viewed')
+        if (!seen) {
+            setIsLooping(true)
+        }
         const timeout = setTimeout(() => {
             setIsLooping(false)
-        }, 15000)
-        return clearTimeout(timeout)
-    }, [])
+            sessionStorage.setItem('animation_viewed', true)
+        }, 16000)
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [isLooping])
 
     return (
         <div className="hero">
@@ -31,12 +39,12 @@ const Hero = () => {
                                         damping: 13
                                     }}
                                 >
+                                    <span className="c0">the best</span>
                                     <span className="c1">amazing</span>
                                     <span className="c2">cool</span>
                                     <span className="c3">brilliant</span>
                                     <span className="c4">eccentric</span>
                                     <span className="c5">unique</span>
-                                    <span className="c0">the best</span>
                                 </TextLoop>
                             ) : (
                                 <span className="c0">the best</span>

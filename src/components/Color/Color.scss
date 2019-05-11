@@ -1,0 +1,86 @@
+.color-page {
+    padding: 1.5em;
+
+    .color-main {
+        display: flex;
+        flex-wrap: wrap;
+        // align-items: flex-end;
+        // box-sizing: border-box;
+        .color-id {
+            // margin-right: 2.2em;
+            // margin-bottom: 1em;
+            width: 100%;
+            h2 {
+                line-height: 1;
+                margin-top: 12px;
+                margin-bottom: 12px;
+                font-size: 2.2em;
+                width: 100%;
+                .color-hex {
+                    font-weight: 500;
+                }
+            }
+        }
+        .main-swatches {
+            width: 100%;
+            display: flex;
+            .main-swatch {
+                width: 300px;
+                .swatch {
+                    max-width: 300px;
+                    height: 120px;
+                    list-style: none;
+                    box-sizing: border-box;
+                    margin-right: 2.2em;
+                    .swatch-color {
+                        height: 100%;
+                    }
+                }
+            }
+            .shades-tints {
+                position: relative;
+                // width: 100%;
+                top: -20px;
+                margin-left: auto;
+                flex: 1;
+                h3 {
+                    margin: 0;
+                    font-size: 1em;
+                    font-weight: 400;
+                }
+                .swatch-list {
+                    display: flex;
+                    justify-content: space-between;
+
+                    li {
+                        width: 15%;
+                        min-width: 100px;
+                        box-sizing: border-box;
+                        font-size: 12px;
+                        // flex: 1;
+                        .swatch-color {
+                            min-height: 35px;
+                        }
+                    }
+                }
+                .shades {
+                    .swatch-list {
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    .color-page {
+        .color-main {
+            .main-swatches {
+                .main-swatch {
+                    width: 400px;
+                }
+            }
+        }
+    }
+}

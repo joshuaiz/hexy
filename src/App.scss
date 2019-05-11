@@ -1,3 +1,7 @@
+* {
+    // box-sizing: border-box;
+}
+
 body {
     font-size: 16px;
     line-height: 1.41;
@@ -21,6 +25,7 @@ h6 {
         &:focus {
             padding-bottom: 2px;
             border-bottom: 1px solid #0088cc;
+            cursor: pointer;
         }
         &:active {
             color: #0088cc;
@@ -70,10 +75,11 @@ h6 {
         }
         .favorites {
         }
+        
     }
     .content.sidebar {
         display: flex;
-        .colors {
+        .colors, .color-page {
             width: 80%;
         }
         .favorites {
@@ -92,6 +98,9 @@ h6 {
         }
         .colors {
         }
+    }
+    .favorites.inactive {
+        display: none;
     }
 }
 

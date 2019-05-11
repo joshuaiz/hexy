@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import { ReactComponent as Sync } from '../../images/sync.svg'
 import SwatchList from '../SwatchList'
+import './Colors.scss'
 
 const Colors = ({
     colors,
@@ -13,10 +15,17 @@ const Colors = ({
     setFavoriteSwatches,
     handleBright,
     sortBright,
-    history
+    history,
+    getRandoms
 }) => {
-    const handleReload = () => {
-        window.location.reload(false)
+    const [rotate, setRotate] = useState(false)
+
+    const handleReload = event => {
+        getRandoms(event)
+        setRotate(true)
+        setTimeout(() => {
+            setRotate(false)
+        }, 500)
     }
 
     return (
@@ -26,10 +35,15 @@ const Colors = ({
                     {!searchInput && !searchSubmitted ? (
                         <p>
                             Showing 1000 random colors.{' '}
-                            <a href="/" onClick={handleReload}>
-                                Reload
-                            </a>{' '}
-                            for a new set.{' '}
+                            <span
+                                className={`more-trigger ${
+                                    rotate ? 'rotate' : ''
+                                }`}
+                                onClick={handleReload}
+                            >
+                                <Sync />
+                            </span>{' '}
+                            Reload for a new set.{' '}
                         </p>
                     ) : searchSubmitted ? (
                         <p>

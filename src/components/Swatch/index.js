@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Heart } from '../../images/heart.svg'
-import { getReadableColor } from '../../utils/helpers'
+import { getReadableColor, getNamedColor } from '../../utils/helpers'
 import './Swatch.scss'
 
 const Swatch = ({
@@ -14,6 +14,7 @@ const Swatch = ({
     removeFavorite,
     favorites
 }) => {
+    const [namedColor, setNamedColor] = useState()
     const readableColor = getReadableColor(color)
 
     // console.log(color)
@@ -21,9 +22,21 @@ const Swatch = ({
     // your link creation
     const params = {
         pathname: `/color/${color && color.hex.slice(1)}`,
-        color: { name: color && color.name, hex: color && color.hex }
+        color: {
+            name: color && color.name ? color.name : '',
+            hex: color && color.hex ? color.hex : '#000000'
+        }
         // name: color.name
     }
+
+    useEffect(() => {
+        const named = getNamedColor(color)
+        if (named) {
+            setNamedColor(named)
+        }
+    }, [color])
+
+    // console.log('namedColor', namedColor)
 
     return (
         <li
@@ -41,7 +54,13 @@ const Swatch = ({
                     <span
                         className="add-favorite"
                         onClick={() => {
-                            handleFavorites(color)
+                            handleFavorites({
+                                name:
+                                    namedColor && namedColor.length
+                                        ? namedColor[0].name
+                                        : color.name,
+                                hex: color.hex
+                            })
                         }}
                     >
                         <PlusCircle style={{ fill: readableColor }} />
@@ -64,7 +83,11 @@ const Swatch = ({
                 <div className="swatch-content">
                     <Link to={params}>
                         <div className="swatch-hex">{color.hex}</div>
-                        <div className="swatch-name">{color.name}</div>
+                        <div className="swatch-name">
+                            {namedColor && namedColor.length
+                                ? namedColor[0].name
+                                : color.name}
+                        </div>
                     </Link>
                 </div>
             </div>

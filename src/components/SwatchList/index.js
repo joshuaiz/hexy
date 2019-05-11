@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect } from 'react'
 import Swatch from '../Swatch/'
 import './SwatchList.scss'
 
@@ -11,7 +11,7 @@ const SwatchList = ({
     setFavoriteSwatches,
     searchSubmitted
 }) => {
-    useMemo(() => {
+    useEffect(() => {
         if (colors && colors.length && favorites && favorites.length) {
             const favSwatches = []
             const intersection = favorites.filter((element, index) => {
@@ -22,6 +22,8 @@ const SwatchList = ({
             setFavoriteSwatches(intersection)
         }
     }, [colors, favorites, setFavoriteSwatches])
+
+    // console.log('favoriteSwatches', favoriteSwatches)
 
     return (
         <ul
@@ -36,7 +38,10 @@ const SwatchList = ({
                         isFavorite = favoriteSwatches.some(
                             el => el.hex === color.hex
                         )
-                    } else if (favoriteSwatches.length === 0) {
+                    } else if (
+                        !favoriteSwatches ||
+                        favoriteSwatches.length === 0
+                    ) {
                         isFavorite = false
                     }
                     return (

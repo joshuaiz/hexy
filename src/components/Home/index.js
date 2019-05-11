@@ -4,6 +4,8 @@ import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as Sync } from '../../images/sync.svg'
 import { ReactComponent as Heart } from '../../images/heart.svg'
+import { ReactComponent as SearchIcon } from '../../images/search-solid.svg'
+import { ReactComponent as Rocket } from '../../images/rocket.svg'
 import Hero from './Hero'
 import Swatch from '../Swatch'
 import './Home.scss'
@@ -28,7 +30,6 @@ const Home = ({
 
     useEffect(() => {
         getHomeRandoms()
-
         return undefined
     }, [])
 
@@ -107,7 +108,12 @@ const Home = ({
             <div className="home-content">
                 <ul className="nostyle home-tiles">
                     <li>
-                        <h2>Quick Start</h2>
+                        <h2>
+                            <span className="svg-icon">
+                                <Rocket />
+                            </span>{' '}
+                            Quick Start
+                        </h2>
                         <div className="tile-content">
                             <p>
                                 Visit the <Link to="/colors">Colors</Link> page
@@ -117,17 +123,30 @@ const Home = ({
                                     <PlusCircle />
                                 </span>{' '}
                                 to add as a favorite. Your favorites will appear
-                                in the Favorites sidebar.
+                                in the Favorites sidebar. Toggle the sidebar
+                                using the switch in the header.
                             </p>
                             <p>
                                 Click on any swatches name or hex code to view a
                                 detail page with color properties, harmonies,
                                 shades/tints, and more.
                             </p>
+                            <p>
+                                The hope is that you discover new colors{' '}
+                                <em>while</em> you are exploring the site and
+                                these will inspire you to create something
+                                beautiful. That's really the whole point of
+                                Hexy.
+                            </p>
                         </div>
                     </li>
                     <li>
-                        <h2>Search Tips</h2>
+                        <h2>
+                            <span className="svg-icon">
+                                <SearchIcon />
+                            </span>{' '}
+                            Search Tips
+                        </h2>
                         <div className="tile-content">
                             <p>
                                 If you're looking for something specific, a
@@ -148,12 +167,6 @@ const Home = ({
                                 You can also try descriptors like "vivid" or
                                 "muted" and adjectives like "vintage" or
                                 "tropical".
-                            </p>
-                            <p>
-                                The hope is that you discover new colors{' '}
-                                <em>while</em> you are searching and these will
-                                inspire you to create something beautiful.
-                                That's really the whole point.
                             </p>
                             <p>
                                 You can also search for specific hex values and
@@ -195,7 +208,7 @@ const Home = ({
                                 file at any time from the Favorites sidebar.
                                 Hexy's Favorites are an awesome way to find and
                                 download palettes or color groups quickly and
-                                use them in your designs or code.
+                                use them in your designs or code right away.
                             </p>
                             <p>
                                 <Link to="/colors">

@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import {
-    BrowserRouter as Router,
-    Route,
-    Link,
-    Switch,
-    Redirect,
-    withRouter
-} from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
-import SwatchList from './components/SwatchList'
 import Wrapper from './components/Wrapper'
 import Home from './components/Home'
 import Colors from './components/Colors'
@@ -38,7 +30,14 @@ const App = ({ history, location }) => {
     const [dragEnded, setDragEnded] = useState(false)
 
     // Get 1000 random colors to show on home page
-    const getRandoms = () => {
+    const getRandoms = event => {
+        if (event) {
+            event.preventDefault()
+            const randoms = getRandomColors(1000)
+            setColors(randoms)
+            sessionStorage.setItem('hexy_randoms', JSON.stringify(randoms))
+            return
+        }
         const cachedRandoms = sessionStorage.getItem('hexy_randoms')
         if (!cachedRandoms) {
             const randoms = getRandomColors(1000)
@@ -274,6 +273,7 @@ const App = ({ history, location }) => {
                                     setFavoriteSwatches={setFavoriteSwatches}
                                     handleBright={handleBright}
                                     sortBright={sortBright}
+                                    getRandoms={getRandoms}
                                 />
                             )}
                         />
@@ -288,7 +288,7 @@ const App = ({ history, location }) => {
                                     favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
-                                    {...props}
+                                    location={props.location}
                                 />
                             )}
                         />
