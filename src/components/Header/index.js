@@ -1,7 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import * as firebase from 'firebase/app'
 import Switch from 'react-switch'
 import SearchBox from './SearchBox'
+import { ReactComponent as UserCircle } from '../../images/user-circle.svg'
 import { getNumberOfNamedColors } from '../../utils/helpers'
 import './Header.scss'
 
@@ -14,6 +17,28 @@ const Header = ({
     handleSidebarToggle,
     isSidebarVisible
 }) => {
+    const { user } = useAuthState(firebase.auth())
+    const [iconHover, setIconHover] = useState(false)
+
+    // console.log(user)
+
+    const handleLogout = () => {
+        firebase.auth().signOut()
+    }
+
+    const handleMouseEnter = () => {
+        setIconHover(true)
+    }
+
+    const handleMouseLeave = () => {
+        setIconHover(false)
+    }
+
+    // clear hover state on reload
+    window.onbeforeunload = () => {
+        setIconHover(false)
+    }
+
     return (
         <div id="top" className="header">
             <div className="header-bar">
@@ -49,16 +74,48 @@ const Header = ({
                             <h1>hexy</h1>
                         </Link>
                     </div>
-                    <div className="header-text">
-                        Explore and discover {num ? num : '18,000+'} named hex
-                        colors.
-                    </div>
+                </div>
+                <div className="header-tagline">
+                    Explore and discover {num ? num : '18,000+'} named hex
+                    colors.
                 </div>
                 <SearchBox
                     handleSearch={handleSearch}
                     handleSearchInput={handleSearchInput}
                     searchInput={searchInput}
                 />
+                <nav className="main-nav">
+                    <NavLink to="/colors">Explore Colors</NavLink>
+                    <NavLink to="/pro">Go Pro</NavLink>
+                    {user ? (
+                        <NavLink
+                            to="/account"
+                            className={`icon-link ${iconHover ? 'hover' : ''}`}
+                        >
+                            <UserCircle
+                                onMouseEnter={handleMouseEnter}
+                                className={iconHover ? 'hover' : ''}
+                            />
+                        </NavLink>
+                    ) : (
+                        <NavLink to="/account">Log In</NavLink>
+                    )}
+                    {user && (
+                        <ul
+                            className={`nostyle sub-menu ${
+                                iconHover ? 'show' : 'hide'
+                            }`}
+                            onMouseLeave={handleMouseLeave}
+                        >
+                            <li>
+                                <NavLink to="/account">Account</NavLink>
+                            </li>
+                            <li>
+                                <span onClick={handleLogout}>Log Out</span>
+                            </li>
+                        </ul>
+                    )}
+                </nav>
                 <div className="sidebar-toggle">
                     <label>
                         <Switch

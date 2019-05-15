@@ -23,9 +23,13 @@ const Colors = ({
     const handleReload = event => {
         getRandoms(event)
         setRotate(true)
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             setRotate(false)
         }, 500)
+
+        return () => {
+            clearTimeout(timeout)
+        }
     }
 
     return (

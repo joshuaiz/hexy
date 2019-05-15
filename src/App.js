@@ -6,6 +6,8 @@ import Home from './components/Home'
 import Colors from './components/Colors'
 import Favorites from './components/Favorites'
 import Color from './components/Color'
+import CurrentUser from './components/CurrentUser'
+import Account from './components/Account'
 import {
     getRandomColors,
     sortLightness,
@@ -109,6 +111,9 @@ const App = ({ history, location }) => {
     let found
 
     const handleFavorites = color => {
+        if (!color) {
+            return
+        }
         if (favorites && favorites.length) {
             // check if color is already a favorite
             found = favorites.some(el => el.hex === color.hex)
@@ -136,6 +141,9 @@ const App = ({ history, location }) => {
     }
 
     const removeFavorite = color => {
+        if (!color || !favorites) {
+            return
+        }
         let filteredFavorites = favorites.filter(item => item.hex !== color.hex)
         if (!filteredFavorites.length) {
             clearFavorites()
@@ -171,7 +179,6 @@ const App = ({ history, location }) => {
     }
 
     const onDragEnd = result => {
-        // console.log(result)
         const { destination, source, draggableId } = result
         if (!destination) {
             return
@@ -221,10 +228,6 @@ const App = ({ history, location }) => {
         // resume normal body scroll behavior
         document.body.style.overflow = 'scroll'
     }
-
-    // console.log(window.location)
-
-    useEffect(() => {}, [])
 
     return (
         <div className="App">
@@ -289,8 +292,19 @@ const App = ({ history, location }) => {
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
                                     location={props.location}
+                                    match={props.match}
                                 />
                             )}
+                        />
+                        <Route
+                            exact
+                            path="/account"
+                            render={props => <Account {...props} />}
+                        />
+                        <Route
+                            exact
+                            path="/user"
+                            render={props => <CurrentUser {...props} />}
                         />
                     </Switch>
                     <DragDropContext
@@ -312,5 +326,7 @@ const App = ({ history, location }) => {
         </div>
     )
 }
+
+// export default withRouter(App)
 
 export default withRouter(App)

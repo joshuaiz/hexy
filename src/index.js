@@ -1,9 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import withFirebaseAuth from 'react-with-firebase-auth'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+// import 'firebase/firestore'
+import { firebaseAppAuth } from './config/firebaseconfig'
+import { compose } from 'recompose'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+
+// const firebaseAppAuth = firebaseApp.auth()
+
+// export const db = firebase.firestore()
+
+const providers = {
+    googleProvider: new firebase.auth.GoogleAuthProvider()
+}
 
 const RouterApp = () => {
     return (
@@ -13,7 +27,15 @@ const RouterApp = () => {
     )
 }
 
-export default withRouter(RouterApp)
+// export default withRouter(RouterApp)
+
+export default compose(
+    withRouter,
+    withFirebaseAuth({
+        providers,
+        firebaseAppAuth
+    })
+)(RouterApp)
 
 ReactDOM.render(<RouterApp />, document.getElementById('root'))
 

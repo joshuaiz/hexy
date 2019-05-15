@@ -11,6 +11,7 @@ const SwatchList = ({
     setFavoriteSwatches,
     searchSubmitted
 }) => {
+    /* eslint-disable */
     useEffect(() => {
         if (colors && colors.length && favorites && favorites.length) {
             const favSwatches = []
@@ -21,9 +22,8 @@ const SwatchList = ({
             })
             setFavoriteSwatches(intersection)
         }
-    }, [colors, favorites, setFavoriteSwatches])
-
-    // console.log('favoriteSwatches', favoriteSwatches)
+    }, [favorites])
+    /* eslint-enable */
 
     return (
         <ul
@@ -46,7 +46,7 @@ const SwatchList = ({
                     }
                     return (
                         <Swatch
-                            key={color.hex}
+                            key={color.hex + index}
                             color={color}
                             index={index}
                             handleFavorites={handleFavorites}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
@@ -41,7 +41,7 @@ const Home = ({
         }, 500)
     }
 
-    useMemo(() => {
+    useCallback(() => {
         if (
             homeRandoms &&
             homeRandoms.length &&
@@ -191,8 +191,9 @@ const Home = ({
                         </h2>
                         <div className="tile-content">
                             <p>
-                                You can save any color as a Favorite and up to
-                                15 Favorites at any one time.
+                                You can save any color (even a non-named color)
+                                as a Favorite and up to 15 Favorites at any one
+                                time.
                             </p>
 
                             <p>

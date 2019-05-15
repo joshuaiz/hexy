@@ -1,0 +1,88 @@
+.account-page {
+    .page-account {
+        width: 80%;
+        padding: 1.5em;
+        .user-info {
+            margin: 1.5em 0;
+            .user-avatar {
+                display: flex;
+                .avatar {
+                    margin-right: 1.5em;
+                    img {
+                        width: 96px;
+                        height: 96px;
+                        margin: 1em 0;
+                        border-radius: 150px;
+                    }
+                }
+                
+                .file-uploader {
+                    margin: 1em 0 1.5em;
+                    padding: 1em;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    width: auto;
+                    p {
+                        margin-top: 0;
+                        font-size: 13px;
+                    }
+                    input {
+                        display: inline-block;
+                    }
+                }
+            }
+            .profile-updated {
+                p {
+                    margin-top: 1em !important;
+                    margin: 1em 0 0;
+                    font-size: 13px;
+                }
+            }
+            .start-date {
+                font-size: 14px;
+            }
+        }
+        .tabs {
+            border: 1px solid #ccc;
+            width: 300px;
+            .tabs-inner {
+            }
+            .tab-triggers {
+                display: flex;
+                .tab-title {
+                    width: 50%;
+                    padding-bottom: 1em;
+                    color: #bbb;
+                    padding: 1em;
+                    border-bottom: 1px solid #ccc;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    h2 {
+                        margin: 0;
+                    }
+                }
+                .tab-title-1 {
+                    border-right: 1px solid #ccc;
+                }
+                .tab-title.tab-active {
+                    color: #222;
+                    border-bottom: none;
+                }
+            }
+            .tab {
+                padding: 1em;
+                form {
+                    display: flex;
+                    flex-direction: column;
+                }
+            }
+            .tab.active {
+                display: block;
+            }
+            .tab.inactive {
+                display: none;
+            }
+        }
+    }
+}

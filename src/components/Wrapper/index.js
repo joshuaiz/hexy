@@ -4,8 +4,6 @@ import { withRouter } from 'react-router-dom'
 const Wrapper = ({ children, location, match }) => {
     let currentPath = window.location.pathname
 
-    // console.log(match.params.color)
-
     if (currentPath === '/') {
         currentPath = 'home'
     } else {

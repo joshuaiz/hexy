@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { getTintsShades } from '../../utils/helpers'
+import * as tinycolor from 'tinycolor2'
+import { getTintsShades, inverseColor } from '../../utils/helpers'
 import namedColors from 'color-name-list'
 import Swatch from '../Swatch'
 import SwatchList from '../SwatchList'
+import ColorSpaces from '../ColorSpaces'
 import './Color.scss'
 
 const Color = React.memo(function Color({
+    match,
     location,
     handleFavorites,
     favorites,
@@ -19,6 +22,8 @@ const Color = React.memo(function Color({
     const url = location.pathname
     const urlHex = url.split('/').pop()
     const urlHexHash = '#' + urlHex
+
+    const hexColor = '#' + match.params.color
 
     const getColorByHex = hex => {
         let namedColor = namedColors.filter((item, index) => {
@@ -71,19 +76,63 @@ const Color = React.memo(function Color({
         getColorByHex(urlHexHash)
     }, [urlHexHash])
 
-    // let found
+    let found
 
-    // if (favorites && currentColor) {
-    //     found = favorites.some(el => {
-    //         return el.hex === currentColor.hex
-    //     })
-    // }
+    if (favorites && currentColor) {
+        found = favorites.some(el => {
+            return el.hex === currentColor.hex
+        })
+    }
 
     let shades = []
     let tints = []
 
     shades = getTintsShades('darken', currentColor && currentColor.hex)
     tints = getTintsShades('lighten', currentColor && currentColor.hex)
+
+    const hex = tinycolor(hexColor)
+
+    const analogous = hex.analogous(3, 10)
+    const triad = hex.triad()
+    const tetrad = hex.tetrad()
+    const complement = hex.complement().toHexString()
+    const splitComplement = hex.splitcomplement()
+    let inverse = inverseColor(hex)
+
+    // console.log(inverse)
+
+    // console.log('analogous', analogous)
+    // console.log('triad', triad)
+    // console.log('tetrad', tetrad)
+    // console.log('complement', complement)
+    // console.log('split complement', splitComplement)
+
+    // const analogousHex = analogous.map(item => {
+    //     return { name: '', hex: item.toHexString() }
+    // })
+
+    const colorArray = array => {
+        const newArray = array.map(item => {
+            return { name: '', hex: item.toHexString() }
+        })
+        return newArray
+    }
+
+    const spinColor = color => {
+        let spins = []
+        let newColor
+        for (let s = 1, i = 0; i < 4; i++, s += 30) {
+            newColor = color.spin(s).toString()
+            if (spins.indexOf(newColor) === -1) {
+                spins.push({ name: '', hex: newColor })
+            }
+        }
+        return spins
+    }
+
+    const spins = spinColor(hex)
+
+    // console.log(spins)
 
     return (
         <div
@@ -109,9 +158,9 @@ const Color = React.memo(function Color({
                         {currentColor ? (
                             <Swatch
                                 color={currentColor}
-                                // handleFavorites={handleFavorites}
-                                // removeFavorite={removeFavorite}
-                                // isFavorite={found}
+                                handleFavorites={handleFavorites}
+                                removeFavorite={removeFavorite}
+                                isFavorite={found}
                             />
                         ) : (
                             location.color && <Swatch color={location.color} />
@@ -148,10 +197,110 @@ const Color = React.memo(function Color({
                     </div>
                 </div>
             </div>
+            <div className="color-spaces">
+                <ColorSpaces
+                    hexColor={urlHexHash ? urlHexHash : currentColor.hex}
+                />
+            </div>
+            <div className="color-harmonies">
+                <div className="analogous color-harmony">
+                    <h3>Analogous</h3>
+                    {analogous && (
+                        <SwatchList
+                            colors={colorArray(analogous)}
+                            favorites={favorites}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            favoriteSwatches={favoriteSwatches}
+                            setFavoriteSwatches={setFavoriteSwatches}
+                        />
+                    )}
+                </div>
+                <div className="triad color-harmony">
+                    <h3>Triad</h3>
+                    {triad && (
+                        <SwatchList
+                            colors={colorArray(triad)}
+                            favorites={favorites}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            favoriteSwatches={favoriteSwatches}
+                            setFavoriteSwatches={setFavoriteSwatches}
+                        />
+                    )}
+                </div>
+                <div className="tetrad color-harmony">
+                    <h3>Tetrad</h3>
+                    {tetrad && (
+                        <SwatchList
+                            colors={colorArray(tetrad)}
+                            favorites={favorites}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            favoriteSwatches={favoriteSwatches}
+                            setFavoriteSwatches={setFavoriteSwatches}
+                        />
+                    )}
+                </div>
+                <div className="split-complement color-harmony">
+                    <h3>Split Complement</h3>
+                    {splitComplement && (
+                        <SwatchList
+                            colors={colorArray(splitComplement)}
+                            favorites={favorites}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            favoriteSwatches={favoriteSwatches}
+                            setFavoriteSwatches={setFavoriteSwatches}
+                        />
+                    )}
+                </div>
+                <div className="complement-inverse">
+                    <div className="complement color-harmony">
+                        <h3>Complement</h3>
+                        {complement && (
+                            <Swatch
+                                color={{ name: '', hex: complement }}
+                                favorites={favorites}
+                                handleFavorites={handleFavorites}
+                                removeFavorite={removeFavorite}
+                                favoriteSwatches={favoriteSwatches}
+                                setFavoriteSwatches={setFavoriteSwatches}
+                            />
+                        )}
+                    </div>
+                    <div className="inverse color-harmony">
+                        <h3>Inverse</h3>
+                        {inverse && (
+                            <Swatch
+                                color={{ name: '', hex: inverse }}
+                                favorites={favorites}
+                                handleFavorites={handleFavorites}
+                                removeFavorite={removeFavorite}
+                                favoriteSwatches={favoriteSwatches}
+                                setFavoriteSwatches={setFavoriteSwatches}
+                            />
+                        )}
+                    </div>
+                </div>
+                <div className="spins color-harmony">
+                    <h3>Spins</h3>
+                    {spins && (
+                        <SwatchList
+                            colors={spins}
+                            favorites={favorites}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            favoriteSwatches={favoriteSwatches}
+                            setFavoriteSwatches={setFavoriteSwatches}
+                        />
+                    )}
+                </div>
+            </div>
         </div>
     )
 })
 
 // Color.whyDidYouRender = true
 
-export default Color
+export default withRouter(Color)

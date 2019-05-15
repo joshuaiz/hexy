@@ -23,7 +23,10 @@ const Swatch = ({
     const params = {
         pathname: `/color/${color && color.hex.slice(1)}`,
         color: {
-            name: color && color.name ? color.name : '',
+            name:
+                namedColor && namedColor.length
+                    ? namedColor[0].name
+                    : color.name,
             hex: color && color.hex ? color.hex : '#000000'
         }
         // name: color.name
@@ -35,8 +38,6 @@ const Swatch = ({
             setNamedColor(named)
         }
     }, [color])
-
-    // console.log('namedColor', namedColor)
 
     return (
         <li
