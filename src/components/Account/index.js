@@ -8,11 +8,18 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import FileUploader from 'react-firebase-file-uploader'
 import { format } from 'date-fns'
 import { login, logout, signup } from '../../utils/user'
+import Swatch from '../Swatch'
 import './Account.scss'
 
 // console.log('db', db)
 
-const Account = ({ onSubmit, history }) => {
+const Account = ({
+    onSubmit,
+    history,
+    handleFavorites,
+    removeFavorite,
+    favorites
+}) => {
     const { initialising, user } = useAuthState(firebase.auth())
     const [currentUser, setCurrentUser] = useState()
     const [tab1Active, setTab1Active] = useState(true)
@@ -82,7 +89,7 @@ const Account = ({ onSubmit, history }) => {
         console.log(inputEl)
     }
 
-    // console.log('currentUser', currentUser && currentUser)
+    console.log('currentUser', currentUser && currentUser)
 
     const handleSignUp = async event => {
         event.preventDefault()
@@ -198,6 +205,43 @@ const Account = ({ onSubmit, history }) => {
                     </div>
                 </div>
                 <button onClick={handleLogout}>Log out</button>
+                <div className="user-palettes">
+                    {currentUser && currentUser.palettes && (
+                        <h3>Saved Palettes</h3>
+                    )}
+                    <div className="nostyle palettes-list">
+                        {currentUser &&
+                            currentUser.palettes.map(palette => {
+                                return (
+                                    <ul
+                                        className="user-palette nostyle"
+                                        key={palette.date.seconds}
+                                    >
+                                        {palette.palette.map((color, index) => {
+                                            return (
+                                                <Swatch
+                                                    key={
+                                                        palette.date.seconds +
+                                                        color.hex
+                                                    }
+                                                    color={color}
+                                                    index={index}
+                                                    handleFavorites={
+                                                        handleFavorites
+                                                    }
+                                                    removeFavorite={
+                                                        removeFavorite
+                                                    }
+                                                    favorites={favorites}
+                                                    // isFavorite={isFavorite ? true : false}
+                                                />
+                                            )
+                                        })}
+                                    </ul>
+                                )
+                            })}
+                    </div>
+                </div>
             </div>
         )
     }

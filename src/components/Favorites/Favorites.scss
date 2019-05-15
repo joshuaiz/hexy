@@ -28,49 +28,19 @@
         .favorites-toolbar-inner {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 10px 10px 0;
             background: #ddd;
             margin-top: 8px;
             .favorites-sort {
                 font-size: 12px;
-                margin-right: 1em;
+                margin-right: 4px;
                 color: #777;
-            }
-            .clear-fav {
-                margin-left: auto;
-                .clear-favorites {
-                    font-size: 18px;
-                    display: flex;
-                    align-items: center;
-                    svg {
-                        margin-right: 2px;
-                        font-size: 18px;
-                        width: 18px;
-                        height: 18px;
-                        width: 24px;
-                        fill:  #f35336;
-                        cursor: pointer;
-                        opacity: 0.7;
-                        circle {
-                            fill: transparent;
-                            color: #f35336;
-                        }
-                    }
-                    &:hover, &:focus {
-                        svg {
-                            opacity: 1;
-                        }
-                    }
-                }
-                .clear-text {
-                    font-size: 12px;
-                    color: #777;
-                }
             }
             .favorites-pdf {
                 display: flex;
                 align-items: center;
-                margin-right: 1em;
+                margin-right: 4px;
                 color: #777;
                 span {
                     font-size: 12px;
@@ -91,6 +61,28 @@
                 height: auto;
                 cursor: pointer;
 
+            }
+            .save-palette {
+                display: flex;
+                align-items: center;
+                margin-right: 4px;
+                color: #777;
+                cursor: pointer;
+                span {
+                    font-size: 12px;
+                }
+                svg {
+                    width: 14px;
+                    margin-right: 4px;
+                    opacity: 0.7;
+                    position: relative;
+                    top: 2px;
+                }
+                &:hover, &:focus {
+                    svg {
+                        opacity: 1;
+                    }
+                }
             }
         }
         .favorites-info {
@@ -184,6 +176,40 @@
                 
                 
             }
+        }
+        
+    }
+    .clear-fav {
+        margin: 1em 0 0;
+        display: flex;
+        justify-content: flex-end;
+        .clear-favorites {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            svg {
+                margin-right: 2px;
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                width: 24px;
+                fill:  #f35336;
+                cursor: pointer;
+                opacity: 0.7;
+                circle {
+                    fill: transparent;
+                    color: #f35336;
+                }
+            }
+            &:hover, &:focus {
+                svg {
+                    opacity: 1;
+                }
+            }
+        }
+        .clear-text {
+            font-size: 12px;
+            color: #777;
         }
     }
 }

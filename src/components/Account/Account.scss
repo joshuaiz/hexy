@@ -85,4 +85,34 @@
             }
         }
     }
+    .user-palettes {
+        margin: 2.2em 0;
+        padding: 1em;
+        border: 1px solid #ccc;
+        h3 {
+            margin-top: 0;
+        }
+        .palettes-list {
+            display: flex;
+            justify-content: space-between;
+            .user-palette {
+                display: flex;
+                flex-wrap: wrap;
+                padding: 8px;
+                border: 1px solid #ccc;
+                .swatch {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 2px;
+                    font-size: 9px;
+                    .swatch-color {
+                        padding: 0;
+                        width: 64px;
+                        height: 64px;
+                    }
+                }
+            }
+        }
+    }
 }

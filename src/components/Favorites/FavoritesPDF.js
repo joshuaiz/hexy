@@ -45,7 +45,7 @@ const FavoritesPDF = ({ favorites }) => {
                 onClick={handlePDF}
                 style={{ fill: '#555555' }}
             />
-            <span>Save to PDF</span>
+            <span>Export to PDF</span>
         </div>
     )
 }

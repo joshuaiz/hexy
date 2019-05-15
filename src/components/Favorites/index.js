@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
+import { db } from '../../config/firebaseconfig'
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
+import 'firebase/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import FavoritesPDF from './FavoritesPDF'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
+import { ReactComponent as Palette } from '../../images/palette.svg'
 import { sortLightness } from '../../utils/helpers'
 import './Favorites.scss'
 
@@ -16,6 +22,10 @@ const Favorites = ({
     dragEnded
 }) => {
     const [isBright, setIsBright] = useState(false)
+    const [paletteSaved, setPaletteSaved] = useState(false)
+    const { initialising, user } = useAuthState(firebase.auth())
+
+    console.log(user)
 
     const handleBright = () => {
         localStorage.setItem('original_favorites', JSON.stringify(favorites))
@@ -55,6 +65,30 @@ const Favorites = ({
         }
     }, [dragEnded])
 
+    const savePalette = () => {
+        if (favorites && favorites.length !== 0 && user) {
+            const date = new Date()
+
+            db.collection('users')
+                .doc(user.uid)
+                .update({
+                    palettes: firebase.firestore.FieldValue.arrayUnion({
+                        date: date,
+                        palette: favorites
+                    })
+                })
+                .then(setPaletteSaved(true))
+                .then(
+                    setTimeout(() => {
+                        setPaletteSaved(false)
+                    }, 4000)
+                )
+                .catch(err => {
+                    console.log('Error saving palette', err)
+                })
+        }
+    }
+
     return (
         <div
             className={`favorites ${isSidebarVisible ? 'active' : 'inactive'}`}
@@ -74,18 +108,17 @@ const Favorites = ({
                         <label>Sort by brightness</label>
                     </div>
                     <FavoritesPDF favorites={favorites && favorites} />
-                    <div className="clear-fav">
-                        <span
-                            className="clear-favorites"
-                            onClick={clearFavorites}
-                        >
-                            <TimesCircle
-                                style={{
-                                    color: '#f35336'
-                                }}
-                            />
-                            <span className="clear-text">Clear</span>
-                        </span>
+                    <div className="save-palette">
+                        {user && user ? (
+                            <span className="save-icon" onClick={savePalette}>
+                                <Palette style={{ color: '#555555' }} />
+                                <span className="save-text">
+                                    {paletteSaved
+                                        ? 'Palette saved!'
+                                        : 'Save Palette'}
+                                </span>
+                            </span>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -159,6 +192,16 @@ const Favorites = ({
                         </Droppable>
                     </div>
                 )}
+                <div className="clear-fav">
+                    <span className="clear-favorites" onClick={clearFavorites}>
+                        <TimesCircle
+                            style={{
+                                color: '#f35336'
+                            }}
+                        />
+                        <span className="clear-text">Clear Favorites</span>
+                    </span>
+                </div>
             </div>
         </div>
     )

@@ -299,7 +299,13 @@ const App = ({ history, location }) => {
                         <Route
                             exact
                             path="/account"
-                            render={props => <Account {...props} />}
+                            render={props => (
+                                <Account
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    favorites={favorites}
+                                />
+                            )}
                         />
                         <Route
                             exact
