@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
+import nearestColor from 'nearest-color'
 import Wrapper from './components/Wrapper'
 import Home from './components/Home'
 import Colors from './components/Colors'
@@ -11,7 +12,9 @@ import Account from './components/Account'
 import {
     getRandomColors,
     sortLightness,
-    filterColorsBySearchText
+    filterColorsBySearchText,
+    getColorByHex,
+    hexColors
 } from './utils/helpers'
 import Header from './components/Header'
 import './App.scss'
@@ -21,15 +24,17 @@ if (process.env.NODE_ENV !== 'production') {
     whyDidYouRender(React)
 }
 
-const App = ({ history, location }) => {
+const App = React.memo(({ history, location, match }) => {
     const [colors, setColors] = useState()
     const [sortBright, setSortBright] = useState(false)
     const [searchInput, setSearchInput] = useState('')
     const [searchSubmitted, setSearchSubmitted] = useState(false)
+    const [noMatch, setNoMatch] = useState(false)
     const [favorites, setFavorites] = useState([])
     const [favoriteSwatches, setFavoriteSwatches] = useState([])
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const [dragEnded, setDragEnded] = useState(false)
+    const [paletteWasSaved, setPaletteWasSaved] = useState(false)
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
@@ -89,7 +94,12 @@ const App = ({ history, location }) => {
         let text = searchInput.toLowerCase()
         const filterList = filterColorsBySearchText(text)
 
-        if (text && text.length) {
+        let validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
+
+        // console.log('handleSearch', filterList)
+
+        if (text && text.length && filterList && filterList.length) {
+            setNoMatch(false)
             // if we have a search, reset brightness sort
             setSortBright(false)
             setColors(filterList)
@@ -100,10 +110,21 @@ const App = ({ history, location }) => {
             setSearchSubmitted(true)
             // if not on colors page, go there to see search results
             history.push('/colors')
+        } else if (validHex) {
+            const nearest = nearestColor.from(hexColors)
+            const nearestString = nearest(text)
+            const nc = getColorByHex(nearestString)
+            setNoMatch(true)
+            setSortBright(false)
+            setColors(nc)
+            setSearchSubmitted(true)
+            history.push('/colors')
         } else {
             setSortBright(false)
             setSearchSubmitted(false)
+            setNoMatch(true)
             getRandoms()
+            sessionStorage.setItem('hexy_searchColors', JSON.stringify(colors))
         }
     }
 
@@ -229,6 +250,14 @@ const App = ({ history, location }) => {
         document.body.style.overflow = 'scroll'
     }
 
+    const paletteHasBeenSaved = () => {
+        setPaletteWasSaved(true)
+        // console.log('in paletteHasBeenSaved')
+        setTimeout(() => {
+            setPaletteWasSaved(false)
+        }, 10000)
+    }
+
     return (
         <div className="App">
             <Wrapper>
@@ -263,12 +292,13 @@ const App = ({ history, location }) => {
                         <Route
                             exact
                             path="/colors"
-                            render={props => (
+                            render={() => (
                                 <Colors
-                                    key={props.location.href}
+                                    // key={props.location.href}
                                     colors={colors}
                                     searchInput={searchInput}
                                     searchSubmitted={searchSubmitted}
+                                    noMatch={noMatch}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
@@ -283,16 +313,16 @@ const App = ({ history, location }) => {
                         <Route
                             exact
                             path="/color/:color"
-                            render={props => (
+                            render={() => (
                                 <Color
-                                    key={props.location.href}
+                                    key={location.href}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
-                                    location={props.location}
-                                    match={props.match}
+                                    location={location}
+                                    match={match}
                                 />
                             )}
                         />
@@ -304,6 +334,7 @@ const App = ({ history, location }) => {
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
+                                    paletteWasSaved={paletteWasSaved}
                                 />
                             )}
                         />
@@ -325,14 +356,17 @@ const App = ({ history, location }) => {
                             getFavorites={getFavorites}
                             isSidebarVisible={isSidebarVisible}
                             dragEnded={dragEnded}
+                            paletteHasBeenSaved={paletteHasBeenSaved}
                         />
                     </DragDropContext>
                 </div>
             </Wrapper>
         </div>
     )
-}
+})
 
 // export default withRouter(App)
+
+App.whyDidYouRender = true
 
 export default withRouter(App)

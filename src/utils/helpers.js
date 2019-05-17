@@ -1,5 +1,8 @@
 import namedColors from 'color-name-list'
 import * as tinycolor from 'tinycolor2'
+import nearestColor from 'nearest-color'
+
+export const hexColors = getHexArray(namedColors)
 
 export function getNumberOfNamedColors() {
     const num = namedColors.length
@@ -79,6 +82,7 @@ export function sortLightness(colors) {
 }
 
 export function filterColorsBySearchText(text) {
+    let validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
     const filterList = namedColors.filter((item, index) => {
         if (
             (text !== '' && item.name.toLowerCase().includes(text)) ||
@@ -90,6 +94,14 @@ export function filterColorsBySearchText(text) {
         }
     })
     return filterList
+}
+
+export function getHexArray(array) {
+    let hexColors = []
+    hexColors = array.map((color, index) => {
+        return color.hex
+    })
+    return hexColors
 }
 
 export function getTintsShades(adjustment, color) {

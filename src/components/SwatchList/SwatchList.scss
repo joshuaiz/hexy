@@ -10,6 +10,7 @@
             li {
                 margin: 5px;
                 min-width: 180px;
+                max-width: 198px;
                 flex: 1;
                     .swatch-color {
                         height: 80px;
@@ -17,6 +18,11 @@
                 
             }
         }
+        // .nomatch, .match {
+        //     li {
+                
+        //     }
+        // }
     }
 }
 

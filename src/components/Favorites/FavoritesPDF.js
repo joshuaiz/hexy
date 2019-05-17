@@ -3,10 +3,12 @@ import moment from 'moment'
 import * as jsPDF from 'jspdf'
 import { ReactComponent as Download } from '../../images/download.svg'
 
-const FavoritesPDF = ({ favorites }) => {
+const FavoritesPDF = ({ favorites, paletteName }) => {
     var now = new Date()
 
-    var dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ss a')
+    var dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
+
+    let name = paletteName
 
     const doc = new jsPDF({
         orientation: 'landscape',
@@ -15,7 +17,11 @@ const FavoritesPDF = ({ favorites }) => {
         fontSize: 12
     })
 
-    doc.text('Hexy Favorites ' + dateStringWithTime, 1, 0.5)
+    doc.text(
+        `Hexy Favorites ${dateStringWithTime}${name ? ': ' + name : ''}`,
+        1,
+        0.5
+    )
 
     let n = favorites.length
 

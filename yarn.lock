@@ -6986,6 +6986,11 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
+nearest-color@^0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/nearest-color/-/nearest-color-0.4.4.tgz#fb812072b511f4f09a0a316903332e09fa5d7f1d"
+  integrity sha512-orhcaIORC10tf41Ld2wwlcC+FaAavHG87JHWB3eHH5p7v2k9Tzym2XNEZzLAm5YJwGv6Q38WWc7SOb+Qfu/4NQ==
+
 needle@^2.2.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/needle/-/needle-2.3.1.tgz#d272f2f4034afb9c4c9ab1379aabc17fc85c9388"

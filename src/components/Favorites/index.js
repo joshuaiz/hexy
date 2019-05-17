@@ -19,13 +19,16 @@ const Favorites = ({
     setFavorites,
     getFavorites,
     isSidebarVisible,
-    dragEnded
+    dragEnded,
+    paletteHasBeenSaved
 }) => {
     const [isBright, setIsBright] = useState(false)
     const [paletteSaved, setPaletteSaved] = useState(false)
     const { initialising, user } = useAuthState(firebase.auth())
+    const [paletteName, setPaletteName] = useState('')
+    const [paletteNameError, setPaletteNameError] = useState()
 
-    console.log(user)
+    // console.log(user)
 
     const handleBright = () => {
         localStorage.setItem('original_favorites', JSON.stringify(favorites))
@@ -66,18 +69,29 @@ const Favorites = ({
     }, [dragEnded])
 
     const savePalette = () => {
-        if (favorites && favorites.length !== 0 && user) {
+        if (!paletteName) {
+            alert('Please name your palette')
+            setPaletteNameError(true)
+        }
+        if (favorites && favorites.length !== 0 && user && paletteName) {
+            setPaletteNameError(false)
             const date = new Date()
+
+            // console.log(paletteName)
 
             db.collection('users')
                 .doc(user.uid)
                 .update({
                     palettes: firebase.firestore.FieldValue.arrayUnion({
                         date: date,
+                        name: paletteName,
                         palette: favorites
                     })
                 })
-                .then(setPaletteSaved(true))
+                .then(() => {
+                    setPaletteSaved(true)
+                    setPaletteName('')
+                })
                 .then(
                     setTimeout(() => {
                         setPaletteSaved(false)
@@ -87,6 +101,10 @@ const Favorites = ({
                     console.log('Error saving palette', err)
                 })
         }
+    }
+
+    const handlePaletteName = event => {
+        setPaletteName(event.target.value)
     }
 
     return (
@@ -107,10 +125,19 @@ const Favorites = ({
                         />
                         <label>Sort by brightness</label>
                     </div>
-                    <FavoritesPDF favorites={favorites && favorites} />
+                    <FavoritesPDF
+                        favorites={favorites && favorites}
+                        paletteName={paletteName && paletteName}
+                    />
                     <div className="save-palette">
                         {user && user ? (
-                            <span className="save-icon" onClick={savePalette}>
+                            <span
+                                className="save-icon"
+                                onClick={() => {
+                                    savePalette()
+                                    paletteHasBeenSaved()
+                                }}
+                            >
                                 <Palette style={{ color: '#555555' }} />
                                 <span className="save-text">
                                     {paletteSaved
@@ -123,6 +150,18 @@ const Favorites = ({
                 </div>
             </div>
             <div className="favorite-swatches-wrap">
+                {user && user ? (
+                    <div className="palette-name">
+                        <input
+                            className={`palette-name-input ${
+                                paletteNameError ? 'error' : ''
+                            }`}
+                            value={paletteName}
+                            onChange={handlePaletteName}
+                            placeholder="Name your palette"
+                        />
+                    </div>
+                ) : null}
                 <div className="favorites-bar">
                     {favorites.length === 0 && (
                         <div className="favorites-placeholder">

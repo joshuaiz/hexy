@@ -94,6 +94,31 @@
     .favorite-swatches-wrap {
         padding: 10px 10px 16px;
         background: #ddd;
+        .palette-name {
+            .palette-name-input {
+                margin: 8px 0;
+                height: 30px;
+                width: 97.5%;
+                font-size: 15px;
+                padding: 3px;
+            }
+            .palette-name-input.error {
+                background: #fff5be;
+                border: 2px dotted #f98379;
+            }
+            ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+              color: #bbb;
+            }
+            ::-moz-placeholder { /* Firefox 19+ */
+              color: #bbb;
+            }
+            :-ms-input-placeholder { /* IE 10+ */
+              color: #bbb;
+            }
+            :-moz-placeholder { /* Firefox 18- */
+              color: #bbb;
+            }
+        }
     }
     .favorites-bar {
         padding: 10px;

@@ -2,64 +2,63 @@ import React, { useEffect } from 'react'
 import Swatch from '../Swatch/'
 import './SwatchList.scss'
 
-const SwatchList = ({
-    colors,
-    handleFavorites,
-    removeFavorite,
-    favorites,
-    favoriteSwatches,
-    setFavoriteSwatches,
-    searchSubmitted
-}) => {
-    /* eslint-disable */
-    useEffect(() => {
-        if (colors && colors.length && favorites && favorites.length) {
-            const favSwatches = []
-            const intersection = favorites.filter((element, index) => {
-                const found = colors.includes(element)
-                favSwatches.push(found)
-                return favSwatches
-            })
-            setFavoriteSwatches(intersection)
-        }
-    }, [favorites])
-    /* eslint-enable */
+const SwatchList = React.memo(
+    ({
+        colors,
+        handleFavorites,
+        removeFavorite,
+        favorites,
+        favoriteSwatches,
+        setFavoriteSwatches,
+        searchSubmitted,
+        noMatch
+    }) => {
+        /* eslint-disable */
+        useEffect(() => {
+            if (colors && colors.length && favorites && favorites.length) {
+                const favSwatches = []
+                const intersection = favorites.filter((element, index) => {
+                    const found = colors.includes(element)
+                    favSwatches.push(found)
+                    return favSwatches
+                })
+                setFavoriteSwatches(intersection)
+            }
+        }, [favorites])
+        /* eslint-enable */
 
-    return (
-        <ul
-            className={`nostyle swatch-list ${
-                searchSubmitted ? 'search-results' : ''
-            }`}
-        >
-            {colors &&
-                colors.map((color, index) => {
-                    let isFavorite
-                    if (favoriteSwatches && favoriteSwatches.length) {
-                        isFavorite = favoriteSwatches.some(
-                            el => el.hex === color.hex
+        return (
+            <ul className={`nostyle swatch-list`}>
+                {colors &&
+                    colors.map((color, index) => {
+                        let isFavorite
+                        if (favoriteSwatches && favoriteSwatches.length) {
+                            isFavorite = favoriteSwatches.some(
+                                el => el.hex === color.hex
+                            )
+                        } else if (
+                            !favoriteSwatches ||
+                            favoriteSwatches.length === 0
+                        ) {
+                            isFavorite = false
+                        }
+                        return (
+                            <Swatch
+                                key={color.hex + index}
+                                color={color}
+                                index={index}
+                                handleFavorites={handleFavorites}
+                                removeFavorite={removeFavorite}
+                                favorites={favorites}
+                                isFavorite={isFavorite ? true : false}
+                            />
                         )
-                    } else if (
-                        !favoriteSwatches ||
-                        favoriteSwatches.length === 0
-                    ) {
-                        isFavorite = false
-                    }
-                    return (
-                        <Swatch
-                            key={color.hex + index}
-                            color={color}
-                            index={index}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            favorites={favorites}
-                            isFavorite={isFavorite ? true : false}
-                        />
-                    )
-                })}
-        </ul>
-    )
-}
+                    })}
+            </ul>
+        )
+    }
+)
 
-// SwatchList.whyDidYouRender = true
+SwatchList.whyDidYouRender = true
 
 export default SwatchList

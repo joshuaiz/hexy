@@ -8,6 +8,7 @@ const Colors = ({
     colors,
     searchInput,
     searchSubmitted,
+    noMatch,
     handleFavorites,
     removeFavorite,
     favorites,
@@ -36,7 +37,7 @@ const Colors = ({
         <div className="colors">
             <div className="colors-header">
                 <div className="colors-header-text">
-                    {!searchInput && !searchSubmitted ? (
+                    {!searchSubmitted ? (
                         <p>
                             Showing 1000 random colors.{' '}
                             <span
@@ -50,10 +51,19 @@ const Colors = ({
                             Reload for a new set.{' '}
                         </p>
                     ) : searchSubmitted ? (
-                        <p>
+                        <p className="search-results-text">
                             Search results for{' '}
-                            <span className="search-term">{searchInput}</span>:
+                            <span className="search-term">{searchInput}</span>:{' '}
+                            {noMatch && (
+                                <span className="no-match">
+                                    There were no exact matches for your search.
+                                    Here is the nearest named color:
+                                </span>
+                            )}
                         </p>
+                    ) : null}
+                    {searchInput && noMatch ? (
+                        <h3>Sorry, there were no matches for your search.</h3>
                     ) : null}
                 </div>
 
@@ -67,6 +77,7 @@ const Colors = ({
                 </div>
             </div>
             <SwatchList
+                noMatch={noMatch}
                 colors={colors}
                 handleFavorites={handleFavorites}
                 removeFavorite={removeFavorite}
@@ -78,5 +89,7 @@ const Colors = ({
         </div>
     )
 }
+
+Colors.whyDidYouRender = true
 
 export default withRouter(Colors)

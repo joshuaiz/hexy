@@ -33,5 +33,13 @@
                 transform: rotate(180deg);
             }
         }
+        .colors-header-text {
+            .search-results-text {
+                margin: 0;
+            }
+            .no-match {
+                margin: 1em 0;
+            }
+        }
     }
 }

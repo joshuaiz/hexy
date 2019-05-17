@@ -17,9 +17,6 @@ const Swatch = ({
     const [namedColor, setNamedColor] = useState()
     const readableColor = getReadableColor(color)
 
-    // console.log(color)
-
-    // your link creation
     const params = {
         pathname: `/color/${color && color.hex.slice(1)}`,
         color: {
@@ -29,7 +26,6 @@ const Swatch = ({
                     : color.name,
             hex: color && color.hex ? color.hex : '#000000'
         }
-        // name: color.name
     }
 
     useEffect(() => {

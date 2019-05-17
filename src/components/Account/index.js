@@ -8,7 +8,9 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import FileUploader from 'react-firebase-file-uploader'
 import { format } from 'date-fns'
 import { login, logout, signup } from '../../utils/user'
+import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import Swatch from '../Swatch'
+import FavoritesPDF from '../Favorites/FavoritesPDF'
 import './Account.scss'
 
 // console.log('db', db)
@@ -18,7 +20,8 @@ const Account = ({
     history,
     handleFavorites,
     removeFavorite,
-    favorites
+    favorites,
+    paletteWasSaved
 }) => {
     const { initialising, user } = useAuthState(firebase.auth())
     const [currentUser, setCurrentUser] = useState()
@@ -30,6 +33,9 @@ const Account = ({
     const [userName, setUserName] = useState()
     const [profileUpdated, setProfileUpdated] = useState(false)
     const [filename, setFilename] = useState()
+    const [paletteRemoved, setPaletteRemoved] = useState(false)
+
+    // console.log('paletteWasSaved', paletteWasSaved)
 
     const inputEl = useRef(null)
 
@@ -52,7 +58,7 @@ const Account = ({
                 }
             })
         }
-    }, [user, profileUpdated])
+    }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
 
     const handleUploadStart = () => {
         setIsUploading(true)
@@ -73,7 +79,7 @@ const Account = ({
         setAvatar(filename)
         setProgress(100)
         setIsUploading(false)
-        handleSubmit(inputEl)
+        // handleSubmit(inputEl)
         firebase
             .storage()
             .ref('avatars')
@@ -85,11 +91,11 @@ const Account = ({
             })
     }
 
-    const handleSubmit = inputEl => {
-        console.log(inputEl)
-    }
+    // const handleSubmit = inputEl => {
+    //     console.log(inputEl)
+    // }
 
-    console.log('currentUser', currentUser && currentUser)
+    // console.log('currentUser', currentUser && currentUser)
 
     const handleSignUp = async event => {
         event.preventDefault()
@@ -140,6 +146,21 @@ const Account = ({
         setTab1Active(!tab1Active)
     }
 
+    const deletePalette = paletteName => {
+        const userPalettes = currentUser.palettes
+
+        const newPalettes = userPalettes.filter(
+            palette => palette.name !== paletteName
+        )
+
+        var userRef = db.collection('users').doc(user.uid)
+        userRef.update({
+            palettes: newPalettes
+        })
+
+        setPaletteRemoved(true)
+    }
+
     if (initialising) {
         return (
             <div className="page-account">
@@ -185,7 +206,6 @@ const Account = ({
                                     onUploadError={handleUploadError}
                                     onUploadSuccess={handleUploadSuccess}
                                     onProgress={handleProgress}
-                                    onSubmit={handleSubmit}
                                 />
                                 {profileUpdated ? (
                                     <div className="profile-updated">
@@ -213,31 +233,74 @@ const Account = ({
                         {currentUser &&
                             currentUser.palettes.map(palette => {
                                 return (
-                                    <ul
-                                        className="user-palette nostyle"
+                                    <div
+                                        className="palette-wrap"
                                         key={palette.date.seconds}
                                     >
-                                        {palette.palette.map((color, index) => {
-                                            return (
-                                                <Swatch
-                                                    key={
-                                                        palette.date.seconds +
-                                                        color.hex
+                                        <div className="palette-title-bar">
+                                            <div className="palette-name">
+                                                {palette.name && palette.name}
+                                            </div>
+                                            <FavoritesPDF
+                                                favorites={
+                                                    palette.palette &&
+                                                    palette.palette
+                                                }
+                                                paletteName={
+                                                    palette.name && palette.name
+                                                }
+                                            />
+                                        </div>
+
+                                        <ul className="user-palette nostyle">
+                                            {palette.palette.map(
+                                                (color, index) => {
+                                                    return (
+                                                        <Swatch
+                                                            key={
+                                                                palette.date
+                                                                    .seconds +
+                                                                color.hex
+                                                            }
+                                                            color={color}
+                                                            index={index}
+                                                            handleFavorites={
+                                                                handleFavorites
+                                                            }
+                                                            removeFavorite={
+                                                                removeFavorite
+                                                            }
+                                                            favorites={
+                                                                favorites
+                                                            }
+                                                            // isFavorite={isFavorite ? true : false}
+                                                        />
+                                                    )
+                                                }
+                                            )}
+                                        </ul>
+                                        <div className="palette-utilities">
+                                            <div className="delete-palette">
+                                                <span
+                                                    className="palette-delete"
+                                                    onClick={() =>
+                                                        deletePalette(
+                                                            palette.name
+                                                        )
                                                     }
-                                                    color={color}
-                                                    index={index}
-                                                    handleFavorites={
-                                                        handleFavorites
-                                                    }
-                                                    removeFavorite={
-                                                        removeFavorite
-                                                    }
-                                                    favorites={favorites}
-                                                    // isFavorite={isFavorite ? true : false}
-                                                />
-                                            )
-                                        })}
-                                    </ul>
+                                                >
+                                                    <TimesCircle
+                                                        style={{
+                                                            color: '#f35336'
+                                                        }}
+                                                    />
+                                                    <span className="clear-text">
+                                                        Delete
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 )
                             })}
                     </div>

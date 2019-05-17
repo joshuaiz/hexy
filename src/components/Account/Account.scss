@@ -95,24 +95,108 @@
         .palettes-list {
             display: flex;
             justify-content: space-between;
+            .palette-wrap {
+                padding: 10px;
+                background: #f2f2f2;
+                .palette-title-bar {
+                    display: flex;
+                    .palette-name {
+                        font-size: 13px;
+                        margin-bottom: 5px;
+                    }
+                    .favorites-pdf {
+                        display: flex;
+                        align-items: center;
+                        margin-right: 4px;
+                        color: #777;
+                        margin-left: auto;
+                        span {
+                            font-size: 12px;
+                        }
+                        svg {
+                            width: 18px;
+                            margin-right: 2px;
+                            opacity: 0.7;
+                        }
+                        &:hover, &:focus {
+                            svg {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                    .download-favorites {
+                        width: 32px;
+                        height: auto;
+                        cursor: pointer;
+
+                    }
+                }
+            }
             .user-palette {
                 display: flex;
                 flex-wrap: wrap;
                 padding: 8px;
                 border: 1px solid #ccc;
+                background: #fff;
                 .swatch {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     margin: 2px;
                     font-size: 9px;
+                    font-weight: 500;
                     .swatch-color {
-                        padding: 0;
-                        width: 64px;
-                        height: 64px;
+                        padding: 3px;
+                        width: 54px;
+                        height: 54px;
+                        .add-favorite, .remove-favorite {
+                            top: 3px;
+                            right: 3px;
+                            font-size: 12px;
+                            svg {
+                                width: 12px;
+                                height: 12px;
+                            }
+                        }
                     }
                 }
             }
+            .palette-utilities {
+                .delete-palette {
+                    margin: 5px 0 0;
+                    display: flex;
+                    justify-content: flex-end;
+                    .palette-delete {
+                        font-size: 14px;
+                        display: flex;
+                        align-items: center;
+                        svg {
+                            margin-right: 2px;
+                            font-size: 18px;
+                            width: 18px;
+                            height: 18px;
+                            width: 24px;
+                            fill:  #f35336;
+                            cursor: pointer;
+                            opacity: 0.7;
+                            circle {
+                                fill: transparent;
+                                color: #f35336;
+                            }
+                        }
+                        &:hover, &:focus {
+                            svg {
+                                opacity: 1;
+                            }
+                        }
+                    }
+                    .clear-text {
+                        font-size: 11px;
+                        color: #777;
+                    }
+                }
+            }
+            
         }
     }
 }
