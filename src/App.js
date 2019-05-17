@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import nearestColor from 'nearest-color'
@@ -32,6 +32,7 @@ const App = React.memo(({ history, location, match }) => {
     const [noMatch, setNoMatch] = useState(false)
     const [favorites, setFavorites] = useState([])
     const [favoriteSwatches, setFavoriteSwatches] = useState([])
+    const [found, setFound] = useState()
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const [dragEnded, setDragEnded] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
@@ -65,9 +66,10 @@ const App = React.memo(({ history, location, match }) => {
     }, [])
 
     // Sort colors by brightness
-    const handleBright = () => {
+    const handleBright = useCallback(() => {
         if (!sortBright) {
             const brightColors = sortLightness(colors)
+            // console.log(brightColors)
             setColors(brightColors)
             setSortBright(true)
         } else if (searchInput) {
@@ -80,7 +82,7 @@ const App = React.memo(({ history, location, match }) => {
             setColors(JSON.parse(cachedRandoms))
         }
         setSortBright(!sortBright)
-    }
+    }, [sortBright, colors, searchInput])
 
     // SearchBox input is a controlled component
     const handleSearchInput = event => {
@@ -124,33 +126,38 @@ const App = React.memo(({ history, location, match }) => {
             setSearchSubmitted(false)
             setNoMatch(true)
             getRandoms()
-            sessionStorage.setItem('hexy_searchColors', JSON.stringify(colors))
         }
     }
 
-    let newFavorites = []
-    let found
-
-    const handleFavorites = color => {
-        if (!color) {
-            return
-        }
-        if (favorites && favorites.length) {
-            // check if color is already a favorite
-            found = favorites.some(el => el.hex === color.hex)
-        }
-        if (!found && !favorites.length) {
-            newFavorites = [color, ...favorites]
-            setFavorites(newFavorites)
-            localStorage.setItem('hexy_favorites', JSON.stringify(newFavorites))
-        } else if (!found && favorites.length < 15) {
-            newFavorites = [color, ...favorites]
-            setFavorites(newFavorites)
-            localStorage.setItem('hexy_favorites', JSON.stringify(newFavorites))
-        } else if (favorites && favorites.length === 15) {
-            alert('The maximum number of favorites is 15.')
-        }
-    }
+    const handleFavorites = useCallback(
+        color => {
+            if (!color) {
+                return
+            }
+            if (favorites && favorites.length) {
+                // check if color is already a favorite
+                setFound(favorites.some(el => el.hex === color.hex))
+            }
+            if (!found && !favorites.length) {
+                let newFavorites = [color, ...favorites]
+                setFavorites(newFavorites)
+                localStorage.setItem(
+                    'hexy_favorites',
+                    JSON.stringify(newFavorites)
+                )
+            } else if (!found && favorites.length < 15) {
+                let newFavorites = [color, ...favorites]
+                setFavorites(newFavorites)
+                localStorage.setItem(
+                    'hexy_favorites',
+                    JSON.stringify(newFavorites)
+                )
+            } else if (favorites && favorites.length === 15) {
+                alert('The maximum number of favorites is 15.')
+            }
+        },
+        [favorites, found]
+    )
 
     const getFavorites = () => {
         const cachedFavorites = localStorage.getItem('hexy_favorites')
@@ -161,22 +168,27 @@ const App = React.memo(({ history, location, match }) => {
         }
     }
 
-    const removeFavorite = color => {
-        if (!color || !favorites) {
-            return
-        }
-        let filteredFavorites = favorites.filter(item => item.hex !== color.hex)
-        if (!filteredFavorites.length) {
-            clearFavorites()
-            setFavoriteSwatches([])
-        } else {
-            setFavorites(filteredFavorites)
-            localStorage.setItem(
-                'hexy_favorites',
-                JSON.stringify(filteredFavorites)
+    const removeFavorite = useCallback(
+        color => {
+            if (!color || !favorites) {
+                return
+            }
+            let filteredFavorites = favorites.filter(
+                item => item.hex !== color.hex
             )
-        }
-    }
+            if (!filteredFavorites.length) {
+                clearFavorites()
+                setFavoriteSwatches([])
+            } else {
+                setFavorites(filteredFavorites)
+                localStorage.setItem(
+                    'hexy_favorites',
+                    JSON.stringify(filteredFavorites)
+                )
+            }
+        },
+        [favorites]
+    )
 
     const clearFavorites = () => {
         setFavorites([])
@@ -294,7 +306,7 @@ const App = React.memo(({ history, location, match }) => {
                             path="/colors"
                             render={() => (
                                 <Colors
-                                    // key={props.location.href}
+                                    key={location.href}
                                     colors={colors}
                                     searchInput={searchInput}
                                     searchSubmitted={searchSubmitted}

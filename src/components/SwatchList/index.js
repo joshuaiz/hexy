@@ -11,7 +11,8 @@ const SwatchList = React.memo(
         favoriteSwatches,
         setFavoriteSwatches,
         searchSubmitted,
-        noMatch
+        noMatch,
+        sortBright
     }) => {
         /* eslint-disable */
         useEffect(() => {
@@ -28,7 +29,11 @@ const SwatchList = React.memo(
         /* eslint-enable */
 
         return (
-            <ul className={`nostyle swatch-list`}>
+            <ul
+                className={`nostyle swatch-list ${
+                    searchSubmitted ? 'search-results' : ''
+                }${searchSubmitted && noMatch ? 'nomatch' : ''}`}
+            >
                 {colors &&
                     colors.map((color, index) => {
                         let isFavorite

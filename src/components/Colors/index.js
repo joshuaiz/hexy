@@ -85,6 +85,7 @@ const Colors = ({
                 favoriteSwatches={favoriteSwatches}
                 setFavoriteSwatches={setFavoriteSwatches}
                 searchSubmitted={searchSubmitted}
+                sortBright={sortBright}
             />
         </div>
     )
