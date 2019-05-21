@@ -64,6 +64,6 @@ const SwatchList = React.memo(
     }
 )
 
-SwatchList.whyDidYouRender = true
+// SwatchList.whyDidYouRender = true
 
 export default SwatchList

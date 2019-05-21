@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import * as firebase from 'firebase/app'
 import nearestColor from 'nearest-color'
 import Wrapper from './components/Wrapper'
 import Home from './components/Home'
@@ -9,6 +11,8 @@ import Favorites from './components/Favorites'
 import Color from './components/Color'
 import CurrentUser from './components/CurrentUser'
 import Account from './components/Account'
+import Header from './components/Header'
+import Feed from './components/Feed'
 import {
     getRandomColors,
     sortLightness,
@@ -16,7 +20,7 @@ import {
     getColorByHex,
     hexColors
 } from './utils/helpers'
-import Header from './components/Header'
+
 import './App.scss'
 
 if (process.env.NODE_ENV !== 'production') {
@@ -33,6 +37,7 @@ const App = React.memo(({ history, location, match }) => {
     const [favorites, setFavorites] = useState([])
     const [favoriteSwatches, setFavoriteSwatches] = useState([])
     const [found, setFound] = useState()
+    const { initialising, user } = useAuthState(firebase.auth())
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const [dragEnded, setDragEnded] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
@@ -68,10 +73,10 @@ const App = React.memo(({ history, location, match }) => {
     // Sort colors by brightness
     const handleBright = useCallback(() => {
         if (!sortBright) {
+            // setSortBright(true)
             const brightColors = sortLightness(colors)
             // console.log(brightColors)
             setColors(brightColors)
-            setSortBright(true)
         } else if (searchInput) {
             const cachedSearchColors = sessionStorage.getItem(
                 'hexy_searchColors'
@@ -145,18 +150,29 @@ const App = React.memo(({ history, location, match }) => {
                     'hexy_favorites',
                     JSON.stringify(newFavorites)
                 )
-            } else if (!found && favorites.length < 15) {
+            } else if (user && !found && favorites.length < 15) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
                 localStorage.setItem(
                     'hexy_favorites',
                     JSON.stringify(newFavorites)
                 )
-            } else if (favorites && favorites.length === 15) {
+            } else if (user && favorites && favorites.length === 15) {
                 alert('The maximum number of favorites is 15.')
+            } else if (!user && !found && favorites.length < 5) {
+                let newFavorites = [color, ...favorites]
+                setFavorites(newFavorites)
+                localStorage.setItem(
+                    'hexy_favorites',
+                    JSON.stringify(newFavorites)
+                )
+            } else if (!user && favorites && favorites.length === 5) {
+                alert(
+                    'The maximum number of favorites is 5. Get a Pro account to save up to 15 favorites.'
+                )
             }
         },
-        [favorites, found]
+        [favorites, found, user]
     )
 
     const getFavorites = () => {
@@ -264,7 +280,6 @@ const App = React.memo(({ history, location, match }) => {
 
     const paletteHasBeenSaved = () => {
         setPaletteWasSaved(true)
-        // console.log('in paletteHasBeenSaved')
         setTimeout(() => {
             setPaletteWasSaved(false)
         }, 10000)
@@ -272,7 +287,7 @@ const App = React.memo(({ history, location, match }) => {
 
     return (
         <div className="App">
-            <Wrapper>
+            <Wrapper user={user}>
                 <Header
                     handleSearch={handleSearch}
                     handleSearchInput={handleSearchInput}
@@ -298,6 +313,17 @@ const App = React.memo(({ history, location, match }) => {
                                     favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
+                                />
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/feed"
+                            render={() => (
+                                <Feed
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    favorites={favorites}
                                 />
                             )}
                         />
@@ -377,8 +403,6 @@ const App = React.memo(({ history, location, match }) => {
     )
 })
 
-// export default withRouter(App)
-
-App.whyDidYouRender = true
+// App.whyDidYouRender = true
 
 export default withRouter(App)

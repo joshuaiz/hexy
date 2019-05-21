@@ -1,12 +1,20 @@
 import React from 'react'
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
+import 'firebase/auth'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import moment from 'moment'
 import * as jsPDF from 'jspdf'
+import { db } from '../../config/firebaseconfig'
 import { ReactComponent as Download } from '../../images/download.svg'
 
 const FavoritesPDF = ({ favorites, paletteName }) => {
-    var now = new Date()
+    const { user } = useAuthState(firebase.auth())
+    let now = new Date()
 
-    var dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
+    let dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
+
+    let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
 
     let name = paletteName
 
@@ -40,6 +48,25 @@ const FavoritesPDF = ({ favorites, paletteName }) => {
 
     function handlePDF() {
         doc.save('HexyFavorites.pdf')
+        if (!user) {
+            savePaletteToFeed()
+        }
+    }
+
+    const savePaletteToFeed = () => {
+        let palettes = db.collection('palettes')
+        palettes
+            .doc(`${paletteName}_${dateStringSlug}`)
+            .set({
+                date: dateStringWithTime,
+                likes: 0,
+                name: paletteName,
+                pid: `${paletteName}_${dateStringSlug}`,
+                palette: favorites
+            })
+            .catch(err => {
+                console.log('Error saving palette', err)
+            })
     }
 
     // doc.save('test.pdf')

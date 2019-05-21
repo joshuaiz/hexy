@@ -91,6 +91,6 @@ const Colors = ({
     )
 }
 
-Colors.whyDidYouRender = true
+// Colors.whyDidYouRender = true
 
 export default withRouter(Colors)

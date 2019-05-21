@@ -38,12 +38,29 @@
     }
 }
 
+@media screen and (min-width: 1240px) and (max-width: 1440) {
+    .colors-page {
+        .content.sidebar {
+            .colors {
+                .swatch-list {
+                    li.swatch {
+                        .swatch-color {
+                            max-width: 20%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
 @media screen and (min-width : 1240px) {
     .content.sidebar {
         .colors {
             .swatch-list {
                 li {
-                    width: 23%;
+                    // width: 23%;
                 }
                 .swatch {
                     

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
-import { firebaseConfig, db } from '../../config/firebaseconfig'
+import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
@@ -27,12 +27,13 @@ const Account = ({
     const [currentUser, setCurrentUser] = useState()
     const [tab1Active, setTab1Active] = useState(true)
     const [avatar, setAvatar] = useState()
+    const [avatarURL, setAvatarURL] = useState()
     const [isUploading, setIsUploading] = useState(false)
     const [progress, setProgress] = useState(0)
-    const [avatarURL, setAvatarURL] = useState()
-    const [userName, setUserName] = useState()
+
+    // const [userName, setUserName] = useState()
     const [profileUpdated, setProfileUpdated] = useState(false)
-    const [filename, setFilename] = useState()
+    // const [filename, setFilename] = useState()
     const [paletteRemoved, setPaletteRemoved] = useState(false)
 
     // console.log('paletteWasSaved', paletteWasSaved)
@@ -51,9 +52,11 @@ const Account = ({
     useEffect(() => {
         if (user) {
             var userRef = db.collection('users').doc(user.uid)
+
             userRef.get().then(function(doc) {
                 if (doc.exists) {
                     // console.log('Document data:', doc.data())
+
                     setCurrentUser(doc.data())
                 }
             })

@@ -89,6 +89,7 @@ const Favorites = ({
                     })
                 })
                 .then(() => {
+                    // savePaletteToFeed(date, paletteName, favorites)
                     setPaletteSaved(true)
                     setPaletteName('')
                 })
@@ -102,6 +103,20 @@ const Favorites = ({
                 })
         }
     }
+
+    // const savePaletteToFeed = (date, paletteName, favorites) => {
+    //     let palettes = db.collection('palettes')
+    //     palettes
+    //         // .doc(`palette/${id}`)
+    //         .add({
+    //             date: date,
+    //             name: paletteName,
+    //             palette: favorites
+    //         })
+    //         .catch(err => {
+    //             console.log('Error saving palette', err)
+    //         })
+    // }
 
     const handlePaletteName = event => {
         setPaletteName(event.target.value)
@@ -150,18 +165,17 @@ const Favorites = ({
                 </div>
             </div>
             <div className="favorite-swatches-wrap">
-                {user && user ? (
-                    <div className="palette-name">
-                        <input
-                            className={`palette-name-input ${
-                                paletteNameError ? 'error' : ''
-                            }`}
-                            value={paletteName}
-                            onChange={handlePaletteName}
-                            placeholder="Name your palette"
-                        />
-                    </div>
-                ) : null}
+                <div className="palette-name">
+                    <input
+                        className={`palette-name-input ${
+                            paletteNameError ? 'error' : ''
+                        }`}
+                        value={paletteName}
+                        onChange={handlePaletteName}
+                        placeholder="Name your palette"
+                    />
+                </div>
+
                 <div className="favorites-bar">
                     {favorites.length === 0 && (
                         <div className="favorites-placeholder">

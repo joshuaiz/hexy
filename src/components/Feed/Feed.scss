@@ -1,0 +1,88 @@
+.feed-page {
+    .content.sidebar {
+        
+    }
+    .feed {
+        padding: 1.5em;
+        width: 80%;
+        .feed-list {
+            display: flex;
+            .feed-item {
+                padding: 5px 10px 10px;
+                background: #f2f2f2;
+                margin: 5px;
+                .palette-header {
+                    display: flex;
+                    .palette-name {
+                        font-size: 13px;
+                        font-weight: 600;
+                        padding-bottom: 5px;
+                    }
+                    .palette-likes {
+                        // padding: 3px 0;
+                        text-align: right;
+                        margin-left: auto;
+                        svg {
+                            width: 12px;
+                            height: 12px;
+                            font-size: 12px;
+                            position: relative;
+                            // top: 2px;
+                            path {
+                                fill: #bbb;
+                                stroke-width: 5;
+                                stroke: #491EC4;
+                                &:hover {
+                                    fill: red;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                        .liked {
+                            svg {
+                                path {
+                                    fill: red;
+                                }
+                            }
+                        }
+                        .likes-count {
+                            font-size: 12px;
+                            position: relative;
+                            top: -1px
+                        }
+                    }
+                }
+                
+                .feed-palette {
+                    display: flex;
+                    // flex-wrap: wrap;
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    background: #fff;
+                    .swatch {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 2px;
+                        font-size: 9px;
+                        font-weight: 500;
+                        .swatch-color {
+                            padding: 3px;
+                            width: 54px;
+                            height: 54px;
+                            .add-favorite, .remove-favorite {
+                                top: 3px;
+                                right: 3px;
+                                font-size: 12px;
+                                svg {
+                                    width: 12px;
+                                    height: 12px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

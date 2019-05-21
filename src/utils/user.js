@@ -10,6 +10,7 @@ export function login(email, password) {
 }
 
 export function logout() {
+    localStorage.removeItem('current_user')
     return auth().signOut()
 }
 
