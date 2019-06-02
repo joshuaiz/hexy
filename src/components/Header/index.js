@@ -85,7 +85,8 @@ const Header = ({
                     searchInput={searchInput}
                 />
                 <nav className="main-nav">
-                    <NavLink to="/colors">Explore Colors</NavLink>
+                    <NavLink to="/colors">Colors</NavLink>
+                    <NavLink to="/palettes">Palettes</NavLink>
                     <NavLink to="/pro">Go Pro</NavLink>
                     {user ? (
                         <NavLink

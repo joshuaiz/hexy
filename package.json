@@ -21,6 +21,7 @@
     "react-scripts": "3.0.0",
     "react-switch": "^5.0.0",
     "react-text-loop": "^2.0.2",
+    "react-toggle": "^4.0.2",
     "react-tooltip": "^3.10.0",
     "react-with-firebase-auth": "^1.0.3",
     "recompose": "^0.30.0",

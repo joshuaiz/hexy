@@ -8,7 +8,13 @@ import * as jsPDF from 'jspdf'
 import { db } from '../../config/firebaseconfig'
 import { ReactComponent as Download } from '../../images/download.svg'
 
-const FavoritesPDF = ({ favorites, paletteName }) => {
+const FavoritesPDF = ({
+    favorites,
+    paletteName,
+    fromFeed,
+    paletteWasExported,
+    setPaletteNameError
+}) => {
     const { user } = useAuthState(firebase.auth())
     let now = new Date()
 
@@ -17,6 +23,8 @@ const FavoritesPDF = ({ favorites, paletteName }) => {
     let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
 
     let name = paletteName
+
+    // console.log('paletteWasExported FavoritesPDF', paletteWasExported)
 
     const doc = new jsPDF({
         orientation: 'landscape',
@@ -47,26 +55,46 @@ const FavoritesPDF = ({ favorites, paletteName }) => {
     }
 
     function handlePDF() {
-        doc.save('HexyFavorites.pdf')
-        if (!user) {
-            savePaletteToFeed()
+        if (!paletteName) {
+            alert('Please name your palette')
+            setPaletteNameError(true)
+            return
+        } else {
+            doc.save('HexyFavorites.pdf')
+            if (!user && !fromFeed) {
+                savePaletteToFeed()
+                paletteWasExported()
+            }
         }
     }
 
     const savePaletteToFeed = () => {
-        let palettes = db.collection('palettes')
-        palettes
-            .doc(`${paletteName}_${dateStringSlug}`)
-            .set({
-                date: dateStringWithTime,
-                likes: 0,
-                name: paletteName,
-                pid: `${paletteName}_${dateStringSlug}`,
-                palette: favorites
-            })
-            .catch(err => {
-                console.log('Error saving palette', err)
-            })
+        if (!paletteName) {
+            alert('Please name your palette')
+            setPaletteNameError(true)
+            return
+        } else if (paletteName && paletteName.length > 32) {
+            alert(
+                'Palette names must be less than 32 characters. Please rename your palette.'
+            )
+            return
+        } else if (paletteName && paletteName.length <= 32) {
+            let palettes = db.collection('palettes')
+            palettes
+                .doc(`${paletteName}_${dateStringSlug}`)
+                .set({
+                    date: dateStringWithTime,
+                    likes: 0,
+                    name: paletteName,
+                    pid: `${paletteName}_${dateStringSlug}`,
+                    palette: favorites
+                })
+                .catch(err => {
+                    console.log('Error saving palette', err)
+                })
+        } else {
+            alert('Sorry your palette could not be exported. Please try again.')
+        }
     }
 
     // doc.save('test.pdf')
@@ -75,6 +103,7 @@ const FavoritesPDF = ({ favorites, paletteName }) => {
         <div className="favorites-pdf">
             <Download
                 className="download-favorites"
+                // onClick={handlePDF}
                 onClick={handlePDF}
                 style={{ fill: '#555555' }}
             />

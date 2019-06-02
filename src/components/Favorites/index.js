@@ -20,7 +20,8 @@ const Favorites = ({
     getFavorites,
     isSidebarVisible,
     dragEnded,
-    paletteHasBeenSaved
+    paletteHasBeenSaved,
+    paletteWasExported
 }) => {
     const [isBright, setIsBright] = useState(false)
     const [paletteSaved, setPaletteSaved] = useState(false)
@@ -143,6 +144,8 @@ const Favorites = ({
                     <FavoritesPDF
                         favorites={favorites && favorites}
                         paletteName={paletteName && paletteName}
+                        paletteWasExported={paletteWasExported}
+                        setPaletteNameError={setPaletteNameError}
                     />
                     <div className="save-palette">
                         {user && user ? (
@@ -173,6 +176,8 @@ const Favorites = ({
                         value={paletteName}
                         onChange={handlePaletteName}
                         placeholder="Name your palette"
+                        pattern="[A-Za-z0-9]"
+                        required
                     />
                 </div>
 

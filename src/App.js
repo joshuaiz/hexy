@@ -41,6 +41,7 @@ const App = React.memo(({ history, location, match }) => {
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const [dragEnded, setDragEnded] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
+    const [paletteExported, setPaletteExported] = useState(false)
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
@@ -285,6 +286,13 @@ const App = React.memo(({ history, location, match }) => {
         }, 10000)
     }
 
+    const paletteWasExported = () => {
+        setPaletteExported(true)
+        setTimeout(() => {
+            setPaletteExported(false)
+        }, 10000)
+    }
+
     return (
         <div className="App">
             <Wrapper user={user}>
@@ -318,12 +326,13 @@ const App = React.memo(({ history, location, match }) => {
                         />
                         <Route
                             exact
-                            path="/feed"
+                            path="/palettes"
                             render={() => (
                                 <Feed
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
+                                    paletteExported={paletteExported}
                                 />
                             )}
                         />
@@ -395,6 +404,7 @@ const App = React.memo(({ history, location, match }) => {
                             isSidebarVisible={isSidebarVisible}
                             dragEnded={dragEnded}
                             paletteHasBeenSaved={paletteHasBeenSaved}
+                            paletteWasExported={paletteWasExported}
                         />
                     </DragDropContext>
                 </div>

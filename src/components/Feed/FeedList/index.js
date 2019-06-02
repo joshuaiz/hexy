@@ -1,28 +1,52 @@
 import React from 'react'
 import { ReactComponent as Heart } from '../../../images/heart.svg'
 import Swatch from '../../Swatch'
+import FavoritesPDF from '../../Favorites/FavoritesPDF'
 
-const FeedList = ({ feed, handleLike, handleFavorites, removeFavorite }) => {
+const FeedList = ({
+    feed,
+    handleLike,
+    handleFavorites,
+    removeFavorite,
+    swatchInfo
+}) => {
     return (
-        <ul className="nostyle feed-list">
+        <ul className={`nostyle feed-list ${swatchInfo ? 'no-info' : 'info'}`}>
             {feed.map((item, index) => {
-                // console.log(item)
+                console.log('FeedList', item.name, item.likes)
                 return (
                     <li className="feed-item" key={item.date}>
                         <div className="palette-header">
                             <div className="palette-name">{item.name}</div>
+                            <div className="palette-pdf">
+                                <FavoritesPDF
+                                    favorites={item.palette}
+                                    paletteName={item.name}
+                                    fromFeed={true}
+                                />
+                            </div>
                             <div className="palette-likes">
                                 <span
                                     className={`likes ${
                                         item.likes !== 0 ? 'liked' : ''
                                     }`}
-                                    onClick={() => handleLike(item.pid)}
+                                    onClick={() =>
+                                        handleLike(
+                                            item.pid,
+                                            item.palette,
+                                            item.name
+                                        )
+                                    }
                                 >
                                     <Heart />{' '}
                                 </span>
 
                                 <span className="likes-count">
-                                    {item.likes}
+                                    {item.likes && item.likes > -1 ? (
+                                        item.likes
+                                    ) : (
+                                        <span>&nbsp;</span>
+                                    )}
                                 </span>
                             </div>
                         </div>
