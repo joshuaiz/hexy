@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
 import { format } from 'date-fns'
 import { login, logout, signup } from '../../utils/user'
@@ -30,13 +31,15 @@ const Account = ({
     const [avatarURL, setAvatarURL] = useState()
     const [isUploading, setIsUploading] = useState(false)
     const [progress, setProgress] = useState(0)
+    const [userPalettes, setUserPalettes] = useState([])
+    const [swatchInfo, setSwatchInfo] = useState(true)
 
     // const [userName, setUserName] = useState()
     const [profileUpdated, setProfileUpdated] = useState(false)
     // const [filename, setFilename] = useState()
     const [paletteRemoved, setPaletteRemoved] = useState(false)
 
-    // console.log('paletteWasSaved', paletteWasSaved)
+    console.log('paletteWasSaved', paletteWasSaved)
 
     const inputEl = useRef(null)
 
@@ -50,18 +53,88 @@ const Account = ({
     }
 
     useEffect(() => {
+        // used to cancel async fetch on unmount
+        // see here: https://github.com/facebook/react/issues/14326
+        let didCancel = false
+
         if (user) {
             var userRef = db.collection('users').doc(user.uid)
 
-            userRef.get().then(function(doc) {
-                if (doc.exists) {
-                    // console.log('Document data:', doc.data())
+            userRef
+                .get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        console.log('Document data:', doc.data())
 
-                    setCurrentUser(doc.data())
-                }
-            })
+                        setCurrentUser(doc.data())
+                    }
+                })
+                .catch(err => {
+                    console.log('Error getting documents', err)
+                })
+        }
+        return () => {
+            didCancel = true
         }
     }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
+
+    // useEffect(() => {
+    //     // used to cancel async fetch on unmount
+    //     // see here: https://github.com/facebook/react/issues/14326
+    //     let didCancel = false
+
+    //     const palettes = []
+    //     if (user) {
+    //         var palettesRef = db
+    //             .collection('users')
+    //             .doc(`${user.uid}/palettes`)
+    //             .orderBy('date', 'desc')
+
+    //         // palettesRef
+    //         //     .get()
+    //         //     .then(function(doc) {
+    //         //         if (doc.exists) {
+    //         //             console.log('Document data:', doc.data())
+
+    //         //             palettes.push(doc.data.palettes)
+    //         //             setUserPalettes(palettes)
+    //         //         }
+    //         //     })
+    //         //     .catch(err => {
+    //         //         console.log('Error getting documents', err)
+    //         //     })
+
+    //         console.log(palettesRef)
+    //     }
+
+    //     return () => {
+    //         didCancel = true
+    //     }
+
+    //     console.log('palettes', palettes)
+
+    //     // let palettesRef = db.collection('palettes').orderBy('date', 'desc')
+    //     // palettesRef
+    //     //     .get()
+    //     //     .then(snapshot => {
+    //     //         snapshot.forEach(doc => {
+    //     //             palettes.push(doc.data())
+    //     //             //   console.log(doc.id, '=>', doc.data());
+    //     //         })
+    //     //         if (!didCancel) {
+    //     //             setFeed(palettes)
+    //     //             return palettes
+    //     //         }
+    //     //     })
+    //     //     .catch(err => {
+    //     //         console.log('Error getting documents', err)
+    //     //     })
+
+    //     // // cleanup function
+    //     // return () => {
+    //     //     didCancel = true
+    //     // }
+    // }, [paletteWasSaved])
 
     const handleUploadStart = () => {
         setIsUploading(true)
@@ -164,6 +237,10 @@ const Account = ({
         setPaletteRemoved(true)
     }
 
+    const handleToggle = () => {
+        setSwatchInfo(!swatchInfo)
+    }
+
     if (initialising) {
         return (
             <div className="page-account">
@@ -229,83 +306,107 @@ const Account = ({
                 </div>
                 <button onClick={handleLogout}>Log out</button>
                 <div className="user-palettes">
-                    {currentUser && currentUser.palettes && (
-                        <h3>Saved Palettes</h3>
-                    )}
-                    <div className="nostyle palettes-list">
-                        {currentUser &&
-                            currentUser.palettes.map(palette => {
-                                return (
-                                    <div
-                                        className="palette-wrap"
-                                        key={palette.date.seconds}
-                                    >
-                                        <div className="palette-title-bar">
-                                            <div className="palette-name">
-                                                {palette.name && palette.name}
-                                            </div>
-                                            <FavoritesPDF
-                                                favorites={
-                                                    palette.palette &&
-                                                    palette.palette
-                                                }
-                                                paletteName={
-                                                    palette.name && palette.name
-                                                }
-                                            />
-                                        </div>
+                    <div className="user-palettes-header">
+                        {currentUser && currentUser.palettes && (
+                            <h3>Saved Palettes</h3>
+                        )}
+                        <div className="feed-toggle">
+                            <label>
+                                <Toggle
+                                    defaultChecked={!swatchInfo}
+                                    icons={false}
+                                    onChange={handleToggle}
+                                />
+                                <span>
+                                    {swatchInfo ? 'Show' : 'Hide'} swatch info
+                                </span>
+                            </label>
+                        </div>
+                    </div>
 
-                                        <ul className="user-palette nostyle">
-                                            {palette.palette.map(
-                                                (color, index) => {
-                                                    return (
-                                                        <Swatch
-                                                            key={
-                                                                palette.date
-                                                                    .seconds +
-                                                                color.hex
-                                                            }
-                                                            color={color}
-                                                            index={index}
-                                                            handleFavorites={
-                                                                handleFavorites
-                                                            }
-                                                            removeFavorite={
-                                                                removeFavorite
-                                                            }
-                                                            favorites={
-                                                                favorites
-                                                            }
-                                                            // isFavorite={isFavorite ? true : false}
-                                                        />
-                                                    )
-                                                }
-                                            )}
-                                        </ul>
-                                        <div className="palette-utilities">
-                                            <div className="delete-palette">
-                                                <span
-                                                    className="palette-delete"
-                                                    onClick={() =>
-                                                        deletePalette(
-                                                            palette.name
+                    <div
+                        className={`nostyle palettes-list ${
+                            swatchInfo ? 'no-info' : 'info'
+                        }`}
+                    >
+                        {currentUser &&
+                            currentUser.palettes
+                                .slice(0)
+                                .reverse()
+                                .map(palette => {
+                                    return (
+                                        <div
+                                            className="palette-wrap"
+                                            key={palette.date.seconds}
+                                        >
+                                            <div className="palette-title-bar">
+                                                <div className="palette-name">
+                                                    {palette.name &&
+                                                        palette.name}
+                                                </div>
+                                                <FavoritesPDF
+                                                    favorites={
+                                                        palette.palette &&
+                                                        palette.palette
+                                                    }
+                                                    paletteName={
+                                                        palette.name &&
+                                                        palette.name
+                                                    }
+                                                />
+                                            </div>
+
+                                            <ul className="user-palette nostyle">
+                                                {palette.palette.map(
+                                                    (color, index) => {
+                                                        return (
+                                                            <Swatch
+                                                                key={
+                                                                    palette.date
+                                                                        .seconds +
+                                                                    color.hex
+                                                                }
+                                                                color={color}
+                                                                index={index}
+                                                                handleFavorites={
+                                                                    handleFavorites
+                                                                }
+                                                                removeFavorite={
+                                                                    removeFavorite
+                                                                }
+                                                                favorites={
+                                                                    favorites
+                                                                }
+                                                                // isFavorite={isFavorite ? true : false}
+                                                            />
                                                         )
                                                     }
-                                                >
-                                                    <TimesCircle
-                                                        style={{
-                                                            color: '#f35336'
-                                                        }}
-                                                    />
-                                                    <span className="clear-text">
-                                                        Delete
+                                                )}
+                                            </ul>
+                                            <div className="palette-utilities">
+                                                <div className="delete-palette">
+                                                    <span
+                                                        className="palette-delete"
+                                                        onClick={() =>
+                                                            deletePalette(
+                                                                palette.name
+                                                            )
+                                                        }
+                                                    >
+                                                        <TimesCircle
+                                                            style={{
+                                                                color: '#f35336'
+                                                            }}
+                                                        />
+                                                        <span className="clear-text">
+                                                            Delete
+                                                        </span>
                                                     </span>
-                                                </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
+                                    )
+                                })}
                     </div>
                 </div>
             </div>

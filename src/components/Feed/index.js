@@ -63,7 +63,7 @@ const Feed = ({
         // keep liked palettes in localStorage so we can increment/decrement likes count
         if (likedPalettes && likedPalettes.length) {
             const found = likedPalettes.some(item => item.name === paletteName)
-            console.log(found)
+            // console.log(found)
             if (!found) {
                 const newPalettes = [...likedPalettes, { ...addedPalette }]
                 localStorage.setItem(
@@ -74,7 +74,7 @@ const Feed = ({
                 setPaletteLiked(true)
                 setTimeout(() => {
                     setPaletteLiked(false)
-                }, 200)
+                }, 1000)
             } else {
                 let filteredPalettes = likedPalettes.filter(
                     item => item.name !== paletteName
@@ -88,7 +88,7 @@ const Feed = ({
                 setPaletteLiked(true)
                 setTimeout(() => {
                     setPaletteLiked(false)
-                }, 200)
+                }, 1000)
             }
         } else if (!likedPalettes || likedPalettes.length === 0) {
             localStorage.setItem(
@@ -106,6 +106,8 @@ const Feed = ({
     const handleToggle = () => {
         setSwatchInfo(!swatchInfo)
     }
+
+    // console.log('paletteLiked', paletteLiked)
 
     return (
         <div className="feed">

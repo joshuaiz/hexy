@@ -13,7 +13,7 @@ const FeedList = ({
     return (
         <ul className={`nostyle feed-list ${swatchInfo ? 'no-info' : 'info'}`}>
             {feed.map((item, index) => {
-                console.log('FeedList', item.name, item.likes)
+                // console.log('FeedList', item.name, item.likes)
                 return (
                     <li className="feed-item" key={item.date}>
                         <div className="palette-header">
@@ -42,11 +42,7 @@ const FeedList = ({
                                 </span>
 
                                 <span className="likes-count">
-                                    {item.likes && item.likes > -1 ? (
-                                        item.likes
-                                    ) : (
-                                        <span>&nbsp;</span>
-                                    )}
+                                    {item.likes && item.likes}
                                 </span>
                             </div>
                         </div>

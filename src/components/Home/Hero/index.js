@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import TextLoop from 'react-text-loop'
+import colorsImg from '../../../images/hexy_colors.png'
 import './Hero.scss'
 
 const Hero = () => {
@@ -23,6 +24,18 @@ const Hero = () => {
 
     return (
         <div className="hero">
+            <div className="hero-bg">
+                <div className="hero-bg-inner">
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                </div>
+            </div>
             <div className="hero-inner">
                 <div className="hero-content">
                     <div className="hero-tagline">
@@ -55,6 +68,15 @@ const Hero = () => {
                     <div className="hero-cta">
                         <Link to="/colors">Start Exploring &rarr;</Link>
                     </div>
+                    <div className="hero-button">
+                        <Link className="button" to="/pro">
+                            Go Pro
+                        </Link>
+                        <span className="what modal">Learn more</span>
+                    </div>
+                </div>
+                <div className="colors-image">
+                    <img src={colorsImg} alt="hexy colors" />
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ import CurrentUser from './components/CurrentUser'
 import Account from './components/Account'
 import Header from './components/Header'
 import Feed from './components/Feed'
+import GoPro from './components/GoPro'
 import {
     getRandomColors,
     sortLightness,
@@ -132,6 +133,7 @@ const App = React.memo(({ history, location, match }) => {
             setSearchSubmitted(false)
             setNoMatch(true)
             getRandoms()
+            history.push('/colors')
         }
     }
 
@@ -357,6 +359,7 @@ const App = React.memo(({ history, location, match }) => {
                                 />
                             )}
                         />
+                        <Route exact path="/pro" component={GoPro} />
                         <Route
                             exact
                             path="/color/:color"

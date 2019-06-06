@@ -1,24 +1,136 @@
 .hero {
     width: 100%;
-    
+    // z-index: -1;
+    // position: relative;
+    .hero-bg {
+        z-index: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 600px;
+        overflow: hidden;
+        background-image: linear-gradient(#020035, #465f9e);
+        transform: skewY(-2deg);
+        transform-origin: 0;
+        .hero-bg-inner {
+            display: flex;
+            position: relative;
+        }
+        > span {
+            transform: skewY(-2deg);
+            transform-origin: 0;
+        }
+        span:nth-of-type(1) {
+            background: #1f56a7;
+            width: 100%;
+            height: 160px;
+            position: absolute;
+            display: block;
+            opacity: 0.2;
+            transform: rotate(-3deg);
+        }
+        span:nth-of-type(2) {
+            background: #93d6bf;
+            width: 400px;
+            height: 202px;
+            position: absolute;
+            display: block;
+            opacity: 0.2;
+            transform: rotate(-2deg);
+        }
+        span:nth-of-type(3) {
+            background: #003a6c;
+            width: 400px;
+            height: 183px;
+            position: absolute;
+            left: 40%;
+            display: block;
+            opacity: 0.3;
+            bottom: 0;
+        }
+        span:nth-of-type(4) {
+            background: #494d8b;
+            width: 420px;
+            height: 247px;
+            position: absolute;
+            display: block;
+            // opacity: 0.5;
+            opacity: 0.26;
+        }
+        span:nth-of-type(5) {
+            background: #4b2d72;
+            width: 2999px;
+            height: 377px;
+            position: absolute;
+            bottom: -600px;
+            right: 0;
+            display: block;
+            // opacity: 0.5;
+            opacity: 0.36;
+        }
+        span:nth-of-type(6) {
+            background: #b5b6ce;
+            width: 299px;
+            height: 327px;
+            position: absolute;
+            right: 0;
+            display: block;
+            // opacity: 0.5;
+            opacity: 0.12;
+            transform: rotate(-2.334deg);
+        }
+        span:nth-of-type(7) {
+            background: #ff5a36;
+            // background: #221144;
+            width: 349px;
+            height: 307px;
+            position: absolute;
+            right: 0;
+            display: block;
+            // opacity: 0.5;
+            opacity: 0.11;
+            transform: rotate(-1.54deg);
+        }
+        span:nth-of-type(8) {
+            background: #221144;
+            width: 78%;
+            height: 557px;
+            position: absolute;
+            right: 120px;
+            top: -30px;
+            display: block;
+            // opacity: 0.5;
+            opacity: 0.33;
+            transform: rotate(-2deg);
+        }
+    }
     .hero-inner {
+        // max-width: 700px;
+        margin-top: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 500px;
-        text-align: center;
+        height: 420px;
+        // text-align: center;
         .hero-content {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            // align-items: center;
+            // justify-content: center;
             flex-direction: column;
             position: relative;
-            top: -60px;
+            // top: -100px;
+            // left: -120px;
+            // max-width: 80%;
         }
         .hero-tagline {
             h2 {
                 color: #fff;
-                font-size: 3em;
+                font-size: 2.5em;
+                margin-bottom: 20px;
                 font-weight: 700;
                 font-family: -apple-system,
                 BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
@@ -56,7 +168,7 @@
                 font-weight: 700;
                 // display: inline-block;
                 // border-radius: 6px;
-                font-size: 1.5em;
+                font-size: 1.75em;
                 &:hover, &:focus {
                     // background: #262b2f;
                     // color: #9bddff;
@@ -66,5 +178,83 @@
                 }
             }
         }
+        .hero-button {
+            margin: 2em 0 1em;
+            .button {
+                margin-right: 1em;
+                background: #65318e;
+                &:hover, &:focus {
+                    background: #0088cc;
+                    text-decoration: none;
+                    border: 0;
+                }
+            }
+            span {
+                color: #afe0ef;
+                font-size: 13px;
+                opacity: 0.6;
+                cursor: pointer;
+                &:hover, &:focus {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    .colors-image {
+        // box-shadow: inset 0 4px 7px 1px #fff, inset 0 -5px 20px rgba(173,186,204,.25), 0 2px 6px rgba(0,21,64,.14), 0 10px 20px rgba(0,21,64,.05);
+        background-color: #fff;
+        box-shadow: 0 0 1px 6px #fff;
     }
 }
+
+@media only screen and (max-width: 1029px) {
+    .hero {
+        .hero-inner {
+            flex-direction: column;
+            margin-top: 150px;
+            .hero-content {
+                top: -60px;
+                // left: -120px;
+                max-width: 80%;
+                text-align: center;
+                h2 {
+                    font-size: 2.2em;
+                    line-height: 1.2;
+                }
+            }
+        }
+        .colors-image {
+            // position: absolute;
+            right: 160px;
+            bottom: 300px;
+            max-width: 300px;
+            transform: rotate(-2deg);
+        }
+    }
+}
+
+
+@media only screen and (min-width: 1030px) {
+    .hero {
+        
+        .hero-inner {
+            position: relative;
+            .hero-content {
+                top: -100px;
+                left: -120px;
+                max-width: 80%;
+                
+            }
+        }
+        .colors-image {
+            position: absolute;
+            right: 140px;
+            bottom: 0px;
+            max-width: 500px;
+            transform: rotate(-1.99deg);
+
+        }
+    }
+}
+
+

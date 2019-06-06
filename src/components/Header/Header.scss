@@ -1,5 +1,8 @@
 .header {
     z-index: 999999;
+    position: absolute;
+    top: 0;
+    width: 100%;
     .header-bar {
         background: #111;
         display: flex;
@@ -35,10 +38,11 @@
         .searchbox {
             margin-right: 24px;
             .searchform {
+                position: relative;
                 input {
                     height: 36px;
                     width: 320px;
-                    font-size: 1.2em;
+                    font-size: 18px;
                     color: #123456;
                     padding: 0 16px;
                     border: 2px solid transparent;
@@ -193,6 +197,18 @@
     }
 }
 
+.ua-firefox {
+    .header {
+        .header-bar {
+            .searchform {
+                input {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
 .home-page {
     .header {
         .header-bar {
@@ -217,11 +233,18 @@
         
     }
     .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
         .header-bar {
             justify-content: center;
             flex-direction: column;
             padding: 0;
             position: relative;
+            width: 100%;
+            margin: 0 auto;
             .site-id {
                 margin: 1em 0 0;
                 .site-title {

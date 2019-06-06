@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter, Link } from 'react-router-dom'
+import ScrollAnimation from 'react-animate-on-scroll'
 import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as Sync } from '../../images/sync.svg'
@@ -8,6 +9,10 @@ import { ReactComponent as SearchIcon } from '../../images/search-solid.svg'
 import { ReactComponent as Rocket } from '../../images/rocket.svg'
 import Hero from './Hero'
 import Swatch from '../Swatch'
+import RandomSwatches from '../RandomSwatches'
+import abstract2 from '../../images/abstract2.png'
+import abstract3 from '../../images/abstract3.png'
+import abstract4 from '../../images/abstract4.png'
 import './Home.scss'
 
 const Home = ({
@@ -20,92 +25,108 @@ const Home = ({
     favoriteSwatches,
     setFavoriteSwatches
 }) => {
-    const [homeRandoms, setHomeRandoms] = useState([])
-    const [rotate, setRotate] = useState(false)
-
-    const getHomeRandoms = () => {
-        const randoms = getRandomColors(8)
-        setHomeRandoms(randoms)
-    }
-
-    useEffect(() => {
-        getHomeRandoms()
-        return undefined
-    }, [])
-
-    const handleReload = () => {
-        getHomeRandoms()
-        setRotate(true)
-        setTimeout(() => {
-            setRotate(false)
-        }, 500)
-    }
-
-    useCallback(() => {
-        if (
-            homeRandoms &&
-            homeRandoms.length &&
-            favorites &&
-            favorites.length
-        ) {
-            const favSwatches = []
-            const intersection = favorites.filter((element, index) => {
-                const found = homeRandoms.includes(element)
-                favSwatches.push(found)
-                return favSwatches
-            })
-            setFavoriteSwatches(intersection)
-        }
-    }, [homeRandoms, favorites, setFavoriteSwatches])
-
-    const randomColors = homeRandoms.map((color, index) => {
-        let isFavorite
-        if (favoriteSwatches && favoriteSwatches.length) {
-            isFavorite = favoriteSwatches.some(el => el.hex === color.hex)
-        } else if (favoriteSwatches.length === 0) {
-            isFavorite = false
-        }
-        return (
-            <Swatch
-                key={color.hex}
-                color={color}
-                index={index}
-                favorites={favorites}
-                handleFavorites={handleFavorites}
-                removeFavorites={removeFavorites}
-                isFavorite={isFavorite}
-            />
-        )
-    })
-
     return (
         <div className="page-home">
             <Hero />
-            <div className="home-swatches">
-                <div className="swatches-header">
-                    <h3>
-                        <span
-                            className={`more-trigger ${rotate ? 'rotate' : ''}`}
-                            onClick={handleReload}
-                        >
-                            <Sync />
-                        </span>{' '}
-                        Here's eight random named colors.{' '}
-                        <span className="swatch-info">
-                            Hover on any color and click <PlusCircle /> to add
-                            as a favorite.{' '}
-                        </span>
-                    </h3>
-                    <div className="swatches-link">
-                        <Link to="/colors">
-                            Explore more colors & view favorites &rarr;
-                        </Link>
+
+            <div className="home-content">
+                <div className="home-features">
+                    <div className="features-1 features">
+                        <div className="features-image">
+                            <ScrollAnimation animateIn="fadeIn" delay={2}>
+                                <img src={abstract2} alt="abstract shapes" />
+                            </ScrollAnimation>
+                        </div>
+
+                        <div className="features-content">
+                            <h3>Cool colors, quickly.</h3>
+                            <p>
+                                Search and browse named colors by keyword,
+                                theme, descriptor or hex code.
+                            </p>
+                            <p>
+                                It's never been easier to find the perfect
+                                colors for your project. Or just for fun.{' '}
+                                <Link to="/colors">Browse colors &rarr;</Link>.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="features-2 features">
+                        <div className="features-content">
+                            <h3>Explore more.</h3>
+                            <p>
+                                With a library of 18,000+ colors, there's always
+                                more to discover. And color detail pages go
+                                deeper with color properties, harmonies, and
+                                tints/shades &mdash; any of which can be added
+                                as a favorite. Check out{' '}
+                                <Link to="/color/3b4271" target="_blank">
+                                    Space Angel (#3b4271)
+                                </Link>
+                                .
+                            </p>
+                        </div>
+                        <div className="features-image">
+                            <ScrollAnimation
+                                animateIn="rollIn"
+                                duration={5}
+                                // scrollableParentSelector=".home-features"
+                                animatePreScroll={false}
+                            >
+                                <img src={abstract4} alt="abstract shapes" />
+                            </ScrollAnimation>
+                        </div>
+                    </div>
+                    <div className="features-3 features">
+                        <div className="features-image">
+                            <img src={abstract3} alt="abstract shapes" />
+                        </div>
+                        <div className="features-content">
+                            <h3>Your colors, your way.</h3>
+                            <p>
+                                Export palettes with one click to an editable
+                                PDF you can use in any design program right
+                                away.
+                            </p>
+                            <p>
+                                <Link to="/pro">Pro</Link> users can save up to
+                                15 colors to a palette and save palettes to
+                                their profile to export or share anytime. <br />
+                                <Link to="/pro">Learn more about Hexy Pro</Link>
+                                .
+                            </p>
+                        </div>
                     </div>
                 </div>
-
-                <ul className="nostyle swatch-list">{randomColors}</ul>
-            </div>
-            <div className="home-content">
+                <div class="home-go-pro">
+                    <div className="go-pro-bg" />
+                    <h2>Get more with Hexy Pro.</h2>
+                    <div className="go-pro">
+                        <p>
+                            Hexy Pro gives power users more features and more
+                            ways to save and share their favorite colors:
+                        </p>
+                        <ul class="nostyle pro-features">
+                            <li>Save up to 15 favorites to a palette</li>
+                            <li>
+                                Save up to unlimited palettes to your profile
+                            </li>
+                            <li>Private palettes</li>
+                            <li>Share palettes with private link</li>
+                            <li>View and browse entire color library</li>
+                            <li>Dedicated support</li>
+                            <li>Early access to new colors</li>
+                        </ul>
+                    </div>
+                </div>
+                <RandomSwatches
+                    numRandoms={8}
+                    favorites={favorites}
+                    handleFavorites={handleFavorites}
+                    removeFavorites={removeFavorites}
+                    favoriteSwatches={favoriteSwatches}
+                    setFavoriteSwatches={setFavoriteSwatches}
+                />
                 <ul className="nostyle home-tiles">
                     <li>
                         <h2>
