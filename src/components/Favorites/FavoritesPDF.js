@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import moment from 'moment'
 import * as jsPDF from 'jspdf'
 import { db } from '../../config/firebaseconfig'
+import { checkInputChars } from '../../utils/helpers'
 import { ReactComponent as Download } from '../../images/download.svg'
 
 const FavoritesPDF = ({
@@ -57,6 +58,13 @@ const FavoritesPDF = ({
     function handlePDF() {
         if (!paletteName) {
             alert('Please name your palette')
+            setPaletteNameError(true)
+            return
+        } else if (paletteName && paletteName.length > 32) {
+            alert('Palette names must be less than 32 characters.')
+            setPaletteNameError(true)
+            return
+        } else if (paletteName && !checkInputChars(paletteName)) {
             setPaletteNameError(true)
             return
         } else {

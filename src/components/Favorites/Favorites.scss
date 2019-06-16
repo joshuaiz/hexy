@@ -210,6 +210,35 @@
         }
         
     }
+    .bottom-utilities {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .export-code {
+        margin: 1em 0 0;
+        display: flex;
+        justify-content: flex-start;
+        .export-css {
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        svg {
+            width: 32px;
+            height: 32px;
+            circle {
+                fill: #bbb;
+            }
+            path {
+                fill: #fff;
+            }
+        }
+        svg:hover {
+            opacity: 0.7;
+        }
+    }
     .clear-fav {
         margin: 1em 0 0;
         display: flex;
@@ -238,9 +267,10 @@
                 }
             }
         }
-        .clear-text {
-            font-size: 12px;
-            color: #777;
-        }
+        
+    }
+    .clear-text, .export-text {
+        font-size: 12px;
+        color: #777;
     }
 }

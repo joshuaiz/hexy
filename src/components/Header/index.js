@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app'
 import Switch from 'react-switch'
 import SearchBox from './SearchBox'
 import { ReactComponent as UserCircle } from '../../images/user-circle.svg'
+import { ReactComponent as Cart } from '../../images/cart.svg'
 import { getNumberOfNamedColors } from '../../utils/helpers'
 import './Header.scss'
 
@@ -15,12 +16,13 @@ const Header = ({
     handleSearchInput,
     searchInput,
     handleSidebarToggle,
-    isSidebarVisible
+    isSidebarVisible,
+    cart
 }) => {
     const { user } = useAuthState(firebase.auth())
     const [iconHover, setIconHover] = useState(false)
 
-    // console.log(user)
+    // console.log('header', cart)
 
     const handleLogout = () => {
         firebase.auth().signOut()
@@ -127,6 +129,16 @@ const Header = ({
                     </label>
                 </div>
             </div>
+            {cart && (
+                <div className="header-cart">
+                    <div className="cart-inner">
+                        <Link to="/checkout">
+                            <Cart />
+                            <span className="item-count">1</span>
+                        </Link>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

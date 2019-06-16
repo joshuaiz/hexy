@@ -1,0 +1,9 @@
+<svg id='Layer_1' xmlns='http://www.w3.org/2000/svg' width='100' height='100'
+viewBox='0 0 100 100'>
+    <circle className='st0' cx='50.2' cy='50.6' r='37.4' />
+    <path className='st1' d='M29,51.7v0.3l9.4,4.4v4.6l-13.8-7.3V50l13.8-7.3v4.6L29,51.7z'
+    />
+    <path className='st1' d='M43.1,64.5l10-27.8h4.2L47.2,64.5H43.1z' />
+    <path className='st1' d='M62.1,47.3v-4.6L75.9,50v3.6l-13.8,7.3v-4.6l9.4-4.4v-0.3L62.1,47.3z'
+    />
+</svg>

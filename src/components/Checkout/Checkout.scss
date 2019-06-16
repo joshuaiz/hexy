@@ -1,0 +1,88 @@
+.checkout-page {
+    .favorites, .sidebar-toggle {
+        display: none;
+    }
+    .checkout {
+        max-width: 800px;
+        margin: 2em auto;
+        min-width: 600px;
+        .cart-table {
+            table, thead, tbody, tr, th, td {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            thead {
+                background: #65318e;
+                color: #fff;
+                border: 0;
+                border-spacing: 0;
+                td {
+                    padding: 12px 1.5em;
+                    font-weight: 600;
+                }
+            }
+            tbody {
+                border: 1px solid #efefef;
+                td {
+                    padding: 1.5em;
+                }
+            }
+            .table-total {
+                border-top: 1px solid #efefef;
+            }
+            .total-price {
+                font-weight: 600;
+            }
+        }
+        .clear-cart {
+            background: lighten(#65318e, 48%);
+            color: lighten(#65318e, 24%);
+            border: 1px solid lighten(#65318e, 40%);
+            font-size: 13px;
+            padding: 5px 12px;
+            &:hover, &:focus {
+                background: #65318e;
+                color: #fff;
+            }
+        }
+    }
+    .cart-empty {
+        padding: 1.5em;
+        border: 1px solid #dedede;
+        border-radius: 4px;
+        h3 {
+            margin-top: 0;
+        }
+        p {
+            margin-bottom: 0;
+        }
+    }
+    .page-checkout {
+        h2 {
+            // margin-bottom: 0;
+        }
+    }
+    .checkout-form-wrap {
+        p {
+            margin-top: 0;
+            font-size: 13px;
+        }
+    }
+    .checkout-form {
+        position: relative;
+        .StripeElement {
+            padding: 1.5em;
+            border: 1px solid #dedede;
+            border-radius: 4px;
+        }
+        
+        button {
+            position: absolute;
+            right: 0;
+        }
+    }
+    .stripe-badge {
+        position: relative;
+        top: 10px;
+    }
+}

@@ -2,7 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { db } from '../src/config/firebaseconfig'
 import * as firebase from 'firebase/app'
+import 'firebase/storage'
+import 'firebase/auth'
+import { Elements, StripeProvider, stripe } from 'react-stripe-elements'
 import nearestColor from 'nearest-color'
 import Wrapper from './components/Wrapper'
 import Home from './components/Home'
@@ -14,13 +18,17 @@ import Account from './components/Account'
 import Header from './components/Header'
 import Feed from './components/Feed'
 import GoPro from './components/GoPro'
+import Checkout from './components/Checkout'
+import NoMatch from './components/NoMatch'
 import {
     getRandomColors,
     sortLightness,
     filterColorsBySearchText,
     getColorByHex,
-    hexColors
+    hexColors,
+    getCurrentDateTime
 } from './utils/helpers'
+import { createID } from './utils/user'
 
 import './App.scss'
 
@@ -43,6 +51,7 @@ const App = React.memo(({ history, location, match }) => {
     const [dragEnded, setDragEnded] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
     const [paletteExported, setPaletteExported] = useState(false)
+    const [cart, setCart] = useState()
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
@@ -295,6 +304,33 @@ const App = React.memo(({ history, location, match }) => {
         }, 10000)
     }
 
+    const addToCart = (accountType, price, dateAdded) => {
+        let date = getCurrentDateTime()
+        console.log('addToCart', date)
+
+        const sessionID = sessionStorage.getItem('hexy_session_id')
+
+        if (!sessionID) {
+            const ID = createID()
+            sessionStorage.setItem('hexy_session_id', JSON.stringify(ID))
+        }
+
+        const localCart = {
+            accountType,
+            price: price.toFixed(2),
+            dateAdded: date
+        }
+
+        setCart(localCart)
+        localStorage.setItem('hexy_cart', JSON.stringify(localCart))
+    }
+
+    useEffect(() => {
+        const currentCart = JSON.parse(localStorage.getItem('hexy_cart'))
+        setCart(currentCart)
+        // console.log(currentCart)
+    }, [])
+
     return (
         <div className="App">
             <Wrapper user={user}>
@@ -304,6 +340,7 @@ const App = React.memo(({ history, location, match }) => {
                     handleSidebarToggle={handleSidebarToggle}
                     isSidebarVisible={isSidebarVisible}
                     searchInput={searchInput}
+                    cart={cart}
                 />
 
                 <div
@@ -359,7 +396,24 @@ const App = React.memo(({ history, location, match }) => {
                                 />
                             )}
                         />
-                        <Route exact path="/pro" component={GoPro} />
+                        <Route
+                            exact
+                            path="/pro"
+                            render={() => <GoPro addToCart={addToCart} />}
+                        />
+
+                        <Route
+                            exact
+                            path="/checkout"
+                            render={() => (
+                                <Checkout
+                                    stripe={stripe}
+                                    cart={cart}
+                                    setCart={setCart}
+                                />
+                            )}
+                        />
+
                         <Route
                             exact
                             path="/color/:color"
@@ -412,6 +466,7 @@ const App = React.memo(({ history, location, match }) => {
                     </DragDropContext>
                 </div>
             </Wrapper>
+            <div id="modal-root" />
         </div>
     )
 })

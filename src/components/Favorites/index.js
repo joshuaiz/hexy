@@ -5,11 +5,14 @@ import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import moment from 'moment'
+import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import FavoritesPDF from './FavoritesPDF'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
-import { sortLightness } from '../../utils/helpers'
+import { ReactComponent as Code } from '../../images/code.svg'
+import { sortLightness, slugify, checkInputChars } from '../../utils/helpers'
 import './Favorites.scss'
 
 const Favorites = ({
@@ -121,6 +124,35 @@ const Favorites = ({
 
     const handlePaletteName = event => {
         setPaletteName(event.target.value)
+    }
+
+    const exportCode = () => {
+        if (!paletteName) {
+            alert('Please name your palette')
+            setPaletteNameError(true)
+            return
+        } else if (paletteName && paletteName.length > 32) {
+            alert('Palette names must be less than 32 characters.')
+            setPaletteNameError(true)
+            return
+        } else if (paletteName && !checkInputChars(paletteName)) {
+            setPaletteNameError(true)
+            return
+        } else {
+            let now = new Date()
+            let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
+            let colorArray = favorites.map(fav => {
+                let name = slugify(fav.name)
+                // console.log(name)
+                return '$' + name + ': ' + fav.hex + ';\r'
+            })
+            colorArray = colorArray.join('')
+            let blob = new Blob([colorArray], {
+                type: 'text/plain;charset=utf-8'
+            })
+            let paletteTitle = slugify(paletteName)
+            saveAs(blob, `${paletteTitle}_${dateStringSlug}.txt`)
+        }
     }
 
     return (
@@ -250,15 +282,28 @@ const Favorites = ({
                         </Droppable>
                     </div>
                 )}
-                <div className="clear-fav">
-                    <span className="clear-favorites" onClick={clearFavorites}>
-                        <TimesCircle
-                            style={{
-                                color: '#f35336'
-                            }}
-                        />
-                        <span className="clear-text">Clear Favorites</span>
-                    </span>
+                <div className="bottom-utilities">
+                    {user && user ? (
+                        <div className="export-code">
+                            <span className="export-css" onClick={exportCode}>
+                                <Code />
+                                <span className="export-text">Export SCSS</span>
+                            </span>
+                        </div>
+                    ) : null}
+                    <div className="clear-fav">
+                        <span
+                            className="clear-favorites"
+                            onClick={clearFavorites}
+                        >
+                            <TimesCircle
+                                style={{
+                                    color: '#f35336'
+                                }}
+                            />
+                            <span className="clear-text">Clear Favorites</span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

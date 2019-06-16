@@ -62,7 +62,7 @@
                     color: #aaa;
                     font-size: 0.69em !important;
                     position: relative;
-                    top: -3px;
+                    top: -1px;
                 }
                 button {
                     height: 0;
@@ -193,6 +193,50 @@
                 color: #fff;
                 width: 60px;
             }
+        }
+        
+    }
+    .header-cart {
+        position: relative;
+        text-align: right;
+        // right: 40px;
+        // background: #111;
+        
+        // width: 100%;
+        display: flex;
+        .cart-inner {
+            margin-left: auto;
+            width: 50px;
+            padding: 3px 28px 3px 3px;
+            border-right: 1px solid #ddd;
+            border-left: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            background: #ddd;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:hover, a:focus {
+            border-bottom: 0;
+            
+        }
+        svg {
+            width: 18px;
+            height: auto;
+            opacity: 0.7;
+            path {
+                fill: #555;
+            }
+        }
+        svg:hover {
+            opacity: 1;
+        }
+        .item-count {
+            font-size: 14px;
+            margin-left: 4px;
+            position: relative;
+            top: -2px;
+            font-weight: 600;
         }
     }
 }

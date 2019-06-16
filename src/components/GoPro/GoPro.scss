@@ -13,8 +13,15 @@
         .page-title {
             text-align: center;
         }
+        .gopro-intro {
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            margin: 1em 0 100px;
+        }
         .account-list {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             > li {
                 border: 1px solid #ccc;
@@ -33,12 +40,16 @@
                     }
                 }
                 .account-features {
-                    height: 550px;
+                    min-height: 550px;
                 }
                 .account-meta {
-                    
                     height: 140px;
                     background: #f2f2f2;
+                }
+                .account-info {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: column;
                 }
                 .account-price {
                     padding: 18px 0;
@@ -63,18 +74,30 @@
                 }
                 .signup {
                     padding: 1.5em;
-                    // button {
-                    //     background: #0088cc;
-                    //     padding: 1em 2em;
-                    //     color: #fff;
-                    //     border: 0;
-                    //     border-radius: 4px;
-                    //     font-size: 1.1em;
-                    //     font-weight: 600;
-                    //     font-family: 'SF Compact Display', 'SF Pro Display', -apple-system,
-                    //     BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-                    //     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-                    // }
+                }
+            }
+            .account-free {
+                border: 1px solid #7aaae0;
+                background: #c8ddee;
+                .account-title, .account-meta {
+                    background: #e4eef7;
+                }
+                ul {
+                    li:nth-child(even) {
+                        background: #e4eef7;
+                    }
+                }
+            }
+            .account-pro {
+                border: 1px solid #c8bad4;
+                background: #d7d2e7;
+                .account-title, .account-meta {
+                    background: #eeecf5;
+                }
+                ul {
+                    li:nth-child(even) {
+                        background: #eeecf5;
+                    }
                 }
             }
             .account-pro-unlimited {
@@ -86,6 +109,18 @@
                 ul {
                     li:nth-child(even) {
                         background: #e7f0e9;
+                    }
+                }
+            }
+            .account-pro-lifetime {
+                border: 1px solid #ffe59d;
+                background: #fff0b3;
+                .account-title, .account-meta {
+                    background: #fdf8e6;
+                }
+                ul {
+                    li:nth-child(even) {
+                        background: #fdf8e6;
                     }
                 }
             }
@@ -143,6 +178,24 @@
             }
             .starburst span:before {
               transform: rotate(-30deg);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 899px) {
+    .pro-page {
+        .gopro {
+            margin-top: 0;
+            padding: 0 1.5em;
+            .gopro-intro {
+                margin-bottom: 2.2em;
+            }
+            .account-list {
+                li {
+                    width: 48%;
+                    margin-bottom: 2.2em;
+                }
             }
         }
     }

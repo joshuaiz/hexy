@@ -1,6 +1,48 @@
 import namedColors from 'color-name-list'
 import * as tinycolor from 'tinycolor2'
 import nearestColor from 'nearest-color'
+import moment from 'moment'
+
+export function slugify(text) {
+    return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-') // Replace spaces with -
+        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+        .replace(/\-\-+/g, '-') // Replace multiple - with single -
+        .replace(/^-+/, '') // Trim - from start of text
+        .replace(/-+$/, '') // Trim - from end of text
+}
+
+export function humanize(str) {
+    let i
+    let frags = str.split('_')
+    for (i = 0; i < frags.length; i++) {
+        frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1)
+    }
+    return frags.join(' ')
+}
+
+export function checkInputChars(text) {
+    var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/) //unacceptable chars
+    if (pattern.test(text)) {
+        alert(
+            'Palette names may only use standard characters ("A-Z", "a-z", "_", "0-9" ).'
+        )
+        return false
+    }
+    return true //good user input
+}
+
+export function getCurrentDateTime() {
+    return moment().format()
+}
+
+export function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    })
+}
 
 export const hexColors = getHexArray(namedColors)
 

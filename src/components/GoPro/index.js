@@ -3,11 +3,17 @@ import { withRouter } from 'react-router-dom'
 import PriceTable from './PriceTable'
 import './GoPro.scss'
 
-const GoPro = () => {
+const GoPro = ({ addToCart }) => {
     return (
         <div className="gopro">
             <h1 className="page-title">Hexy Accounts</h1>
-            <PriceTable />
+            <p className="gopro-intro">
+                <strong>Hexy Pro</strong> accounts give you more ways to
+                explore, save, and share your favorite colors
+                <br />
+                whether you're a design pro or just having fun.
+            </p>
+            <PriceTable addToCart={addToCart} />
         </div>
     )
 }

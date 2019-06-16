@@ -1,3 +1,4 @@
+import React from 'react'
 import { db, auth } from '../config/firebaseconfig'
 import firebase from 'firebase/app'
 // import { format } from 'date-fns'
@@ -5,8 +6,29 @@ import firebase from 'firebase/app'
 // const formatDate = format
 // const DATE_FORMAT = 'yyyy-MM-DD'
 
+// export function login(email, password) {
+//     // return auth().signInWithEmailAndPassword(email, password)
+//     auth()
+//         .signInWithEmailAndPassword(email, password)
+//         .then(function(firebaseUser) {
+//             return auth().signInWithEmailAndPassword(email, password)
+//         })
+//         .catch(error => {
+//             console.log(error)
+//             throw error
+//         })
+// }
+
 export function login(email, password) {
-    return auth().signInWithEmailAndPassword(email, password)
+    return new Promise((resolve, reject) => {
+        auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(res => resolve(res))
+            .catch(error => {
+                console.log(error)
+                reject(error)
+            })
+    })
 }
 
 export function logout() {
@@ -33,43 +55,48 @@ export async function signup({
             photoURL: photoURL,
             startDate: startDate
         })
-    } catch (e) {
-        throw e
+    } catch (error) {
+        console.log(error)
+        throw error
     }
 }
 
 export function getUser(uid) {
-    // const users = db.collection('users').doc(uid)
-    // return (getUser = users
-    //     .get()
-    //     .then(doc => {
-    //         if (!doc.exists) {
-    //             console.log('No such document!')
-    //         } else {
-    //             // console.log('Document data:', doc.data())
-    //             // return doc.data()
-    //             return doc.data()
-    //         }
-    //     })
-    //     .catch(err => {
-    //         console.log('Error getting document', err)
-    //     }))
-
-    // return getUser
-
     const users = db.collection('users').doc(uid)
-    return (
-        users
-            // .ref('/users/' + userId)
-            .get()
-            // .once('value')
-            .then(function(snapshot) {
-                let userData = snapshot.data() && snapshot.data()
-                // ...
-                console.log('userData', userData)
-                return userData
-            })
-    )
+    return users.get().then(function(snapshot) {
+        let userData = snapshot.data() && snapshot.data()
+        // ...
+        // console.log('userData', userData)
+        return userData
+    })
+}
+
+export function getUserCart(uid) {
+    //this is code for javascript
+    var docRef = db.collection('users').doc(uid)
+
+    docRef
+        .get()
+        .then(function(doc) {
+            if (doc.exists) {
+                var cart = doc.get('cart')
+                // console.log(cart)
+
+                return cart
+            } else {
+                // doc.data() will be undefined in this case
+                console.log('No such document!')
+            }
+        })
+        .catch(function(error) {
+            console.log('Error getting document:', error)
+        })
+}
+
+export function createID() {
+    return Math.random()
+        .toString(36)
+        .substr(2, 9)
 }
 
 export function fetchUser(uid) {

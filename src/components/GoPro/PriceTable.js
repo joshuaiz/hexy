@@ -1,6 +1,10 @@
 import React from 'react'
 
-const PriceTable = () => {
+const PriceTable = ({ addToCart }) => {
+    const standard = 'standard'
+    const pro = 'pro'
+    const proUnlimited = 'pro_unlimited'
+    const proLifetime = 'pro_lifetime'
     return (
         <ul className="nostyle account-list">
             <li className="account-free">
@@ -24,7 +28,12 @@ const PriceTable = () => {
                 </div>
 
                 <div className="signup">
-                    <button className="button">Sign Up</button>
+                    <button
+                        className="button"
+                        onClick={() => addToCart(standard, 0)}
+                    >
+                        Sign Up
+                    </button>
                 </div>
             </li>
             <li className="account-pro">
@@ -51,7 +60,12 @@ const PriceTable = () => {
                 </div>
 
                 <div className="signup">
-                    <button className="button">Get Pro!</button>
+                    <button
+                        className="button"
+                        onClick={() => addToCart(pro, 19.0)}
+                    >
+                        Get Pro!
+                    </button>
                 </div>
             </li>
             <li className="account-pro-unlimited">
@@ -88,7 +102,12 @@ const PriceTable = () => {
                 </div>
 
                 <div className="signup">
-                    <button className="button">Get Pro Unlimited!</button>
+                    <button
+                        className="button"
+                        onClick={() => addToCart(proUnlimited, 49.0)}
+                    >
+                        Get Pro Unlimited!
+                    </button>
                 </div>
             </li>
             <li className="account-pro-lifetime">
@@ -98,8 +117,14 @@ const PriceTable = () => {
                 <div className="account-features">
                     <div className="account-meta">
                         <div className="account-price">$199.00</div>
-                        <div className="account-payment">one-time payment</div>
-                        <div className="account-license">lifetime license</div>
+                        <div className="account-info">
+                            <div className="account-payment">
+                                one-time payment
+                            </div>
+                            <div className="account-license">
+                                lifetime license
+                            </div>
+                        </div>
                     </div>
 
                     <ul className="nostyle features-list">
@@ -119,7 +144,12 @@ const PriceTable = () => {
                 </div>
 
                 <div className="signup">
-                    <button className="button">Get Pro Lifetime!</button>
+                    <button
+                        className="button"
+                        onClick={() => addToCart(proLifetime, 199)}
+                    >
+                        Get Pro Lifetime!
+                    </button>
                 </div>
             </li>
         </ul>

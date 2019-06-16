@@ -72,7 +72,7 @@ const Hero = () => {
                         <Link className="button" to="/pro">
                             Go Pro
                         </Link>
-                        <span className="what modal">Learn more</span>
+                        <a href="#home-go-pro">Learn more</a>
                     </div>
                 </div>
                 <div className="colors-image">

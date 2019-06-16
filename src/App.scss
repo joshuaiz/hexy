@@ -25,6 +25,10 @@ img {
     margin: 0;
 }
 
+button, .button {
+    cursor: pointer;
+}
+
 .App {
     a {
         text-decoration: none;
@@ -111,6 +115,7 @@ img {
 
 .home-page {
     // background: #465f9e;
+    scroll-behavior: smooth;
     .header {
         .header-bar {
             background: transparent;
@@ -129,7 +134,7 @@ img {
 }
 
 .button {
-    background: #0088cc;
+    background: #65318e;
     padding: 0.5em 2em;
     color: #fff;
     border: 0;
@@ -142,13 +147,128 @@ img {
     BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     &:hover, &:focus {
-        background: darken(#0088cc, 10%);
-        padding: 0.5em 2em !important;
+        background: #0088cc;
+        padding: 0.5em 2em;
         border: 0;
         color: #fff;
-        padding-bottom: 0.5em !important;
     }
 }
+
+.tabs {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    .tabs-inner {
+    }
+    .tab-triggers {
+        display: flex;
+        .tab-title {
+            width: 50%;
+            padding-bottom: 1em;
+            color: #bbb;
+            padding: 1em;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            &:hover, &:focus {
+                background: #f2f2f2;
+            }
+            h2 {
+                margin: 0;
+            }
+        }
+        .tab-title-1 {
+            border-right: 1px solid #ccc;
+        }
+        .tab-title.tab-active {
+            color: #222;
+            border-bottom: none;
+        }
+    }
+    .tab {
+        padding: 1.5em;
+        form {
+            display: flex;
+            flex-direction: column;
+            label {
+                display: flex;
+                align-items: center;
+                margin: 8px 0;
+                .input-label {
+                    width: 120px;
+                    font-size: 18px;
+                }
+                input {
+                    padding: 4px;
+                    width: 97.5%;
+                    height: 32px;
+                    font-size: 16px;
+                    background: #f1f1f1;
+                    border: 1px solid #dedede;
+                    &:focus {
+                        background: #fff;
+                    }
+                }
+            }
+            .button {
+                padding: 1em 2em;
+                display: inline-block;
+            }
+        }
+    }
+    .tab-title:not(.tab-active) {
+        background: #ddd;
+    }
+    .tab.active {
+        display: block;
+    }
+    .tab.inactive {
+        display: none;
+    }
+}
+
+/* Used to detect in JavaScript if apps have loaded styles or not. */
+:root {
+    --reach-dialog: 1;
+  }
+  
+  [data-reach-dialog-overlay] {
+    background: hsla(0, 0%, 0%, 0.33);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+  }
+  
+  [data-reach-dialog-content] {
+    width: 50vw;
+    max-width: 600px;
+    margin: 30vh auto;
+    background: white;
+    padding: 1.5em;
+    outline: none;
+    position: relative;
+    border-radius: 4px;
+    .modal-close {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 36px;
+        color: #aaa;
+        cursor: pointer;
+        &:hover, &:focus {
+            color: #555;
+        }
+    }
+    .error-message {
+        padding: 1.5em;
+    }
+  }
+  
 
 @media only screen and (max-width: 899px) {
     .sidebar-toggle {

@@ -1,5 +1,6 @@
 .page-home {
     overflow: hidden;
+    scroll-behavior: smooth;
     .content {
         position: relative;
        
@@ -13,7 +14,7 @@
     // }
     .home-features {
         max-width: 80%;
-        margin: 1em auto 2em;
+        margin: 1em auto 3em;
         .features {
             display: flex;
             flex-wrap: wrap;
@@ -195,10 +196,11 @@
         .home-go-pro {
             padding: 1.5em;
             position: relative;
+            height: 820px;
             .go-pro-bg {
-                background-image: linear-gradient(#c7d8e3, #e3e9e8);
-                transform: skewY(0.5deg);
-                transform-origin: 0;
+                background-image: linear-gradient(#d3b2e0, #e3e9e8, #ecead1);
+                // transform: skewY(0.5deg);
+                // transform-origin: 0;
                 min-height: 300px;
                 z-index: 0;
                 position: absolute;
@@ -208,15 +210,127 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                max-height: 600px;
+                max-height: 820px;
                 overflow: hidden;
+                -webkit-clip-path: polygon(0 0, 100% 4%, 100% 96%, 0% 100%);
+                clip-path: polygon(0 0, 100% 4%, 100% 96%, 0% 100%);
+            
             }
+            .go-pro-bg-inner {
+                span:nth-of-type(1) {
+                    background: #9d7ca5;
+                    width: 80%;
+                    height: 255px;
+                    position: absolute;
+                    display: block;
+                    opacity: 0.2;
+                    transform: rotate(-2.789deg);
+                }
+                span:nth-of-type(2) {
+                    background: #cdc5e6;
+                    width: 550px;
+                    height: 392px;
+                    position: absolute;
+                    display: block;
+                    opacity: 0.4;
+                    transform: rotate(-4.5deg);
+                }
+                span:nth-of-type(3) {
+                    background: #e2d987;
+                    width: 58%;
+                    height: 403px;
+                    position: absolute;
+                    // bottom: 0;
+                    left: 60%;
+                    display: block;
+                    opacity: 0.08;
+                    bottom: 100px;
+                }
+                span:nth-of-type(4) {
+                    background: #494d8b;
+                    width: 420px;
+                    height: 247px;
+                    position: absolute;
+                    display: block;
+                    // opacity: 0.5;
+                    opacity: 0.06;
+                }
+                span:nth-of-type(5) {
+                    background: #b3a3c9;
+                    width: 2999px;
+                    height: 277px;
+                    position: absolute;
+                    bottom: -400px;
+                    right: 0;
+                    display: block;
+                    // opacity: 0.5;
+                    opacity: 0.09;
+                }
+                span:nth-of-type(6) {
+                    background: #b5b6ce;
+                    width: 299px;
+                    height: 327px;
+                    position: absolute;
+                    right: 0;
+                    display: block;
+                    // opacity: 0.5;
+                    opacity: 0.029;
+                    transform: rotate(-2.334deg);
+                }
+                span:nth-of-type(7) {
+                    background: #ff5a36;
+                    // background: #221144;
+                    width: 349px;
+                    height: 457px;
+                    position: absolute;
+                    right: -120px;
+                    bottom: 0;
+                    display: block;
+                    // opacity: 0.5;
+                    opacity: 0.03;
+                    transform: rotate(-1.54deg);
+                }
+                span:nth-of-type(8) {
+                    background: #505883;
+                    width: 88%;
+                    height: 857px;
+                    position: absolute;
+                    right: 40px;
+                    top: -80px;
+                    display: block;
+                    // opacity: 0.5;
+                    opacity: 0.03;
+                    transform: rotate(-2deg);
+                }
+            }
+            // .go-pro-bg-2 {
+            //     background-image: linear-gradient(#e3e9e8, #ecead1);
+            //     transform: skewY(-0.5deg);
+            //     transform-origin: 0;
+            //     height: 120px;
+            //     z-index: 0;
+            //     position: absolute;
+            //     // top: 0;
+            //     bottom: 60px;
+            //     right: 0;
+            //     left: 0;
+            //     width: 100%;
+            //     // height: 100%;
+            //     // max-height: 600px;
+            //     overflow: hidden;
+            //     z-index: 0;
+            // }
             h2 {
                 position: relative;
                 text-align: center;
+                font-size: 3em;
+                // color: #fff;
+                margin-bottom: 16px;
             }
             p {
                 max-width: 600px;
+                font-size: 1.5em;
+                margin-top: 0;
             }
             .go-pro {
                 max-width: 1200px;
@@ -231,10 +345,58 @@
                     flex-wrap: wrap;
                     // align-items: center;
                     justify-content: center;
+                    // flex-direction: column;
                     li {
-                        width: 28%;
+                        width: 29%;
                         padding: 0 1.5em;
                         margin: 1em 0;
+                        text-align: center;
+                        h3 {
+                            margin: 0;
+                        }
+                        p {
+                            margin-top: 0;
+                            font-size: 14px;
+                        }
+                        svg {
+                            width: 48px;
+                            height: 48px;
+                            circle {
+                                width: 32px;
+                                height: 32px;
+                                fill: #65318e;
+                            }
+                            path {
+                                fill: lighten(#aaaed0, 10%);
+                            }
+                        }
+                    }
+
+                    .fifteen-favorites {
+                        svg {
+                            width: 48px;
+                            height: 48px;
+                            circle {
+                                width: 32px;
+                                height: 32px;
+                                fill: #65318e;
+                            }
+                            path {
+                                fill: lighten(#aaaed0, 10%);
+                            }
+                        }
+                    }
+                }
+                .go-pro-cta {
+                    z-index: 999;
+                }
+                .button {
+                    background: #65318e;
+                    padding: 1em 2em;
+                    cursor: pointer;
+                    &:hover, &:focus {
+                        background: #4b1375;
+                        padding: 1em 2em !important;
                     }
                 }
             }
@@ -293,7 +455,16 @@
                 }
                 
             }
-            
+            .home-go-pro {
+                height: 1400px;
+                h2 {
+                    font-size: 2.5em;
+                    margin-top: 1.5em;
+                }
+                .go-pro-bg {
+                    max-height: 1400px;
+                }
+            }
             .home-content {
                 .home-tiles.nostyle {
                     li {
@@ -342,6 +513,27 @@
 
 @media only screen and (min-width: 1030px) {
     .home-page {
+        .header {
+            position: relative;
+            .header-cart {
+                position: absolute;
+                right: 24px;
+                bottom: 24px;
+                .cart-inner {
+                    background: transparent;
+                    border: 0;
+                    svg {
+                        path {
+                            fill: #fff;
+                            opacity: 0.7;
+                        }
+                    }
+                    .item-count {
+                        color: #fff;
+                    }
+                }
+            }
+        }
         .page-home {
             .random-swatches {
                 .swatch-list {

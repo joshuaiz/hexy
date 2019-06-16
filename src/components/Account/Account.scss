@@ -42,48 +42,7 @@
                 font-size: 14px;
             }
         }
-        .tabs {
-            border: 1px solid #ccc;
-            width: 300px;
-            .tabs-inner {
-            }
-            .tab-triggers {
-                display: flex;
-                .tab-title {
-                    width: 50%;
-                    padding-bottom: 1em;
-                    color: #bbb;
-                    padding: 1em;
-                    border-bottom: 1px solid #ccc;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    h2 {
-                        margin: 0;
-                    }
-                }
-                .tab-title-1 {
-                    border-right: 1px solid #ccc;
-                }
-                .tab-title.tab-active {
-                    color: #222;
-                    border-bottom: none;
-                }
-            }
-            .tab {
-                padding: 1em;
-                form {
-                    display: flex;
-                    flex-direction: column;
-                }
-            }
-            .tab.active {
-                display: block;
-            }
-            .tab.inactive {
-                display: none;
-            }
-        }
+        
     }
     .user-palettes {
         margin: 3em 0 2.2em;
@@ -115,49 +74,6 @@
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
-            // .palette-wrap {
-            //     // padding: 5px 10px 10px;
-            //     // background: #f2f2f2;
-            //     // margin-bottom: 10px;
-            //     // min-width: 318px;
-            //     // width: 23%;
-            //     padding: 5px 10px 10px;
-            //     background: #f2f2f2;
-            //     margin-bottom: 10px;
-            //     .palette-title-bar {
-            //         display: flex;
-            //         .palette-name {
-            //             font-size: 13px;
-            //             margin-bottom: 5px;
-            //         }
-            //         .favorites-pdf {
-            //             display: flex;
-            //             align-items: center;
-            //             margin-right: 4px;
-            //             color: #777;
-            //             margin-left: auto;
-            //             span {
-            //                 font-size: 12px;
-            //             }
-            //             svg {
-            //                 width: 18px;
-            //                 margin-right: 2px;
-            //                 opacity: 0.7;
-            //             }
-            //             &:hover, &:focus {
-            //                 svg {
-            //                     opacity: 1;
-            //                 }
-            //             }
-            //         }
-            //         .download-favorites {
-            //             width: 32px;
-            //             height: auto;
-            //             cursor: pointer;
-
-            //         }
-            //     }
-            // }
             .palette-wrap {
                 padding: 5px 10px 10px;
                 background: #f2f2f2;
@@ -197,40 +113,6 @@
                             }
                         
                     }
-                    // .palette-likes {
-                    //     // padding: 3px 0;
-                    //     text-align: right;
-                    //     // margin-left: auto;
-                    //     // align-self: flex-end;
-                    //     svg {
-                    //         width: 12px;
-                    //         height: 12px;
-                    //         font-size: 12px;
-                    //         position: relative;
-                    //         // top: 2px;
-                    //         path {
-                    //             fill: #bbb;
-                    //             stroke-width: 5;
-                    //             stroke: #491EC4;
-                    //             &:hover {
-                    //                 fill: red;
-                    //                 cursor: pointer;
-                    //             }
-                    //         }
-                    //     }
-                    //     .liked {
-                    //         svg {
-                    //             path {
-                    //                 fill: red;
-                    //             }
-                    //         }
-                    //     }
-                    //     .likes-count {
-                    //         font-size: 12px;
-                    //         position: relative;
-                    //         top: -1px
-                    //     }
-                    // }
                 }
 
                 .user-palette {

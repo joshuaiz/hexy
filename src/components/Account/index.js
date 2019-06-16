@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
 import { format } from 'date-fns'
 import { login, logout, signup } from '../../utils/user'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import Swatch from '../Swatch'
+import Login from '../Login'
 import FavoritesPDF from '../Favorites/FavoritesPDF'
 import './Account.scss'
 
@@ -26,31 +27,16 @@ const Account = ({
 }) => {
     const { initialising, user } = useAuthState(firebase.auth())
     const [currentUser, setCurrentUser] = useState()
-    const [tab1Active, setTab1Active] = useState(true)
     const [avatar, setAvatar] = useState()
     const [avatarURL, setAvatarURL] = useState()
     const [isUploading, setIsUploading] = useState(false)
     const [progress, setProgress] = useState(0)
     const [userPalettes, setUserPalettes] = useState([])
     const [swatchInfo, setSwatchInfo] = useState(true)
-
-    // const [userName, setUserName] = useState()
     const [profileUpdated, setProfileUpdated] = useState(false)
-    // const [filename, setFilename] = useState()
     const [paletteRemoved, setPaletteRemoved] = useState(false)
 
-    console.log('paletteWasSaved', paletteWasSaved)
-
     const inputEl = useRef(null)
-
-    const handleLogin = async event => {
-        event.preventDefault()
-        const { email, password } = event.target.elements
-        login(email.value, password.value)
-    }
-    const handleLogout = () => {
-        logout()
-    }
 
     useEffect(() => {
         // used to cancel async fetch on unmount
@@ -77,64 +63,6 @@ const Account = ({
             didCancel = true
         }
     }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
-
-    // useEffect(() => {
-    //     // used to cancel async fetch on unmount
-    //     // see here: https://github.com/facebook/react/issues/14326
-    //     let didCancel = false
-
-    //     const palettes = []
-    //     if (user) {
-    //         var palettesRef = db
-    //             .collection('users')
-    //             .doc(`${user.uid}/palettes`)
-    //             .orderBy('date', 'desc')
-
-    //         // palettesRef
-    //         //     .get()
-    //         //     .then(function(doc) {
-    //         //         if (doc.exists) {
-    //         //             console.log('Document data:', doc.data())
-
-    //         //             palettes.push(doc.data.palettes)
-    //         //             setUserPalettes(palettes)
-    //         //         }
-    //         //     })
-    //         //     .catch(err => {
-    //         //         console.log('Error getting documents', err)
-    //         //     })
-
-    //         console.log(palettesRef)
-    //     }
-
-    //     return () => {
-    //         didCancel = true
-    //     }
-
-    //     console.log('palettes', palettes)
-
-    //     // let palettesRef = db.collection('palettes').orderBy('date', 'desc')
-    //     // palettesRef
-    //     //     .get()
-    //     //     .then(snapshot => {
-    //     //         snapshot.forEach(doc => {
-    //     //             palettes.push(doc.data())
-    //     //             //   console.log(doc.id, '=>', doc.data());
-    //     //         })
-    //     //         if (!didCancel) {
-    //     //             setFeed(palettes)
-    //     //             return palettes
-    //     //         }
-    //     //     })
-    //     //     .catch(err => {
-    //     //         console.log('Error getting documents', err)
-    //     //     })
-
-    //     // // cleanup function
-    //     // return () => {
-    //     //     didCancel = true
-    //     // }
-    // }, [paletteWasSaved])
 
     const handleUploadStart = () => {
         setIsUploading(true)
@@ -173,23 +101,6 @@ const Account = ({
 
     // console.log('currentUser', currentUser && currentUser)
 
-    const handleSignUp = async event => {
-        event.preventDefault()
-        const { email, password, username } = event.target.elements
-
-        const date = format(Date.now(), 'YYYY-MM-dd', {
-            awareOfUnicodeTokens: true
-        })
-
-        // eslint-disable-next-line
-        const newUser = signup({
-            email: email.value,
-            password: password.value,
-            displayName: username.value,
-            startDate: date
-        })
-    }
-
     const updateUserProfile = (displayName, url) => {
         setProfileUpdated(false)
         let activeUser = firebase.auth().currentUser
@@ -218,10 +129,6 @@ const Account = ({
             })
     }
 
-    const handleTabs = () => {
-        setTab1Active(!tab1Active)
-    }
-
     const deletePalette = paletteName => {
         const userPalettes = currentUser.palettes
 
@@ -241,13 +148,17 @@ const Account = ({
         setSwatchInfo(!swatchInfo)
     }
 
-    if (initialising) {
-        return (
-            <div className="page-account">
-                <p>Loading...</p>
-            </div>
-        )
+    const handleLogout = () => {
+        logout()
     }
+
+    // if (initialising) {
+    //     return (
+    //         <div className="page-account">
+    //             <p>Loading...</p>
+    //         </div>
+    //     )
+    // }
     if (user) {
         return (
             <div className="page-account">
@@ -415,96 +326,7 @@ const Account = ({
 
     return (
         <div className="page-account">
-            {!user && (
-                <div className="tabs">
-                    <div className="tab-triggers">
-                        <div
-                            className={`tab-title tab-title-1 ${
-                                tab1Active ? 'tab-active' : ''
-                            }`}
-                            onClick={handleTabs}
-                        >
-                            <h2>Log In</h2>
-                        </div>
-                        <div
-                            className={`tab-title tab-title-2 ${
-                                !tab1Active ? 'tab-active' : ''
-                            }`}
-                            onClick={handleTabs}
-                        >
-                            <h2>Sign Up</h2>
-                        </div>
-                    </div>
-                    <div className="tabs-inner">
-                        <div
-                            className={`tab1 tab ${
-                                tab1Active ? 'active' : 'inactive'
-                            }`}
-                        >
-                            <div className="login-form">
-                                <div className="tab-content">
-                                    <form onSubmit={handleLogin}>
-                                        <label>
-                                            Email
-                                            <input
-                                                name="email"
-                                                type="email"
-                                                placeholder="Email"
-                                            />
-                                        </label>
-                                        <label>
-                                            Password
-                                            <input
-                                                name="password"
-                                                type="password"
-                                                placeholder="Password"
-                                            />
-                                        </label>
-                                        <button type="submit">Log In</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            className={`tab2 tab ${
-                                tab1Active ? 'inactive' : 'active'
-                            }`}
-                        >
-                            <div className="login-form">
-                                <div className="tab-content">
-                                    <form onSubmit={handleSignUp}>
-                                        <label>
-                                            Username
-                                            <input
-                                                name="username"
-                                                type="text"
-                                                placeholder="Username (no spaces or special characters)"
-                                            />
-                                        </label>
-                                        <label>
-                                            Email
-                                            <input
-                                                name="email"
-                                                type="email"
-                                                placeholder="Email"
-                                            />
-                                        </label>
-                                        <label>
-                                            Password
-                                            <input
-                                                name="password"
-                                                type="password"
-                                                placeholder="Password"
-                                            />
-                                        </label>
-                                        <button type="submit">Sign Up</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <Login />
         </div>
     )
 }

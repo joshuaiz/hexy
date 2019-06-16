@@ -2,6 +2,7 @@
     width: 100%;
     // z-index: -1;
     // position: relative;
+    scroll-behavior: smooth;
     .hero-bg {
         z-index: 0;
         position: absolute;
@@ -110,7 +111,7 @@
     }
     .hero-inner {
         // max-width: 700px;
-        margin-top: 120px;
+        margin-top: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -130,6 +131,7 @@
             h2 {
                 color: #fff;
                 font-size: 2.5em;
+                margin-top: 0;
                 margin-bottom: 20px;
                 font-weight: 700;
                 font-family: -apple-system,
@@ -183,19 +185,25 @@
             .button {
                 margin-right: 1em;
                 background: #65318e;
+                opacity: 1;
+                color: #fff;
                 &:hover, &:focus {
                     background: #0088cc;
                     text-decoration: none;
                     border: 0;
+                    color: #fff;
                 }
             }
-            span {
+            a {
                 color: #afe0ef;
                 font-size: 13px;
                 opacity: 0.6;
                 cursor: pointer;
                 &:hover, &:focus {
                     opacity: 1;
+                    color: #b2ffff;
+                    // text-decoration: none;
+                    border-bottom: 1px solid #b2ffff;
                 }
             }
         }

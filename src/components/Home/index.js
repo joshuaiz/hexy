@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import ScrollAnimation from 'react-animate-on-scroll'
+import ScrollableAnchor from 'react-scrollable-anchor'
+import { configureAnchors } from 'react-scrollable-anchor'
 import { getRandomColors } from '../../utils/helpers'
-import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
-import { ReactComponent as Sync } from '../../images/sync.svg'
-import { ReactComponent as Heart } from '../../images/heart.svg'
-import { ReactComponent as SearchIcon } from '../../images/search-solid.svg'
-import { ReactComponent as Rocket } from '../../images/rocket.svg'
+import { ReactComponent as CircleSquares } from '../../images/circle_squares.svg'
+import { ReactComponent as Infinity } from '../../images/infinity.svg'
+import { ReactComponent as Code } from '../../images/code.svg'
+import { ReactComponent as Lock } from '../../images/lock.svg'
+import { ReactComponent as Links } from '../../images/link.svg'
+import { ReactComponent as PaletteCircle } from '../../images/palette_circle.svg'
+import { ReactComponent as Info } from '../../images/info.svg'
+import { ReactComponent as HeartCircle } from '../../images/heart_circle.svg'
 import Hero from './Hero'
-import Swatch from '../Swatch'
 import RandomSwatches from '../RandomSwatches'
 import abstract2 from '../../images/abstract2.png'
 import abstract3 from '../../images/abstract3.png'
@@ -25,6 +29,25 @@ const Home = ({
     favoriteSwatches,
     setFavoriteSwatches
 }) => {
+    const [random, setRandom] = useState()
+
+    configureAnchors({ scrollDuration: 1000 })
+
+    const randomColor = () => {
+        let color = getRandomColors(1)
+        console.log('random', color)
+        let hexString = color[0].hex.substring(1)
+        return (
+            <Link to={`/color/${hexString}`} target="_blank">
+                {color[0].name} ({color[0].hex})
+            </Link>
+        )
+    }
+    useEffect(() => {
+        const random = randomColor()
+        setRandom(random)
+    }, [])
+
     return (
         <div className="page-home">
             <Hero />
@@ -59,18 +82,13 @@ const Home = ({
                                 more to discover. And color detail pages go
                                 deeper with color properties, harmonies, and
                                 tints/shades &mdash; any of which can be added
-                                as a favorite. Check out{' '}
-                                <Link to="/color/3b4271" target="_blank">
-                                    Space Angel (#3b4271)
-                                </Link>
-                                .
+                                as a favorite. Check out {random && random}.
                             </p>
                         </div>
                         <div className="features-image">
                             <ScrollAnimation
-                                animateIn="rollIn"
-                                duration={5}
-                                // scrollableParentSelector=".home-features"
+                                animateIn="fadeIn"
+                                delay={2}
                                 animatePreScroll={false}
                             >
                                 <img src={abstract4} alt="abstract shapes" />
@@ -79,7 +97,13 @@ const Home = ({
                     </div>
                     <div className="features-3 features">
                         <div className="features-image">
-                            <img src={abstract3} alt="abstract shapes" />
+                            <ScrollAnimation
+                                animateIn="fadeIn"
+                                delay={2}
+                                animatePreScroll={false}
+                            >
+                                <img src={abstract3} alt="abstract shapes" />
+                            </ScrollAnimation>
                         </div>
                         <div className="features-content">
                             <h3>Your colors, your way.</h3>
@@ -92,32 +116,108 @@ const Home = ({
                                 <Link to="/pro">Pro</Link> users can save up to
                                 15 colors to a palette and save palettes to
                                 their profile to export or share anytime. <br />
-                                <Link to="/pro">Learn more about Hexy Pro</Link>
+                                <a href="#home-go-pro">
+                                    Learn more about Hexy Pro
+                                </a>
                                 .
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="home-go-pro">
-                    <div className="go-pro-bg" />
+                <ScrollableAnchor id={'home-go-pro'}>
+                    <span />
+                </ScrollableAnchor>
+                <div className="home-go-pro">
+                    <div className="go-pro-bg">
+                        <div className="go-pro-bg-inner">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                        </div>
+                    </div>
                     <h2>Get more with Hexy Pro.</h2>
                     <div className="go-pro">
                         <p>
-                            Hexy Pro gives power users more features and more
-                            ways to save and share their favorite colors:
+                            <Link to="/pro">
+                                <strong>Hexy Pro</strong>
+                            </Link>{' '}
+                            gives power users more features and more ways to
+                            save and share their favorite colors:
                         </p>
-                        <ul class="nostyle pro-features">
-                            <li>Save up to 15 favorites to a palette</li>
-                            <li>
-                                Save up to unlimited palettes to your profile
+                        <ul className="nostyle pro-features">
+                            <li className="fifteen-favorites">
+                                <CircleSquares />
+                                <h3>Save up to 15 favorites to a palette</h3>
+                                <p>
+                                    Because sometimes 5 colors just isn't
+                                    enough.
+                                </p>
                             </li>
-                            <li>Private palettes</li>
-                            <li>Share palettes with private link</li>
-                            <li>View and browse entire color library</li>
-                            <li>Dedicated support</li>
-                            <li>Early access to new colors</li>
+                            <li>
+                                <Infinity />
+                                <h3>
+                                    Save unlimited palettes to your profile*
+                                </h3>
+                                <p>*With a Pro Lifetime account.</p>
+                            </li>
+                            <li>
+                                <Code />
+                                <h3>Export CSS/SCSS code</h3>
+                                <p>Need hex codes quickly? We got you.</p>
+                            </li>
+                            <li>
+                                <Lock />
+                                <h3>Private palettes</h3>
+                                <p>
+                                    Keep your palettes yours until you're ready
+                                    to share.
+                                </p>
+                            </li>
+                            <li>
+                                <Links />
+                                <h3>Share palettes with private link</h3>
+                                <p>
+                                    Great for showing to clients or team
+                                    members.
+                                </p>
+                            </li>
+                            <li>
+                                <PaletteCircle />
+                                <h3>View and browse entire color library</h3>
+                                <p>Access to all 18,000+ colors on one page.</p>
+                            </li>
+                            <li>
+                                <Info />
+                                <h3>Dedicated support</h3>
+                                <p>
+                                    Our team will help you get the most out of
+                                    Hexy.
+                                </p>
+                            </li>
+                            <li>
+                                <HeartCircle />
+                                <h3>Early access to new colors</h3>
+                                <p>
+                                    As the library is updated, see new colors
+                                    first.
+                                </p>
+                            </li>
                         </ul>
+                        <div className="go-pro-cta">
+                            <Link to="/pro">
+                                <button className="button">
+                                    View Plans and Pricing
+                                </button>
+                            </Link>
+                        </div>
                     </div>
+
+                    <div className="go-pro-bg-2" />
                 </div>
                 <RandomSwatches
                     numRandoms={8}
@@ -127,119 +227,6 @@ const Home = ({
                     favoriteSwatches={favoriteSwatches}
                     setFavoriteSwatches={setFavoriteSwatches}
                 />
-                <ul className="nostyle home-tiles">
-                    <li>
-                        <h2>
-                            <span className="svg-icon">
-                                <Rocket />
-                            </span>{' '}
-                            Quick Start
-                        </h2>
-                        <div className="tile-content">
-                            <p>
-                                Visit the <Link to="/colors">Colors</Link> page
-                                and start scrolling. When you find a color you
-                                like, click the{' '}
-                                <span className="svg-icon">
-                                    <PlusCircle />
-                                </span>{' '}
-                                to add as a favorite. Your favorites will appear
-                                in the Favorites sidebar. Toggle the sidebar
-                                using the switch in the header.
-                            </p>
-                            <p>
-                                Click on any swatches name or hex code to view a
-                                detail page with color properties, harmonies,
-                                shades/tints, and more.
-                            </p>
-                            <p>
-                                The hope is that you discover new colors{' '}
-                                <em>while</em> you are exploring the site and
-                                these will inspire you to create something
-                                beautiful. That's really the whole point of
-                                Hexy.
-                            </p>
-                        </div>
-                    </li>
-                    <li>
-                        <h2>
-                            <span className="svg-icon">
-                                <SearchIcon />
-                            </span>{' '}
-                            Search Tips
-                        </h2>
-                        <div className="tile-content">
-                            <p>
-                                If you're looking for something specific, a
-                                great way to find colors on Hexy is to search.
-                                If you're looking for a nice shade of green, by
-                                all means type in "green" — you will get a lot
-                                of greens to choose from.
-                            </p>
-
-                            <p>
-                                Yet, not all greens will have "green" in the
-                                name so you can also get creative and search for
-                                things like "willow" or "tree" or "forest" or
-                                "wasabi".
-                            </p>
-
-                            <p>
-                                You can also try descriptors like "vivid" or
-                                "muted" and adjectives like "vintage" or
-                                "tropical".
-                            </p>
-                            <p>
-                                You can also search for specific hex values and
-                                if there is no named color, Hexy will return the
-                                closest named color.
-                            </p>
-
-                            <p>
-                                Note that while the{' '}
-                                <Link to="/colors">Colors</Link> page only shows
-                                1000 colors at a time, search looks through the
-                                entire list of 18,000+ colors!
-                            </p>
-                        </div>
-                    </li>
-                    <li>
-                        <h2>
-                            <span className="svg-icon">
-                                <Heart />
-                            </span>{' '}
-                            Favorites
-                        </h2>
-                        <div className="tile-content">
-                            <p>
-                                You can save any color (even a non-named color)
-                                as a Favorite and up to 15 Favorites at any one
-                                time.
-                            </p>
-
-                            <p>
-                                While five colors is often a good number for a
-                                website palette, being able to view and group
-                                more colors really helps to find the perfect hue
-                                for your project. And sometimes five just isn't
-                                enough.
-                            </p>
-
-                            <p>
-                                You can export your Favorites to an editable PDF
-                                file at any time from the Favorites sidebar.
-                                Hexy's Favorites are an awesome way to find and
-                                download palettes or color groups quickly and
-                                use them in your designs or code right away.
-                            </p>
-                            <p>
-                                <Link to="/colors">
-                                    Explore more colors & view favorites &rarr;
-                                </Link>
-                            </p>
-                        </div>
-                    </li>
-                </ul>
             </div>
         </div>
     )
