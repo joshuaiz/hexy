@@ -38,6 +38,18 @@ export function getCurrentDateTime() {
     return moment().format()
 }
 
+export function getDateString(date) {
+    return moment(date).toISOString()
+}
+
+export function getExpirationDate(dateStr) {
+    let exp = moment(dateStr)
+        .add(1, 'year')
+        .format('LLLL')
+
+    return exp
+}
+
 export function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()

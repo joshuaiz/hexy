@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import PriceTable from './PriceTable'
 import './GoPro.scss'
 
-const GoPro = ({ addToCart }) => {
+const GoPro = ({ cart, addToCart }) => {
     return (
         <div className="gopro">
             <h1 className="page-title">Hexy Accounts</h1>
@@ -13,7 +13,7 @@ const GoPro = ({ addToCart }) => {
                 <br />
                 whether you're a design pro or just having fun.
             </p>
-            <PriceTable addToCart={addToCart} />
+            <PriceTable cart={cart} addToCart={addToCart} />
         </div>
     )
 }

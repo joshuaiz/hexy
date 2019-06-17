@@ -7,7 +7,7 @@ import 'firebase/storage'
 import 'firebase/auth'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
-import { format } from 'date-fns'
+import { humanize, getExpirationDate } from '../../utils/helpers'
 import { login, logout, signup } from '../../utils/user'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import Swatch from '../Swatch'
@@ -152,13 +152,13 @@ const Account = ({
         logout()
     }
 
-    // if (initialising) {
-    //     return (
-    //         <div className="page-account">
-    //             <p>Loading...</p>
-    //         </div>
-    //     )
-    // }
+    if (initialising) {
+        return (
+            <div className="page-account">
+                <p>Loading...</p>
+            </div>
+        )
+    }
     if (user) {
         return (
             <div className="page-account">
@@ -213,6 +213,17 @@ const Account = ({
                     <div className="start-date">
                         <strong>Account created:</strong>{' '}
                         {currentUser && currentUser.startDate}
+                    </div>
+                    <div className="account-level">
+                        <strong>Account Level:</strong>{' '}
+                        {currentUser && humanize(currentUser.accountType)}
+                    </div>
+                    <div className="account-expiration">
+                        <strong>Valid Until:</strong>{' '}
+                        {currentUser &&
+                        currentUser.accountType !== 'pro_lifetime'
+                            ? getExpirationDate(currentUser.accountStartDate)
+                            : 'Forever'}
                     </div>
                 </div>
                 <button onClick={handleLogout}>Log out</button>
@@ -326,7 +337,10 @@ const Account = ({
 
     return (
         <div className="page-account">
-            <Login />
+            <div className="not-logged-in">
+                <h2>Please Log In or Sign Up</h2>
+                <Login />
+            </div>
         </div>
     )
 }

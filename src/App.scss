@@ -267,8 +267,59 @@ button, .button {
     .error-message {
         padding: 1.5em;
     }
-  }
+    .modal-content {
+        a {
+            border: 0;
+            text-decoration: none;
+            font-weight: 600;
+            &:hover {
+                padding-bottom: 2px;
+                border-bottom: 1px solid #0088cc;
+                cursor: pointer;
+            }
+            &:active {
+                color: #0088cc;
+            }
+        }
+    }
+}
   
+.tippy-popper {
+    .tippy-tooltip.dark-theme {
+        padding: 0.8rem 1rem;
+        bottom: -10px !important;
+        text-align: left;
+        font-size: 14px !important;
+        h3 {
+            margin-top: 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #999;
+        }
+        .cart-item, .cart-link {
+            margin: 3px 0;
+        }
+        .button {
+            color: #fff;
+            text-decoration: none;
+            border: 0;
+            padding: 8px 14px;
+            font-size: 13px;
+            margin-bottom: 0;
+            &:hover,
+            &:focus {
+                // padding-bottom: 2px;
+                padding: 8px 14px;
+                border-bottom: 0;
+                cursor: pointer;
+            }
+            &:active {
+                border: 0;
+            }
+        }
+    }
+    
+}
+
 
 @media only screen and (max-width: 899px) {
     .sidebar-toggle {

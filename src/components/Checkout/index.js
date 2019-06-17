@@ -38,7 +38,7 @@ const Checkout = ({ cart, setCart }) => {
     } else if (cart && cart.accountType === 'pro_lifetime') {
         desc = <div>(one-time payment/lifetime Hexy Pro access)</div>
     } else {
-        return null
+        desc = null
     }
 
     // console.log('status', status)

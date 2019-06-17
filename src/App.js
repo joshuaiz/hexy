@@ -29,7 +29,7 @@ import {
     getCurrentDateTime
 } from './utils/helpers'
 import { createID } from './utils/user'
-
+import 'react-tippy/dist/tippy.css'
 import './App.scss'
 
 if (process.env.NODE_ENV !== 'production') {
@@ -304,9 +304,30 @@ const App = React.memo(({ history, location, match }) => {
         }, 10000)
     }
 
-    const addToCart = (accountType, price, dateAdded) => {
+    // const addToCart = (accountType, price, dateAdded) => {
+    //     let date = getCurrentDateTime()
+    //     // console.log('addToCart', date)
+
+    //     const sessionID = sessionStorage.getItem('hexy_session_id')
+
+    //     if (!sessionID) {
+    //         const ID = createID()
+    //         sessionStorage.setItem('hexy_session_id', JSON.stringify(ID))
+    //     }
+
+    //     const localCart = {
+    //         accountType,
+    //         price: price.toFixed(2),
+    //         dateAdded: date
+    //     }
+
+    //     setCart(localCart)
+    //     localStorage.setItem('hexy_cart', JSON.stringify(localCart))
+    // }
+
+    const addToCart = useCallback((accountType, price, dateAdded) => {
         let date = getCurrentDateTime()
-        console.log('addToCart', date)
+        // console.log('addToCart', date)
 
         const sessionID = sessionStorage.getItem('hexy_session_id')
 
@@ -323,7 +344,7 @@ const App = React.memo(({ history, location, match }) => {
 
         setCart(localCart)
         localStorage.setItem('hexy_cart', JSON.stringify(localCart))
-    }
+    }, [])
 
     useEffect(() => {
         const currentCart = JSON.parse(localStorage.getItem('hexy_cart'))
@@ -399,7 +420,9 @@ const App = React.memo(({ history, location, match }) => {
                         <Route
                             exact
                             path="/pro"
-                            render={() => <GoPro addToCart={addToCart} />}
+                            render={() => (
+                                <GoPro addToCart={addToCart} cart={cart} />
+                            )}
                         />
 
                         <Route
@@ -466,7 +489,6 @@ const App = React.memo(({ history, location, match }) => {
                     </DragDropContext>
                 </div>
             </Wrapper>
-            <div id="modal-root" />
         </div>
     )
 })

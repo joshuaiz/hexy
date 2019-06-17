@@ -23,6 +23,8 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
+            position: relative;
+            top: -40px;
             > li {
                 border: 1px solid #ccc;
             }
@@ -101,18 +103,6 @@
                 }
             }
             .account-pro-unlimited {
-                border: 1px solid #106b21;
-                background: #b7d3bc;
-                .account-title, .account-meta {
-                    background: #e7f0e9;
-                }
-                ul {
-                    li:nth-child(even) {
-                        background: #e7f0e9;
-                    }
-                }
-            }
-            .account-pro-lifetime {
                 border: 1px solid #ffe59d;
                 background: #fff0b3;
                 .account-title, .account-meta {
@@ -124,6 +114,19 @@
                     }
                 }
             }
+            .account-pro-lifetime {
+                border: 1px solid #106b21;
+                background: #b7d3bc;
+                .account-title, .account-meta {
+                    background: #e7f0e9;
+                }
+                ul {
+                    li:nth-child(even) {
+                        background: #e7f0e9;
+                    }
+                }
+            }
+            
             .starburst-outer {
                 position: relative;
             }

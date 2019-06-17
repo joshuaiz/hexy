@@ -10,13 +10,14 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import Login from '../../Login'
+import { getDateString } from '../../../utils/helpers'
 import { ReactComponent as StripeBadge } from '../../../images/stripe_badge.svg'
 
 const CardForm = ({ cart, setCart, stripe, status, setStatus }) => {
     const { initialising, user } = useAuthState(firebase.auth())
     let total = parseInt(cart.price) * 100
 
-    console.log(total)
+    // console.log(total)
 
     const submit = async e => {
         e.preventDefault()
@@ -39,6 +40,7 @@ const CardForm = ({ cart, setCart, stripe, status, setStatus }) => {
             })
 
             if (response.ok) {
+                updateAccount()
                 setStatus('complete')
                 setCart()
                 localStorage.removeItem('hexy_cart')
@@ -49,6 +51,23 @@ const CardForm = ({ cart, setCart, stripe, status, setStatus }) => {
             console.log('response', response)
             setStatus('error')
         }
+    }
+
+    const updateAccount = () => {
+        let date = new Date()
+        date = getDateString(date)
+
+        db.collection('users')
+            .doc(user.uid)
+            .update({
+                accountType: cart.accountType,
+                accountStartDate: date
+            })
+            .then(() => {})
+
+            .catch(err => {
+                console.log('Error updating account:', err)
+            })
     }
 
     return (

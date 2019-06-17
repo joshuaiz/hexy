@@ -2,6 +2,10 @@
     .page-account {
         width: 80%;
         padding: 1.5em;
+        .not-logged-in {
+            max-width: 600px;
+            margin: 2em auto;
+        }
         .user-info {
             margin: 1.5em 0;
             .user-avatar {
@@ -38,7 +42,7 @@
                     font-size: 13px;
                 }
             }
-            .start-date {
+            .start-date, .account-level, .account-expiration {
                 font-size: 14px;
             }
         }

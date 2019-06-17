@@ -34,6 +34,7 @@
     "react-stripe-elements": "^3.0.0",
     "react-switch": "^5.0.0",
     "react-text-loop": "^2.0.2",
+    "react-tippy": "^1.2.3",
     "react-toggle": "^4.0.2",
     "react-tooltip": "^3.10.0",
     "react-with-firebase-auth": "^1.0.3",

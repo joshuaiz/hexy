@@ -1,10 +1,12 @@
 import React from 'react'
+import PriceModal from '../Modal/PriceModal'
 
-const PriceTable = ({ addToCart }) => {
+const PriceTable = ({ cart, addToCart }) => {
     const standard = 'standard'
     const pro = 'pro'
     const proUnlimited = 'pro_unlimited'
     const proLifetime = 'pro_lifetime'
+
     return (
         <ul className="nostyle account-list">
             <li className="account-free">
@@ -60,21 +62,15 @@ const PriceTable = ({ addToCart }) => {
                 </div>
 
                 <div className="signup">
-                    <button
-                        className="button"
-                        onClick={() => addToCart(pro, 19.0)}
-                    >
-                        Get Pro!
-                    </button>
+                    <PriceModal
+                        addToCart={addToCart}
+                        accountType={pro}
+                        price={19}
+                        cart={cart}
+                    />
                 </div>
             </li>
             <li className="account-pro-unlimited">
-                <div className="starburst-outer">
-                    <div className="starburst">
-                        <span>Best Value!</span>
-                    </div>
-                </div>
-
                 <div className="account-title">
                     <h2>Pro Unlimited</h2>
                 </div>
@@ -102,15 +98,20 @@ const PriceTable = ({ addToCart }) => {
                 </div>
 
                 <div className="signup">
-                    <button
-                        className="button"
-                        onClick={() => addToCart(proUnlimited, 49.0)}
-                    >
-                        Get Pro Unlimited!
-                    </button>
+                    <PriceModal
+                        addToCart={addToCart}
+                        accountType={proUnlimited}
+                        price={49}
+                        cart={cart}
+                    />
                 </div>
             </li>
             <li className="account-pro-lifetime">
+                <div className="starburst-outer">
+                    <div className="starburst">
+                        <span>Best Value!</span>
+                    </div>
+                </div>
                 <div className="account-title">
                     <h2>Pro Lifetime</h2>
                 </div>
@@ -144,16 +145,18 @@ const PriceTable = ({ addToCart }) => {
                 </div>
 
                 <div className="signup">
-                    <button
-                        className="button"
-                        onClick={() => addToCart(proLifetime, 199)}
-                    >
-                        Get Pro Lifetime!
-                    </button>
+                    <PriceModal
+                        addToCart={addToCart}
+                        accountType={proLifetime}
+                        price={199}
+                        cart={cart}
+                    />
                 </div>
             </li>
         </ul>
     )
 }
+
+// PriceTable.whyDidYouRender = true
 
 export default PriceTable
