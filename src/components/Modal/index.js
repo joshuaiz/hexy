@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog'
+import React from 'react'
+import { Dialog } from '@reach/dialog'
 import Component from '@reach/component-component'
 // import '@reach/dialog/styles.css'
 

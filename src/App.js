@@ -28,7 +28,7 @@ import {
     hexColors,
     getCurrentDateTime
 } from './utils/helpers'
-import { createID } from './utils/user'
+import { createID, getUser } from './utils/user'
 import 'react-tippy/dist/tippy.css'
 import './App.scss'
 
@@ -52,6 +52,7 @@ const App = React.memo(({ history, location, match }) => {
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
     const [paletteExported, setPaletteExported] = useState(false)
     const [cart, setCart] = useState()
+    const [currentUser, setCurrentUser] = useState()
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
@@ -148,6 +149,26 @@ const App = React.memo(({ history, location, match }) => {
 
     const handleFavorites = useCallback(
         color => {
+            let numFaves = 5
+            // const currentUser = getUser(user.uid)
+            // console.log('handleFavorites', currentUser)
+            if (user && currentUser) {
+                const accountType = currentUser.accountType
+
+                if (accountType) {
+                    if (accountType === 'pro') {
+                        numFaves = 10
+                    } else if (
+                        accountType === 'pro_unlimited' ||
+                        accountType === 'pro_lifetime'
+                    ) {
+                        numFaves = 15
+                    }
+                }
+            }
+
+            // console.log('handleFavorites', numFaves)
+
             if (!color) {
                 return
             }
@@ -162,14 +183,14 @@ const App = React.memo(({ history, location, match }) => {
                     'hexy_favorites',
                     JSON.stringify(newFavorites)
                 )
-            } else if (user && !found && favorites.length < 15) {
+            } else if (user && !found && favorites.length < numFaves) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
                 localStorage.setItem(
                     'hexy_favorites',
                     JSON.stringify(newFavorites)
                 )
-            } else if (user && favorites && favorites.length === 15) {
+            } else if (user && favorites && favorites.length === numFaves) {
                 alert('The maximum number of favorites is 15.')
             } else if (!user && !found && favorites.length < 5) {
                 let newFavorites = [color, ...favorites]
@@ -351,6 +372,42 @@ const App = React.memo(({ history, location, match }) => {
         setCart(currentCart)
         // console.log(currentCart)
     }, [])
+
+    useEffect(() => {
+        // used to cancel async fetch on unmount
+        // see here: https://github.com/facebook/react/issues/14326
+        let didCancel = false
+
+        const thisUser = JSON.parse(localStorage.getItem('hexy_user'))
+
+        if (user && !thisUser) {
+            var userRef = db.collection('users').doc(user.uid)
+
+            userRef
+                .get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        // console.log('Document data:', doc.data())
+
+                        setCurrentUser(doc.data())
+                        localStorage.setItem(
+                            'hexy_user',
+                            JSON.stringify(doc.data())
+                        )
+                    }
+                })
+                .catch(err => {
+                    console.log('Error getting documents', err)
+                })
+        } else if (thisUser) {
+            setCurrentUser(thisUser)
+        }
+        return () => {
+            didCancel = true
+        }
+    }, [user])
+
+    // console.log(currentUser && currentUser)
 
     return (
         <div className="App">

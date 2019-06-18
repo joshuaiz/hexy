@@ -1,15 +1,9 @@
 import React, { useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import {
-    StripeProvider,
-    CardElement,
-    injectStripe,
-    Elements,
-    stripe
-} from 'react-stripe-elements'
-import axios from 'axios'
+import { StripeProvider, Elements, stripe } from 'react-stripe-elements'
+// import axios from 'axios'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { db } from '../../config/firebaseconfig'
+// import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
@@ -18,7 +12,7 @@ import CardForm from './CardForm'
 import './Checkout.scss'
 
 const Checkout = ({ cart, setCart }) => {
-    const { initialising, user } = useAuthState(firebase.auth())
+    const { user } = useAuthState(firebase.auth())
     const [status, setStatus] = useState('default')
 
     // console.log('Checkout', cart)

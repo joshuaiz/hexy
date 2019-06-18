@@ -154,6 +154,17 @@ button, .button {
     }
 }
 
+.button.disabled {
+    opacity: 0.4;
+    color: #ccc;
+    cursor: not-allowed;
+    &:hover, &:focus {
+        background: #65318e;
+        opacity: 0.4;
+        color: #ccc;
+    }
+}
+
 .tabs {
     border: 1px solid #ccc;
     border-radius: 4px;

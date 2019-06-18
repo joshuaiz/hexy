@@ -1,8 +1,9 @@
 import namedColors from 'color-name-list'
 import * as tinycolor from 'tinycolor2'
-import nearestColor from 'nearest-color'
+// import nearestColor from 'nearest-color'
 import moment from 'moment'
 
+/* eslint-disable */
 export function slugify(text) {
     return text
         .toString()

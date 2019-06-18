@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
@@ -8,7 +8,7 @@ import 'firebase/auth'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
 import { humanize, getExpirationDate } from '../../utils/helpers'
-import { login, logout, signup } from '../../utils/user'
+import { logout } from '../../utils/user'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import Swatch from '../Swatch'
 import Login from '../Login'
@@ -31,7 +31,7 @@ const Account = ({
     const [avatarURL, setAvatarURL] = useState()
     const [isUploading, setIsUploading] = useState(false)
     const [progress, setProgress] = useState(0)
-    const [userPalettes, setUserPalettes] = useState([])
+    // const [userPalettes, setUserPalettes] = useState([])
     const [swatchInfo, setSwatchInfo] = useState(true)
     const [profileUpdated, setProfileUpdated] = useState(false)
     const [paletteRemoved, setPaletteRemoved] = useState(false)

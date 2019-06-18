@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { format } from 'date-fns'
-import { login, logout, signup, userSignup } from '../../utils/user'
+import { login, signup } from '../../utils/user'
 import Modal from '../Modal'
 
 const Login = () => {
-    const { initialising, user } = useAuthState(firebase.auth())
+    const { user } = useAuthState(firebase.auth())
     const [tab1Active, setTab1Active] = useState(true)
     const [error, setError] = useState()
     const [modalContent, setModalContent] = useState()

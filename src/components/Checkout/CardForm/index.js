@@ -1,11 +1,5 @@
-import React, { useState, Fragment } from 'react'
-import {
-    StripeProvider,
-    CardElement,
-    injectStripe,
-    Elements,
-    stripe
-} from 'react-stripe-elements'
+import React, { Fragment } from 'react'
+import { CardElement, injectStripe } from 'react-stripe-elements'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
@@ -14,7 +8,7 @@ import { getDateString } from '../../../utils/helpers'
 import { ReactComponent as StripeBadge } from '../../../images/stripe_badge.svg'
 
 const CardForm = ({ cart, setCart, stripe, status, setStatus }) => {
-    const { initialising, user } = useAuthState(firebase.auth())
+    const { user } = useAuthState(firebase.auth())
     let total = parseInt(cart.price) * 100
 
     // console.log(total)
