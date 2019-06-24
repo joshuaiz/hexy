@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
@@ -9,6 +9,7 @@ import moment from 'moment'
 import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import FavoritesPDF from './FavoritesPDF'
+// import { FavoritesContext } from './FavoritesContext'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
 import { ReactComponent as Code } from '../../images/code.svg'
@@ -22,6 +23,7 @@ const Favorites = ({
     setFavorites,
     getFavorites,
     isSidebarVisible,
+    transition,
     dragEnded,
     paletteHasBeenSaved,
     paletteWasExported
@@ -31,6 +33,8 @@ const Favorites = ({
     const { initialising, user } = useAuthState(firebase.auth())
     const [paletteName, setPaletteName] = useState('')
     const [paletteNameError, setPaletteNameError] = useState()
+
+    // console.log('Favorites Context', transition)
 
     // console.log(user)
 
@@ -157,7 +161,9 @@ const Favorites = ({
 
     return (
         <div
-            className={`favorites ${isSidebarVisible ? 'active' : 'inactive'}`}
+            className={`favorites ${isSidebarVisible ? 'active' : 'inactive'} ${
+                transition ? 'transition' : ''
+            }`}
         >
             <div className="favorites-toolbar">
                 <div className="favorites-heading">Favorites</div>

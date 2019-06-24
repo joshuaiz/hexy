@@ -50,7 +50,7 @@ const Account = ({
                 .get()
                 .then(function(doc) {
                     if (doc.exists) {
-                        console.log('Document data:', doc.data())
+                        // console.log('Document data:', doc.data())
 
                         setCurrentUser(doc.data())
                     }
@@ -167,70 +167,85 @@ const Account = ({
                         Welcome,{' '}
                         <strong>{user.displayName && user.displayName}</strong>!
                     </h2>
+
                     {currentUser ? (
-                        <div className="user-avatar">
-                            <div className="avatar">
-                                <img
-                                    src={
-                                        currentUser ? currentUser.photoURL : ''
-                                    }
-                                    alt="user avatar"
-                                />
+                        <div className="user-content-wrap">
+                            <div className="user-avatar">
+                                <div className="avatar">
+                                    <img
+                                        src={
+                                            currentUser
+                                                ? currentUser.photoURL
+                                                : ''
+                                        }
+                                        alt="user avatar"
+                                    />
+                                </div>
+
+                                <div className="file-uploader">
+                                    <p>
+                                        To change your avatar, upload a new
+                                        image:
+                                    </p>
+                                    {isUploading && <p>Progress: {progress}</p>}
+
+                                    <FileUploader
+                                        className="uploader"
+                                        accept="image/*"
+                                        name="avatar"
+                                        ref={inputEl}
+                                        randomizeFilename
+                                        storageRef={firebase
+                                            .storage()
+                                            .ref('avatars')}
+                                        onUploadStart={handleUploadStart}
+                                        onUploadError={handleUploadError}
+                                        onUploadSuccess={handleUploadSuccess}
+                                        onProgress={handleProgress}
+                                    />
+                                    {profileUpdated ? (
+                                        <div className="profile-updated">
+                                            <p>Your avatar has been updated!</p>
+                                        </div>
+                                    ) : (
+                                        ''
+                                    )}
+                                </div>
                             </div>
-
-                            <div className="file-uploader">
-                                <p>
-                                    To change your avatar, upload a new image:
-                                </p>
-                                {isUploading && <p>Progress: {progress}</p>}
-
-                                <FileUploader
-                                    className="uploader"
-                                    accept="image/*"
-                                    name="avatar"
-                                    ref={inputEl}
-                                    randomizeFilename
-                                    storageRef={firebase
-                                        .storage()
-                                        .ref('avatars')}
-                                    onUploadStart={handleUploadStart}
-                                    onUploadError={handleUploadError}
-                                    onUploadSuccess={handleUploadSuccess}
-                                    onProgress={handleProgress}
-                                />
-                                {profileUpdated ? (
-                                    <div className="profile-updated">
-                                        <p>Your avatar has been updated!</p>
-                                    </div>
-                                ) : (
-                                    ''
-                                )}
+                            <div className="user-meta">
+                                <h3>Hexy Account:</h3>
+                                <div className="start-date">
+                                    <strong>Account created:</strong>{' '}
+                                    {currentUser && currentUser.startDate}
+                                </div>
+                                <div className="account-level">
+                                    <strong>Account Level:</strong>{' '}
+                                    {currentUser &&
+                                        humanize(currentUser.accountType)}
+                                </div>
+                                <div className="account-expiration">
+                                    <strong>Valid Until:</strong>{' '}
+                                    {currentUser &&
+                                    currentUser.accountType !== 'pro_lifetime'
+                                        ? getExpirationDate(
+                                              currentUser.accountStartDate
+                                          )
+                                        : 'Forever'}
+                                </div>
                             </div>
                         </div>
                     ) : (
                         <span>Loading...</span>
                     )}
-                    <div className="start-date">
-                        <strong>Account created:</strong>{' '}
-                        {currentUser && currentUser.startDate}
-                    </div>
-                    <div className="account-level">
-                        <strong>Account Level:</strong>{' '}
-                        {currentUser && humanize(currentUser.accountType)}
-                    </div>
-                    <div className="account-expiration">
-                        <strong>Valid Until:</strong>{' '}
-                        {currentUser &&
-                        currentUser.accountType !== 'pro_lifetime'
-                            ? getExpirationDate(currentUser.accountStartDate)
-                            : 'Forever'}
-                    </div>
+                    <button onClick={handleLogout}>Log out</button>
                 </div>
-                <button onClick={handleLogout}>Log out</button>
+
                 <div className="user-palettes">
                     <div className="user-palettes-header">
                         {currentUser && currentUser.palettes && (
-                            <h3>Saved Palettes</h3>
+                            <h3>
+                                Saved Palettes ({currentUser.palettes.length})
+                            </h3>
                         )}
                         <div className="feed-toggle">
                             <label>

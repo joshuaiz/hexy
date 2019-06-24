@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -16,10 +16,16 @@ import Color from './components/Color'
 import CurrentUser from './components/CurrentUser'
 import Account from './components/Account'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Feed from './components/Feed'
 import GoPro from './components/GoPro'
 import Checkout from './components/Checkout'
+import FAQ from './components/FAQ'
 import NoMatch from './components/NoMatch'
+// import {
+//     FavoritesContext,
+//     FavoritesContextProvider
+// } from './components/Favorites/FavoritesContext'
 import {
     getRandomColors,
     sortLightness,
@@ -48,6 +54,7 @@ const App = React.memo(({ history, location, match }) => {
     const [found, setFound] = useState()
     const { initialising, user } = useAuthState(firebase.auth())
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
+    const [transition, setTransition] = useState(false)
     const [dragEnded, setDragEnded] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
     const [paletteExported, setPaletteExported] = useState(false)
@@ -85,9 +92,7 @@ const App = React.memo(({ history, location, match }) => {
     // Sort colors by brightness
     const handleBright = useCallback(() => {
         if (!sortBright) {
-            // setSortBright(true)
             const brightColors = sortLightness(colors)
-            // console.log(brightColors)
             setColors(brightColors)
         } else if (searchInput) {
             const cachedSearchColors = sessionStorage.getItem(
@@ -208,14 +213,23 @@ const App = React.memo(({ history, location, match }) => {
         [favorites, found, user]
     )
 
-    const getFavorites = () => {
+    const getFavorites = useCallback(() => {
         const cachedFavorites = localStorage.getItem('hexy_favorites')
         if (cachedFavorites) {
             setFavorites(JSON.parse(cachedFavorites))
         } else {
             setFavorites([])
         }
-    }
+    })
+
+    // const getFavorites = () => {
+    //     const cachedFavorites = localStorage.getItem('hexy_favorites')
+    //     if (cachedFavorites) {
+    //         setFavorites(JSON.parse(cachedFavorites))
+    //     } else {
+    //         setFavorites([])
+    //     }
+    // }
 
     const removeFavorite = useCallback(
         color => {
@@ -250,7 +264,18 @@ const App = React.memo(({ history, location, match }) => {
     }, [])
 
     const handleSidebarToggle = () => {
-        setIsSidebarVisible(!isSidebarVisible)
+        setTimeout(() => {
+            setIsSidebarVisible(!isSidebarVisible)
+        }, 200)
+
+        setTransition(true)
+        setTimeout(() => {
+            setTransition(false)
+        }, 2000)
+    }
+
+    window.onbeforeunload = () => {
+        setTransition(false)
     }
 
     const onDragStart = () => {
@@ -316,6 +341,9 @@ const App = React.memo(({ history, location, match }) => {
         setTimeout(() => {
             setPaletteWasSaved(false)
         }, 10000)
+        return () => {
+            setPaletteWasSaved(false)
+        }
     }
 
     const paletteWasExported = () => {
@@ -323,6 +351,9 @@ const App = React.memo(({ history, location, match }) => {
         setTimeout(() => {
             setPaletteExported(false)
         }, 10000)
+        return () => {
+            setPaletteExported(false)
+        }
     }
 
     // const addToCart = (accountType, price, dateAdded) => {
@@ -499,7 +530,7 @@ const App = React.memo(({ history, location, match }) => {
                             path="/color/:color"
                             render={() => (
                                 <Color
-                                    key={location.href}
+                                    // key={location.href}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
@@ -522,6 +553,7 @@ const App = React.memo(({ history, location, match }) => {
                                 />
                             )}
                         />
+                        <Route exact path="/faq" component={FAQ} />
                         <Route
                             exact
                             path="/user"
@@ -539,12 +571,14 @@ const App = React.memo(({ history, location, match }) => {
                             setFavorites={setFavorites}
                             getFavorites={getFavorites}
                             isSidebarVisible={isSidebarVisible}
+                            transition={transition}
                             dragEnded={dragEnded}
                             paletteHasBeenSaved={paletteHasBeenSaved}
                             paletteWasExported={paletteWasExported}
                         />
                     </DragDropContext>
                 </div>
+                <Footer currentUser={currentUser} />
             </Wrapper>
         </div>
     )

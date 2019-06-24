@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import ScrollAnimation from 'react-animate-on-scroll'
 import ScrollableAnchor from 'react-scrollable-anchor'
 import { configureAnchors } from 'react-scrollable-anchor'
+import { useScroll } from '../../hooks/useScroll'
 import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as CircleSquares } from '../../images/circle_squares.svg'
 import { ReactComponent as Infinity } from '../../images/infinity.svg'
@@ -30,12 +31,18 @@ const Home = ({
     setFavoriteSwatches
 }) => {
     const [random, setRandom] = useState()
+    const { scrollX, scrollY, scrollDirection } = useScroll()
+    const [scrolledTo, setScrolledTo] = useState({
+        scroll1: false,
+        scroll2: false,
+        scroll3: false
+    })
 
     configureAnchors({ scrollDuration: 1000 })
 
     const randomColor = () => {
         let color = getRandomColors(1)
-        console.log('random', color)
+        // console.log('random', color)
         let hexString = color[0].hex.substring(1)
         return (
             <Link to={`/color/${hexString}`} target="_blank">
@@ -48,6 +55,44 @@ const Home = ({
         setRandom(random)
     }, [])
 
+    useEffect(() => {
+        if (scrollY <= 200) {
+            setScrolledTo({
+                scroll1: false,
+                scroll2: false,
+                scroll3: false
+            })
+        }
+        if (scrollDirection === 'up') {
+            if (scrollY >= 200) {
+                // console.log('scrolled to 200')
+                setScrolledTo({
+                    scroll1: true,
+                    scroll2: false,
+                    scroll3: false
+                })
+            }
+            if (scrollY >= 400) {
+                // console.log('scrolled to 350')
+                setScrolledTo({
+                    scroll1: true,
+                    scroll2: true,
+                    scroll3: false
+                })
+            }
+            if (scrollY >= 600) {
+                // console.log('scrolled to 500')
+                setScrolledTo({
+                    scroll1: true,
+                    scroll2: true,
+                    scroll3: true
+                })
+            }
+        }
+    }, [useScroll, scrollY])
+
+    // console.log(scrollY, scrolledTo, scrollDirection)
+
     return (
         <div className="page-home">
             <Hero />
@@ -56,8 +101,26 @@ const Home = ({
                 <div className="home-features">
                     <div className="features-1 features">
                         <div className="features-image">
-                            <ScrollAnimation animateIn="fadeIn" delay={2}>
-                                <img src={abstract2} alt="abstract shapes" />
+                            {/*<img src={abstract2} alt="abstract shapes" />*/}
+                            <ScrollAnimation
+                                animateIn="fadeIn"
+                                delay={2}
+                                animateOnce={true}
+                            >
+                                <div className="outer">
+                                    <div
+                                        className={`inner inner1 ${
+                                            scrolledTo.scroll1 ? 'scroll1' : ''
+                                        }`}
+                                    >
+                                        <div className="box box1" />
+                                        <div className="box box2" />
+                                        <div className="box box3" />
+                                        <div className="box box4" />
+                                        <div className="box box5" />
+                                        <div className="box box6" />
+                                    </div>
+                                </div>
                             </ScrollAnimation>
                         </div>
 
@@ -90,8 +153,22 @@ const Home = ({
                                 animateIn="fadeIn"
                                 delay={2}
                                 animatePreScroll={false}
+                                animateOnce={true}
                             >
-                                <img src={abstract4} alt="abstract shapes" />
+                                <div className="outer">
+                                    <div
+                                        className={`inner inner2 ${
+                                            scrolledTo.scroll2 ? 'scroll2' : ''
+                                        }`}
+                                    >
+                                        <div className="box box1" />
+                                        <div className="box box2" />
+                                        <div className="box box3" />
+                                        <div className="box box4" />
+                                        <div className="box box5" />
+                                        <div className="box box6" />
+                                    </div>
+                                </div>
                             </ScrollAnimation>
                         </div>
                     </div>
@@ -100,9 +177,23 @@ const Home = ({
                             <ScrollAnimation
                                 animateIn="fadeIn"
                                 delay={2}
+                                animateOnce={true}
                                 animatePreScroll={false}
                             >
-                                <img src={abstract3} alt="abstract shapes" />
+                                <div className="outer">
+                                    <div
+                                        className={`inner inner3 ${
+                                            scrolledTo.scroll3 ? 'scroll3' : ''
+                                        }`}
+                                    >
+                                        <div className="box box1" />
+                                        <div className="box box2" />
+                                        <div className="box box3" />
+                                        <div className="box box4" />
+                                        <div className="box box5" />
+                                        <div className="box box6" />
+                                    </div>
+                                </div>
                             </ScrollAnimation>
                         </div>
                         <div className="features-content">

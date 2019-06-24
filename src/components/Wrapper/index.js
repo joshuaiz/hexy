@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 
-const Wrapper = ({ children, location, match, user }) => {
+const Wrapper = ({ children, location, user }) => {
     let currentPath = window.location.pathname
 
     if (currentPath === '/') {

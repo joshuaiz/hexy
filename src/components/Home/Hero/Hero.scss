@@ -187,11 +187,13 @@
                 background: #65318e;
                 opacity: 1;
                 color: #fff;
+                padding: 0.5em 1.5em;
                 &:hover, &:focus {
                     background: #0088cc;
                     text-decoration: none;
                     border: 0;
                     color: #fff;
+                    padding: 0.5em 1.5em;
                 }
             }
             a {

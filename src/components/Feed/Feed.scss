@@ -2,6 +2,11 @@
     .content.sidebar {
         
     }
+    .content.no-sidebar {
+        .feed {
+            width: 97%;
+        }
+    }
     .feed {
         padding: 1.5em;
         width: 80%;

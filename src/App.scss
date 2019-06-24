@@ -60,6 +60,7 @@ button, .button {
     }
     .content {
         padding-top: 88px;
+        min-height: 1200px;
         .colors {
             padding: 1.5em;
             .colors-header {
@@ -92,24 +93,44 @@ button, .button {
             width: 80%;
         }
         .favorites {
+            width: 400px;
             min-width: 400px;
-            width: 20%;
+            // width: 20%;
             position: -webkit-sticky;
             position: sticky;
             top: 0;
+            right: -420px;
+            transition: all .6s ease-in-out;
             .favorites-toolbar {
             }
         }
     }
     .content.no-sidebar {
+        
         .favorites {
             // width: 0;
         }
         .colors {
         }
     }
+    .favorites.active.transition {
+        transition: all .6s ease-in-out;
+        transform: translateX(0);
+        -webkit-transform: translateX(0);
+    }
+    .favorites.inactive.transition {
+        transition: all .6s ease-in-out;
+        // display: none;
+        transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+    }
+    .favorites.active {
+    }
     .favorites.inactive {
-        display: none;
+        position: fixed;
+        width: 400px;
+        right: -400px;
+        
     }
 }
 
@@ -131,6 +152,29 @@ button, .button {
     .sidebar-toggle {
         display: none;
     }
+}
+
+.site-id {
+    display: flex;
+    align-items: center;
+    // margin-right: 24px;
+    .logo {
+        margin-right: 4px;
+        position: relative;
+        top: 2px;
+        svg {
+            width: 32px;
+            height: 32px;
+        }
+    }
+    .site-title {
+        margin-right: 1em;
+        h1 {
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+    }
+    
 }
 
 .button {

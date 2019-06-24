@@ -1,0 +1,17 @@
+.faq {
+    padding: 2.2em;
+    max-width: 800px;
+    margin: 0 auto;
+    dl {
+        dt {
+            font-family: 'SF Compact Display', 'SF Pro Display', -apple-system,
+            BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+            'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            font-size: 21px;
+            font-weight: 600;
+        }
+        dd {
+            margin: 0 0 2.2em;
+        }
+    }
+}

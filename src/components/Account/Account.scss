@@ -1,29 +1,48 @@
 .account-page {
+    .content {
+        transition: all .6s ease;
+    }
+    .content.no-sidebar {
+        .page-account {
+            width: 100%;
+        }
+    }
+}
+
+.account-page {
     .page-account {
         width: 80%;
-        padding: 1.5em;
+        // padding: 1.5em;
         .not-logged-in {
             max-width: 600px;
             margin: 2em auto;
         }
         .user-info {
-            margin: 1.5em 0;
+            // margin: 1.5em 0;
+            padding: 2.2em;
+            background: #f5f5f5;
+            .user-content-wrap {
+                display: flex;
+            }
+
             .user-avatar {
                 display: flex;
+                margin-right: 1.5em;
                 .avatar {
                     margin-right: 1.5em;
                     img {
                         width: 96px;
                         height: 96px;
-                        margin: 1em 0;
+                        // margin: 1em 0;
                         border-radius: 150px;
                     }
                 }
                 
                 .file-uploader {
-                    margin: 1em 0 1.5em;
+                    // margin: 1em 0 1.5em;
                     padding: 1em;
-                    border: 1px solid #ccc;
+                    border: 1px solid #ddd;
+                    background: #f8f8f8;
                     border-radius: 5px;
                     width: auto;
                     p {
@@ -42,6 +61,15 @@
                     font-size: 13px;
                 }
             }
+            .user-meta {
+                padding: 1em 1.5em;
+                border: 1px solid #efefef;
+                border-radius: 4px;
+                background: #fff;
+                h3 {
+                    margin: 0;
+                }
+            }
             .start-date, .account-level, .account-expiration {
                 font-size: 14px;
             }
@@ -49,7 +77,7 @@
         
     }
     .user-palettes {
-        margin: 3em 0 2.2em;
+        padding: 2.2em;
         padding-top: 1.5em;
         border-top: 1px dotted #ccc;
         // padding: 1em;
@@ -224,6 +252,36 @@
             .swatch-content {
                 display: none;
             }
+        }
+    }
+}
+
+@media only screen and (max-width: 1029px) {
+    .account-page {
+        .content {
+            width: 100%;
+            .page-account {
+                width: 100%;
+                .user-content-wrap {
+                    flex-wrap: wrap;
+                    .user-avatar, .user-meta {
+                        margin-bottom: 2.2em;
+                    }
+                    .user-meta {
+                        // width: 100%;
+                    }
+                }
+                .user-palettes {
+                    .palettes-list {
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+        .favorites,
+        .sidebar-toggle {
+            display: none;
         }
     }
 }
