@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
@@ -50,7 +50,7 @@ const Account = ({
                 .get()
                 .then(function(doc) {
                     if (doc.exists) {
-                        // console.log('Document data:', doc.data())
+                        console.log('Document data:', doc.data())
 
                         setCurrentUser(doc.data())
                     }
@@ -242,11 +242,13 @@ const Account = ({
 
                 <div className="user-palettes">
                     <div className="user-palettes-header">
-                        {currentUser && currentUser.palettes && (
+                        {currentUser && currentUser.palettes ? (
                             <h3>
                                 Saved Palettes ({currentUser.palettes.length})
                             </h3>
-                        )}
+                        )
+                        : <p>You don't have any saved palettes. <Link to="/colors">Find colors &rarr;</Link></p>
+                        }
                         <div className="feed-toggle">
                             <label>
                                 <Toggle
@@ -267,7 +269,7 @@ const Account = ({
                         }`}
                     >
                         {currentUser &&
-                            currentUser.palettes
+                            currentUser.palettes && currentUser.palettes.length
                                 .slice(0)
                                 .reverse()
                                 .map(palette => {

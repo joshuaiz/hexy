@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
@@ -12,6 +13,7 @@ const Login = () => {
     const [tab1Active, setTab1Active] = useState(true)
     const [error, setError] = useState()
     const [modalContent, setModalContent] = useState()
+
 
     const handleLogin = async event => {
         event.preventDefault()
@@ -50,6 +52,27 @@ const Login = () => {
             })
         })
     }
+
+    const forgotPassword = () => {
+
+    }
+
+    // const updatePassword = () => {
+    //     // var auth = firebase.auth();
+    //     thisUser = firebase.auth().currentUser;
+    //     let emailAddress;
+
+    //     if (thisUser != null) {
+    //     thisUser.providerData.forEach(function (profile) {
+    //       emailAddress = profile.email
+    //     });
+
+    //     thisUser.sendPasswordResetEmail(emailAddress).then(function() {
+    //       console.log('Email sent!')
+    //     }).catch(function(error) {
+    //       console.log('something went wrong - email not sent')
+    //     });
+    // }
 
     return (
         <div className="login-tabs">
@@ -113,6 +136,9 @@ const Login = () => {
                                         </button>
                                     </form>
                                 </div>
+                            </div>
+                            <div className="forgot-password-link">
+                                <Link to="/reset-password">Forgot your password?</Link>
                             </div>
                         </div>
                         <div

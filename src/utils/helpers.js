@@ -16,6 +16,9 @@ export function slugify(text) {
 }
 
 export function humanize(str) {
+    if (!str) {
+        return
+    }
     let i
     let frags = str.split('_')
     for (i = 0; i < frags.length; i++) {

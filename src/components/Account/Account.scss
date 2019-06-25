@@ -16,6 +16,14 @@
         .not-logged-in {
             max-width: 600px;
             margin: 2em auto;
+            .login-tabs {
+                .forgot-password-link {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                }
+            }
         }
         .user-info {
             // margin: 1.5em 0;

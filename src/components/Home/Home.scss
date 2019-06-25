@@ -39,6 +39,16 @@
                 }
             }
         }
+        .features-2 {
+            .features-image {
+                margin-right: 4%;
+            }
+        }
+        .features-3 {
+            .features-image {
+                margin-left: 4%;
+            }
+        }
         .inner {
             position: relative;
         }
@@ -440,9 +450,9 @@
             }
         }
         .home-go-pro {
-            padding: 1.5em;
+            padding: 1.5em 1.5em 3em;
             position: relative;
-            height: 820px;
+            // height: 820px;
             .go-pro-bg {
                 background-image: linear-gradient(#d3b2e0, #e3e9e8, #ecead1);
                 // transform: skewY(0.5deg);
@@ -456,7 +466,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                max-height: 820px;
+                // max-height: 820px;
                 overflow: hidden;
                 -webkit-clip-path: polygon(0 0, 100% 4%, 100% 96%, 0% 100%);
                 clip-path: polygon(0 0, 100% 4%, 100% 96%, 0% 100%);
@@ -760,6 +770,8 @@
             .home-features {
                 .features {
                     margin-bottom: 60px;
+                    flex-direction: column;
+                    align-items: center;
                     .features-image {
                         order: -1;
                         height: 220px;

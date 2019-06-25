@@ -15,6 +15,7 @@ import Favorites from './components/Favorites'
 import Color from './components/Color'
 import CurrentUser from './components/CurrentUser'
 import Account from './components/Account'
+import ResetPassword from './components/Account/ResetPassword'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Feed from './components/Feed'
@@ -553,12 +554,14 @@ const App = React.memo(({ history, location, match }) => {
                                 />
                             )}
                         />
+                        <Route exact path="/reset-password" component={ResetPassword} />
                         <Route exact path="/faq" component={FAQ} />
                         <Route
                             exact
                             path="/user"
                             render={props => <CurrentUser {...props} />}
                         />
+                    
                     </Switch>
                     <DragDropContext
                         onDragStart={onDragStart}
