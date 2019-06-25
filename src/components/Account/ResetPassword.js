@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
@@ -51,6 +51,8 @@ const ResetPassword = ({ history }) => {
         <div className="reset-password">
             <div className="reset-password-inner">
                 <h1 className="page-title">Reset Password</h1>
+                {!emailSent && 
+                <Fragment>
                 <form
                     className="reset-password-form"
                     onSubmit={checkEmail}
@@ -77,6 +79,8 @@ const ResetPassword = ({ history }) => {
                 <div className="alt-actions">
                     <Link to="/account">Log in/Sign Up</Link>
                 </div>
+                </Fragment>
+                }
                 {emailSent && (
                     <div className="email-sent">
                         <h3>Password reset email sent to: {input}.</h3>
