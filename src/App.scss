@@ -29,6 +29,10 @@ button, .button {
     cursor: pointer;
 }
 
+.small {
+    font-size: 13px;
+}
+
 .App {
     a {
         text-decoration: none;
@@ -411,6 +415,7 @@ button, .button {
         }
     }
 }
+
 
 
 /* React Toggle CSS */

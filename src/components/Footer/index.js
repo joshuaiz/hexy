@@ -92,7 +92,10 @@ const Footer = ({ currentUser }) => {
                                 name="email"
                                 placeholder="you@youremail.com"
                             />
-
+                            <p className="small">
+                                We won't spam or sell or share your email with
+                                anyone. Ever.
+                            </p>
                             <button className="button" type="submit">
                                 Send
                             </button>

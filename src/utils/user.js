@@ -48,10 +48,11 @@ export async function signup({
             email,
             password
         )
-        await user.updateProfile({ displayName, photoURL })
+        await user.updateProfile({ displayName, photoURL, email })
         await db.doc(`users/${user.uid}`).set({
             displayName: displayName,
             uid: user.uid,
+            email: email,
             photoURL: photoURL,
             startDate: startDate
         })

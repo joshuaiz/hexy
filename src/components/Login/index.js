@@ -169,7 +169,7 @@ const Login = () => {
                                             <input
                                                 name="email"
                                                 type="email"
-                                                placeholder="Email"
+                                                placeholder="you@youremail.com"
                                             />
                                         </label>
                                         <label>

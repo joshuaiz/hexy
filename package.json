@@ -17,6 +17,7 @@
     "http-proxy-middleware": "^0.19.1",
     "jspdf": "^1.5.3",
     "lambda": "^0.10.3",
+    "modali": "^1.2.0",
     "moment": "^2.24.0",
     "nearest-color": "^0.4.4",
     "netlify": "^2.4.6",

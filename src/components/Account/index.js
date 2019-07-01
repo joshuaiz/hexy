@@ -5,361 +5,572 @@ import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
+import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
-import { humanize, getExpirationDate } from '../../utils/helpers'
-import { logout } from '../../utils/user'
-import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
-import Swatch from '../Swatch'
+import { login, logout } from '../../utils/user'
 import Login from '../Login'
-import FavoritesPDF from '../Favorites/FavoritesPDF'
+// import Modal from '../Modal'
+import UserMeta from './UserMeta'
+import UserPalettes from './UserPalettes'
+import UpdateProfile from './UpdateProfile'
 import './Account.scss'
 
-// console.log('db', db)
+const Account = React.memo(
+    ({
+        onSubmit,
+        history,
+        handleFavorites,
+        removeFavorite,
+        favorites,
+        paletteWasSaved
+    }) => {
+        const { initialising, user } = useAuthState(firebase.auth())
+        const [currentUser, setCurrentUser] = useState()
+        const [active, setActive] = useState({
+            viewInfo: true,
+            changeAvatar: false,
+            updateProfile: false
+        })
+        const [avatar, setAvatar] = useState()
+        const [avatarURL, setAvatarURL] = useState()
+        const [isUploading, setIsUploading] = useState(false)
+        const [progress, setProgress] = useState(0)
+        // const [userPalettes, setUserPalettes] = useState([])
+        const [swatchInfo, setSwatchInfo] = useState(true)
+        const [avatarUpdated, setAvatarUpdated] = useState(false)
+        const [profileUpdated, setProfileUpdated] = useState(false)
+        const [paletteRemoved, setPaletteRemoved] = useState(false)
+        const [showUpdate, setShowUpdate] = useState(false)
+        const [updateError, setUpdateError] = useState()
+        const [loginError, setLoginError] = useState()
+        const [authSuccess, setAuthSuccess] = useState()
+        const [updating, setUpdating] = useState()
 
-const Account = ({
-    onSubmit,
-    history,
-    handleFavorites,
-    removeFavorite,
-    favorites,
-    paletteWasSaved
-}) => {
-    const { initialising, user } = useAuthState(firebase.auth())
-    const [currentUser, setCurrentUser] = useState()
-    const [avatar, setAvatar] = useState()
-    const [avatarURL, setAvatarURL] = useState()
-    const [isUploading, setIsUploading] = useState(false)
-    const [progress, setProgress] = useState(0)
-    // const [userPalettes, setUserPalettes] = useState([])
-    const [swatchInfo, setSwatchInfo] = useState(true)
-    const [profileUpdated, setProfileUpdated] = useState(false)
-    const [paletteRemoved, setPaletteRemoved] = useState(false)
+        const [loginModal, toggleLoginModal] = useModali()
 
-    const inputEl = useRef(null)
+        const inputEl = useRef(null)
+        const form = useRef(null)
 
-    useEffect(() => {
-        // used to cancel async fetch on unmount
-        // see here: https://github.com/facebook/react/issues/14326
-        let didCancel = false
+        // let viewInfo, changeAvatar, updateProfile
 
-        if (user) {
-            var userRef = db.collection('users').doc(user.uid)
+        useEffect(() => {
+            // used to cancel async fetch on unmount
+            // see here: https://github.com/facebook/react/issues/14326
+            let didCancel = false
 
-            userRef
-                .get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        console.log('Document data:', doc.data())
+            if (user) {
+                var userRef = db.collection('users').doc(user.uid)
 
-                        setCurrentUser(doc.data())
-                    }
+                userRef
+                    .get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            // console.log('Document data:', doc.data())
+
+                            setCurrentUser(doc.data())
+                        }
+                    })
+                    .catch(err => {
+                        console.log('Error getting documents', err)
+                    })
+            }
+            return () => {
+                didCancel = true
+            }
+        }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
+
+        const handleActions = action => {
+            console.log('handleActions', action)
+            console.log('clicked')
+            if (action === 'viewInfo') {
+                setActive({
+                    viewInfo: true,
+                    changeAvatar: false,
+                    updateProfile: false
                 })
-                .catch(err => {
-                    console.log('Error getting documents', err)
+            } else if (action === 'changeAvatar') {
+                setActive({
+                    viewInfo: false,
+                    changeAvatar: true,
+                    updateProfile: false
+                })
+            } else if (action === 'updateProfile') {
+                setActive({
+                    viewInfo: false,
+                    changeAvatar: false,
+                    updateProfile: true
+                })
+                // setShowUpdate(!showUpdate)
+            } else if (action === 'close') {
+                setActive({
+                    viewInfo: true,
+                    changeAvatar: false,
+                    updateProfile: false
+                })
+            }
+        }
+
+        const handleUploadStart = () => {
+            setIsUploading(true)
+            setProgress(0)
+        }
+
+        const handleUploadError = error => {
+            setIsUploading(false)
+            console.error(error)
+        }
+
+        const handleProgress = progress => {
+            setProgress(progress)
+        }
+
+        const handleUploadSuccess = filename => {
+            //   this.setState({ avatar: filename, progress: 100, isUploading: false });
+            setAvatar(filename)
+            setProgress(100)
+            setIsUploading(false)
+            // handleSubmit(inputEl)
+            firebase
+                .storage()
+                .ref('avatars')
+                .child(filename)
+                .getDownloadURL()
+                .then(url => {
+                    setAvatarURL(url)
+                    updateUserProfile(currentUser.displayName, url)
                 })
         }
-        return () => {
-            didCancel = true
-        }
-    }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
 
-    const handleUploadStart = () => {
-        setIsUploading(true)
-        setProgress(0)
-    }
+        // const handleSubmit = inputEl => {
+        //     console.log(inputEl)
+        // }
 
-    const handleUploadError = error => {
-        setIsUploading(false)
-        console.error(error)
-    }
+        // console.log('currentUser', currentUser && currentUser)
 
-    const handleProgress = progress => {
-        setProgress(progress)
-    }
+        const updateUserProfile = (displayName, url) => {
+            setAvatarUpdated(false)
+            let activeUser = firebase.auth().currentUser
 
-    const handleUploadSuccess = filename => {
-        //   this.setState({ avatar: filename, progress: 100, isUploading: false });
-        setAvatar(filename)
-        setProgress(100)
-        setIsUploading(false)
-        // handleSubmit(inputEl)
-        firebase
-            .storage()
-            .ref('avatars')
-            .child(filename)
-            .getDownloadURL()
-            .then(url => {
-                setAvatarURL(url)
-                updateUserProfile(currentUser.displayName, url)
-            })
-    }
+            // console.log('activeUser', displayName, activeUser, url)
 
-    // const handleSubmit = inputEl => {
-    //     console.log(inputEl)
-    // }
-
-    // console.log('currentUser', currentUser && currentUser)
-
-    const updateUserProfile = (displayName, url) => {
-        setProfileUpdated(false)
-        let activeUser = firebase.auth().currentUser
-
-        // console.log('activeUser', displayName, activeUser, url)
-
-        activeUser
-            .updateProfile({
-                displayName: displayName,
-                photoURL: url
-            })
-            .then(function() {
-                setProfileUpdated(true)
-
-                setTimeout(() => {
-                    setProfileUpdated(false)
-                }, 4000)
-
-                db.doc(`users/${user.uid}`).update({
+            activeUser
+                .updateProfile({
                     displayName: displayName,
                     photoURL: url
                 })
+                .then(function() {
+                    setAvatarUpdated(true)
+
+                    setTimeout(() => {
+                        setAvatarUpdated(false)
+                    }, 4000)
+
+                    db.doc(`users/${user.uid}`).update({
+                        displayName: displayName,
+                        photoURL: url
+                    })
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+        }
+
+        const deletePalette = paletteName => {
+            const userPalettes = currentUser.palettes
+
+            const newPalettes = userPalettes.filter(
+                palette => palette.name !== paletteName
+            )
+
+            var userRef = db.collection('users').doc(user.uid)
+            userRef.update({
+                palettes: newPalettes
             })
-            .catch(function(error) {
-                console.log(error)
-            })
-    }
 
-    const deletePalette = paletteName => {
-        const userPalettes = currentUser.palettes
+            setPaletteRemoved(true)
+        }
 
-        const newPalettes = userPalettes.filter(
-            palette => palette.name !== paletteName
-        )
+        const handleToggle = () => {
+            setSwatchInfo(!swatchInfo)
+        }
 
-        var userRef = db.collection('users').doc(user.uid)
-        userRef.update({
-            palettes: newPalettes
-        })
+        const handleLogout = () => {
+            logout()
+        }
 
-        setPaletteRemoved(true)
-    }
+        const handleUpdate = event => {
+            event.preventDefault()
+            const { username, email, password } = event.target.elements
 
-    const handleToggle = () => {
-        setSwatchInfo(!swatchInfo)
-    }
+            console.log(email.value, password.value, username.value)
 
-    const handleLogout = () => {
-        logout()
-    }
+            setProfileUpdated(false)
+            let activeUser = firebase.auth().currentUser
 
-    if (initialising) {
-        return (
-            <div className="page-account">
-                <p>Loading...</p>
-            </div>
-        )
-    }
-    if (user) {
-        return (
-            <div className="page-account">
-                <div className="user-info">
-                    <h2>
-                        Welcome,{' '}
-                        <strong>{user.displayName && user.displayName}</strong>!
-                    </h2>
+            if (username.value) {
+                activeUser
+                    .updateProfile({
+                        displayName: username.value
+                    })
+                    .then(function() {
+                        setProfileUpdated(true)
 
-                    {currentUser ? (
-                        <div className="user-content-wrap">
-                            <div className="user-avatar">
-                                <div className="avatar">
-                                    <img
-                                        src={
-                                            currentUser
-                                                ? currentUser.photoURL
-                                                : ''
-                                        }
-                                        alt="user avatar"
-                                    />
+                        db.doc(`users/${user.uid}`).update({
+                            displayName: username.value
+                        })
+                    })
+                    .catch(function(error) {
+                        console.log(error)
+                    })
+            }
+
+            if (email.value) {
+                activeUser
+                    .updateEmail(email.value)
+                    .then(function() {
+                        setProfileUpdated(true)
+                    })
+                    .then(function() {
+                        db.doc(`users/${user.uid}`).update({
+                            email: email.value
+                        })
+                    })
+                    .catch(function(error) {
+                        console.log(error)
+                        setUpdateError(error)
+                        toggleLoginModal(true)
+                    })
+            }
+
+            if (password.value) {
+                activeUser
+                    .updatePassword(password.value)
+                    .then(function() {
+                        setProfileUpdated(true)
+                    })
+                    .catch(function(error) {
+                        console.log(error)
+                        setUpdateError(error)
+                        toggleLoginModal(true)
+                    })
+            }
+        }
+
+        // console.log('Update Error', updateError && updateError.message)
+
+        useEffect(() => {
+            if (profileUpdated) {
+                // console.log(profileUpdated)
+                form.current.reset()
+                setShowUpdate(false)
+                setTimeout(() => {
+                    setProfileUpdated(false)
+                    // console.log(form)
+                }, 4000)
+            }
+        }, [profileUpdated])
+
+        const handleLogin = async event => {
+            setAuthSuccess(false)
+            setUpdating(true)
+            event.preventDefault()
+            const { email, password } = event.target.elements
+            login(email.value, password.value)
+                .then(
+                    setUpdating(false),
+                    setAuthSuccess(true),
+                    setUpdateError(false)
+                )
+                .catch(error => {
+                    // console.log(error)
+                    setLoginError(error)
+
+                    return <div className="error-message">{error.message}</div>
+                })
+        }
+
+        if (initialising) {
+            return (
+                <div className="page-account">
+                    <p>Loading...</p>
+                </div>
+            )
+        }
+        if (user) {
+            return (
+                <div className="page-account">
+                    <div className="user-info">
+                        <h2>
+                            Welcome,{' '}
+                            <strong>
+                                {user.displayName && user.displayName}
+                            </strong>
+                            !
+                        </h2>
+
+                        {currentUser ? (
+                            <div className="user-content-wrap">
+                                <div className="user-avatar">
+                                    <div className="avatar">
+                                        <img
+                                            src={
+                                                currentUser
+                                                    ? currentUser.photoURL
+                                                    : ''
+                                            }
+                                            alt="user avatar"
+                                        />
+                                    </div>
+
+                                    <div className="user-actions">
+                                        <ul className="nostyle user-action-list">
+                                            <li
+                                                className={`${
+                                                    active.viewInfo
+                                                        ? 'current'
+                                                        : ''
+                                                }`}
+                                            >
+                                                <span
+                                                    onClick={() =>
+                                                        handleActions(
+                                                            'viewInfo'
+                                                        )
+                                                    }
+                                                >
+                                                    View account info
+                                                </span>
+                                            </li>
+                                            <li
+                                                className={`${
+                                                    active.changeAvatar
+                                                        ? 'current'
+                                                        : ''
+                                                }`}
+                                            >
+                                                <span
+                                                    onClick={() =>
+                                                        handleActions(
+                                                            'changeAvatar'
+                                                        )
+                                                    }
+                                                >
+                                                    Change avatar
+                                                </span>
+                                            </li>
+                                            <li
+                                                className={`${
+                                                    active.updateProfile
+                                                        ? 'current'
+                                                        : ''
+                                                }`}
+                                            >
+                                                <span
+                                                    onClick={() =>
+                                                        handleActions(
+                                                            'updateProfile'
+                                                        )
+                                                    }
+                                                >
+                                                    Update profile
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span onClick={handleLogout}>
+                                                    Log Out
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div
+                                        className={`file-uploader ${
+                                            active.changeAvatar
+                                                ? 'active'
+                                                : 'inactive'
+                                        }`}
+                                    >
+                                        <p>
+                                            To change your avatar, upload a new
+                                            image:
+                                        </p>
+                                        {isUploading && (
+                                            <p>Progress: {progress}</p>
+                                        )}
+
+                                        <FileUploader
+                                            className="uploader"
+                                            accept="image/*"
+                                            name="avatar"
+                                            ref={inputEl}
+                                            randomizeFilename
+                                            storageRef={firebase
+                                                .storage()
+                                                .ref('avatars')}
+                                            onUploadStart={handleUploadStart}
+                                            onUploadError={handleUploadError}
+                                            onUploadSuccess={
+                                                handleUploadSuccess
+                                            }
+                                            onProgress={handleProgress}
+                                        />
+                                        {avatarUpdated ? (
+                                            <div className="profile-updated">
+                                                <p>
+                                                    Your avatar has been
+                                                    updated!
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            ''
+                                        )}
+                                    </div>
                                 </div>
+                                <UserMeta
+                                    currentUser={currentUser}
+                                    active={active.viewInfo}
+                                />
+                                <div
+                                    className={`update-profile-outer ${
+                                        active.updateProfile
+                                            ? 'active'
+                                            : 'inactive'
+                                    }`}
+                                >
+                                    {authSuccess && (
+                                        <div className="auth-success">
+                                            Authenticated successfully...please
+                                            update your profle below.
+                                        </div>
+                                    )}
+                                    {!updateError ? (
+                                        <UpdateProfile
+                                            handleUpdate={handleUpdate}
+                                            active={active.updateProfile}
+                                            setActive={setActive}
+                                            setRef={form}
+                                        />
+                                    ) : (
+                                        updateError &&
+                                        updateError.message && (
+                                            <Modali.Modal
+                                                {...loginModal}
+                                                animated={true}
+                                                centered={true}
+                                            >
+                                                <div className="login-form update-login">
+                                                    <h3>
+                                                        To update your profile,
+                                                        please log in again:
+                                                    </h3>
+                                                    <form
+                                                        className="tab-form"
+                                                        onSubmit={handleLogin}
+                                                    >
+                                                        <label>
+                                                            <div className="input-label">
+                                                                Email
+                                                            </div>
+                                                            <input
+                                                                name="email"
+                                                                type="email"
+                                                                placeholder="you@youremail.com"
+                                                            />
+                                                        </label>
+                                                        <label>
+                                                            <div className="input-label">
+                                                                Password
+                                                            </div>
+                                                            <input
+                                                                name="password"
+                                                                type="password"
+                                                                placeholder="Password"
+                                                            />
+                                                        </label>
+                                                        <button
+                                                            className="button"
+                                                            type="submit"
+                                                            disabled={updating}
+                                                        >
+                                                            {updating
+                                                                ? 'Logging you in'
+                                                                : 'Log In'}
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </Modali.Modal>
+                                        )
+                                    )}
 
-                                <div className="file-uploader">
-                                    <p>
-                                        To change your avatar, upload a new
-                                        image:
-                                    </p>
-                                    {isUploading && <p>Progress: {progress}</p>}
-
-                                    <FileUploader
-                                        className="uploader"
-                                        accept="image/*"
-                                        name="avatar"
-                                        ref={inputEl}
-                                        randomizeFilename
-                                        storageRef={firebase
-                                            .storage()
-                                            .ref('avatars')}
-                                        onUploadStart={handleUploadStart}
-                                        onUploadError={handleUploadError}
-                                        onUploadSuccess={handleUploadSuccess}
-                                        onProgress={handleProgress}
-                                    />
                                     {profileUpdated ? (
                                         <div className="profile-updated">
-                                            <p>Your avatar has been updated!</p>
+                                            <p>
+                                                Your profile has been updated!
+                                            </p>
                                         </div>
                                     ) : (
                                         ''
                                     )}
                                 </div>
                             </div>
-                            <div className="user-meta">
-                                <h3>Hexy Account:</h3>
-                                <div className="start-date">
-                                    <strong>Account created:</strong>{' '}
-                                    {currentUser && currentUser.startDate}
-                                </div>
-                                <div className="account-level">
-                                    <strong>Account Level:</strong>{' '}
-                                    {currentUser &&
-                                        humanize(currentUser.accountType)}
-                                </div>
-                                <div className="account-expiration">
-                                    <strong>Valid Until:</strong>{' '}
-                                    {currentUser &&
-                                    currentUser.accountType !== 'pro_lifetime'
-                                        ? getExpirationDate(
-                                              currentUser.accountStartDate
-                                          )
-                                        : 'Forever'}
-                                </div>
+                        ) : (
+                            <span>Loading...</span>
+                        )}
+                    </div>
+
+                    <div className="user-palettes">
+                        <div className="user-palettes-header">
+                            {currentUser && currentUser.palettes ? (
+                                <h3>
+                                    Saved Palettes (
+                                    {currentUser.palettes.length})
+                                </h3>
+                            ) : (
+                                <p>
+                                    You don't have any saved palettes.{' '}
+                                    <Link to="/colors">Find colors &rarr;</Link>
+                                </p>
+                            )}
+                            <div className="feed-toggle">
+                                <label>
+                                    <Toggle
+                                        defaultChecked={!swatchInfo}
+                                        icons={false}
+                                        onChange={handleToggle}
+                                    />
+                                    <span>
+                                        {swatchInfo ? 'Show' : 'Hide'} swatch
+                                        info
+                                    </span>
+                                </label>
                             </div>
                         </div>
-                    ) : (
-                        <span>Loading...</span>
-                    )}
-                    <button onClick={handleLogout}>Log out</button>
+
+                        <UserPalettes
+                            swatchInfo={swatchInfo}
+                            currentUser={currentUser}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            favorites={favorites}
+                            deletePalette={deletePalette}
+                        />
+                    </div>
                 </div>
+            )
+        }
 
-                <div className="user-palettes">
-                    <div className="user-palettes-header">
-                        {currentUser && currentUser.palettes ? (
-                            <h3>
-                                Saved Palettes ({currentUser.palettes.length})
-                            </h3>
-                        )
-                        : <p>You don't have any saved palettes. <Link to="/colors">Find colors &rarr;</Link></p>
-                        }
-                        <div className="feed-toggle">
-                            <label>
-                                <Toggle
-                                    defaultChecked={!swatchInfo}
-                                    icons={false}
-                                    onChange={handleToggle}
-                                />
-                                <span>
-                                    {swatchInfo ? 'Show' : 'Hide'} swatch info
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div
-                        className={`nostyle palettes-list ${
-                            swatchInfo ? 'no-info' : 'info'
-                        }`}
-                    >
-                        {currentUser &&
-                            currentUser.palettes && currentUser.palettes.length
-                                .slice(0)
-                                .reverse()
-                                .map(palette => {
-                                    return (
-                                        <div
-                                            className="palette-wrap"
-                                            key={palette.date.seconds}
-                                        >
-                                            <div className="palette-title-bar">
-                                                <div className="palette-name">
-                                                    {palette.name &&
-                                                        palette.name}
-                                                </div>
-                                                <FavoritesPDF
-                                                    favorites={
-                                                        palette.palette &&
-                                                        palette.palette
-                                                    }
-                                                    paletteName={
-                                                        palette.name &&
-                                                        palette.name
-                                                    }
-                                                />
-                                            </div>
-
-                                            <ul className="user-palette nostyle">
-                                                {palette.palette.map(
-                                                    (color, index) => {
-                                                        return (
-                                                            <Swatch
-                                                                key={
-                                                                    palette.date
-                                                                        .seconds +
-                                                                    color.hex
-                                                                }
-                                                                color={color}
-                                                                index={index}
-                                                                handleFavorites={
-                                                                    handleFavorites
-                                                                }
-                                                                removeFavorite={
-                                                                    removeFavorite
-                                                                }
-                                                                favorites={
-                                                                    favorites
-                                                                }
-                                                                // isFavorite={isFavorite ? true : false}
-                                                            />
-                                                        )
-                                                    }
-                                                )}
-                                            </ul>
-                                            <div className="palette-utilities">
-                                                <div className="delete-palette">
-                                                    <span
-                                                        className="palette-delete"
-                                                        onClick={() =>
-                                                            deletePalette(
-                                                                palette.name
-                                                            )
-                                                        }
-                                                    >
-                                                        <TimesCircle
-                                                            style={{
-                                                                color: '#f35336'
-                                                            }}
-                                                        />
-                                                        <span className="clear-text">
-                                                            Delete
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                    </div>
+        return (
+            <div className="page-account">
+                <div className="not-logged-in">
+                    <h2>Please Log In or Sign Up</h2>
+                    <Login />
                 </div>
             </div>
         )
     }
+)
 
-    return (
-        <div className="page-account">
-            <div className="not-logged-in">
-                <h2>Please Log In or Sign Up</h2>
-                <Login />
-            </div>
-        </div>
-    )
-}
+// Account.whyDidYouRender = true
 
 export default withRouter(Account)
