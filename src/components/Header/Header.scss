@@ -296,10 +296,11 @@
                 }
             }
             .sidebar-toggle {
-                position: absolute;
+                position: relative;
                 padding: 8px 0;
                 bottom: 16px;
-                right: 10px;
+                // right: 10px;
+                margin-left: 0;
             }
         }
     }

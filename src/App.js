@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter, Link } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../src/config/firebaseconfig'
@@ -7,6 +7,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { Elements, StripeProvider, stripe } from 'react-stripe-elements'
+import Modali, { useModali } from 'modali'
 import nearestColor from 'nearest-color'
 import Wrapper from './components/Wrapper'
 import Home from './components/Home'
@@ -31,6 +32,12 @@ import {
     getRandomColors,
     sortLightness,
     filterColorsBySearchText,
+    setSessionStorage,
+    getSessionStorage,
+    setLocalStorage,
+    getLocalStorage,
+    getNumberOfFavorites,
+    favoritesErrorContent,
     getColorByHex,
     hexColors,
     getCurrentDateTime
@@ -52,7 +59,7 @@ const App = React.memo(({ history, location, match }) => {
     const [noMatch, setNoMatch] = useState(false)
     const [favorites, setFavorites] = useState([])
     const [favoriteSwatches, setFavoriteSwatches] = useState([])
-    const [found, setFound] = useState()
+    // const [found, setFound] = useState()
     const { initialising, user } = useAuthState(firebase.auth())
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const [transition, setTransition] = useState(false)
@@ -61,6 +68,11 @@ const App = React.memo(({ history, location, match }) => {
     const [paletteExported, setPaletteExported] = useState(false)
     const [cart, setCart] = useState()
     const [currentUser, setCurrentUser] = useState()
+    const [favoritesError, setFavoritesError] = useState(false)
+
+    const [errorModal, toggleErrorModal] = useModali()
+
+    const numFaves = getNumberOfFavorites(user, currentUser)
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
@@ -68,16 +80,16 @@ const App = React.memo(({ history, location, match }) => {
             event.preventDefault()
             const randoms = getRandomColors(1000)
             setColors(randoms)
-            sessionStorage.setItem('hexy_randoms', JSON.stringify(randoms))
+            setSessionStorage('hexy_randoms', randoms)
             return
         }
-        const cachedRandoms = sessionStorage.getItem('hexy_randoms')
+        const cachedRandoms = getSessionStorage('hexy_randoms')
         if (!cachedRandoms) {
             const randoms = getRandomColors(1000)
             setColors(randoms)
-            sessionStorage.setItem('hexy_randoms', JSON.stringify(randoms))
+            setSessionStorage('hexy_randoms', randoms)
         } else {
-            setColors(JSON.parse(cachedRandoms))
+            setColors(cachedRandoms)
         }
     }
 
@@ -96,13 +108,11 @@ const App = React.memo(({ history, location, match }) => {
             const brightColors = sortLightness(colors)
             setColors(brightColors)
         } else if (searchInput) {
-            const cachedSearchColors = sessionStorage.getItem(
-                'hexy_searchColors'
-            )
-            setColors(JSON.parse(cachedSearchColors))
+            const cachedSearchColors = getSessionStorage('hexy_searchColors')
+            setColors(cachedSearchColors)
         } else if (!searchInput) {
-            const cachedRandoms = sessionStorage.getItem('hexy_randoms')
-            setColors(JSON.parse(cachedRandoms))
+            const cachedRandoms = getSessionStorage('hexy_randoms')
+            setColors(cachedRandoms)
         }
         setSortBright(!sortBright)
     }, [sortBright, colors, searchInput])
@@ -116,10 +126,10 @@ const App = React.memo(({ history, location, match }) => {
     // handle returning search results and updating color list
     const handleSearch = event => {
         event.preventDefault()
-        let text = searchInput.toLowerCase()
+        const text = searchInput.toLowerCase()
         const filterList = filterColorsBySearchText(text)
 
-        let validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
+        const validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
 
         // console.log('handleSearch', filterList)
 
@@ -128,10 +138,7 @@ const App = React.memo(({ history, location, match }) => {
             // if we have a search, reset brightness sort
             setSortBright(false)
             setColors(filterList)
-            sessionStorage.setItem(
-                'hexy_searchColors',
-                JSON.stringify(filterList)
-            )
+            setSessionStorage('hexy_searchColors', filterList)
             setSearchSubmitted(true)
             // if not on colors page, go there to see search results
             history.push('/colors')
@@ -155,82 +162,72 @@ const App = React.memo(({ history, location, match }) => {
 
     const handleFavorites = useCallback(
         color => {
-            let numFaves = 5
-            // const currentUser = getUser(user.uid)
-            // console.log('handleFavorites', currentUser)
-            if (user && currentUser) {
-                const accountType = currentUser.accountType
-
-                if (accountType) {
-                    if (accountType === 'pro') {
-                        numFaves = 10
-                    } else if (
-                        accountType === 'pro_unlimited' ||
-                        accountType === 'pro_lifetime'
-                    ) {
-                        numFaves = 15
-                    }
-                }
-            }
-
-            // console.log('handleFavorites', numFaves)
+            let found
 
             if (!color) {
                 return
             }
             if (favorites && favorites.length) {
                 // check if color is already a favorite
-                setFound(favorites.some(el => el.hex === color.hex))
+                found = checkIfFavorite(color)
             }
             if (!found && !favorites.length) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
-                localStorage.setItem(
-                    'hexy_favorites',
-                    JSON.stringify(newFavorites)
-                )
+                // localStorage.setItem(
+                //     'hexy_favorites',
+                //     JSON.stringify(newFavorites)
+                // )
+                setLocalStorage('hexy_favorites', newFavorites)
             } else if (user && !found && favorites.length < numFaves) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
-                localStorage.setItem(
-                    'hexy_favorites',
-                    JSON.stringify(newFavorites)
-                )
+                // localStorage.setItem(
+                //     'hexy_favorites',
+                //     JSON.stringify(newFavorites)
+                // )
+                setLocalStorage('hexy_favorites', newFavorites)
             } else if (user && favorites && favorites.length === numFaves) {
-                alert('The maximum number of favorites is 15.')
+                // alert('The maximum number of favorites is 15.')
+                setFavoritesError(true)
+                toggleErrorModal(true)
             } else if (!user && !found && favorites.length < 5) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
-                localStorage.setItem(
-                    'hexy_favorites',
-                    JSON.stringify(newFavorites)
-                )
+                // localStorage.setItem(
+                //     'hexy_favorites',
+                //     JSON.stringify(newFavorites)
+                // )
+                setLocalStorage('hexy_favorites', newFavorites)
             } else if (!user && favorites && favorites.length === 5) {
-                alert(
-                    'The maximum number of favorites is 5. Get a Pro account to save up to 15 favorites.'
-                )
+                // alert(
+                //     'The maximum number of favorites is 5. Get a Pro account to save up to 15 favorites.'
+                // )
+                setFavoritesError(true)
+                toggleErrorModal(true)
             }
         },
-        [favorites, found, user]
+        [favorites, user]
     )
 
+    const checkIfFavorite = color => {
+        let found
+        if (favorites && favorites.length) {
+            // check if color is already a favorite
+            found = favorites.some(el => el.hex === color.hex)
+            // console.log(found, color.hex)
+        }
+        return found
+    }
+
     const getFavorites = useCallback(() => {
-        const cachedFavorites = localStorage.getItem('hexy_favorites')
+        const cachedFavorites = getLocalStorage('hexy_favorites')
         if (cachedFavorites) {
-            setFavorites(JSON.parse(cachedFavorites))
+            setFavorites(cachedFavorites)
         } else {
             setFavorites([])
         }
     })
-
-    // const getFavorites = () => {
-    //     const cachedFavorites = localStorage.getItem('hexy_favorites')
-    //     if (cachedFavorites) {
-    //         setFavorites(JSON.parse(cachedFavorites))
-    //     } else {
-    //         setFavorites([])
-    //     }
-    // }
 
     const removeFavorite = useCallback(
         color => {
@@ -245,10 +242,7 @@ const App = React.memo(({ history, location, match }) => {
                 setFavoriteSwatches([])
             } else {
                 setFavorites(filteredFavorites)
-                localStorage.setItem(
-                    'hexy_favorites',
-                    JSON.stringify(filteredFavorites)
-                )
+                setLocalStorage('hexy_favorites', filteredFavorites)
             }
         },
         [favorites]
@@ -329,7 +323,8 @@ const App = React.memo(({ history, location, match }) => {
 
         // set new favorites in state + localStorage
         setFavorites(faves)
-        localStorage.setItem('hexy_favorites', JSON.stringify(faves))
+        // localStorage.setItem('hexy_favorites', JSON.stringify(faves))
+        setLocalStorage('hexy_favorites', faves)
 
         setDragEnded(true)
 
@@ -357,36 +352,17 @@ const App = React.memo(({ history, location, match }) => {
         }
     }
 
-    // const addToCart = (accountType, price, dateAdded) => {
-    //     let date = getCurrentDateTime()
-    //     // console.log('addToCart', date)
-
-    //     const sessionID = sessionStorage.getItem('hexy_session_id')
-
-    //     if (!sessionID) {
-    //         const ID = createID()
-    //         sessionStorage.setItem('hexy_session_id', JSON.stringify(ID))
-    //     }
-
-    //     const localCart = {
-    //         accountType,
-    //         price: price.toFixed(2),
-    //         dateAdded: date
-    //     }
-
-    //     setCart(localCart)
-    //     localStorage.setItem('hexy_cart', JSON.stringify(localCart))
-    // }
-
     const addToCart = useCallback((accountType, price, dateAdded) => {
         let date = getCurrentDateTime()
         // console.log('addToCart', date)
 
-        const sessionID = sessionStorage.getItem('hexy_session_id')
+        // const sessionID = sessionStorage.getItem('hexy_session_id')
+        const sessionID = getSessionStorage('hexy_session_id')
 
         if (!sessionID) {
             const ID = createID()
-            sessionStorage.setItem('hexy_session_id', JSON.stringify(ID))
+            // sessionStorage.setItem('hexy_session_id', JSON.stringify(ID))
+            setSessionStorage('hexy_session_id', ID)
         }
 
         const localCart = {
@@ -396,11 +372,13 @@ const App = React.memo(({ history, location, match }) => {
         }
 
         setCart(localCart)
-        localStorage.setItem('hexy_cart', JSON.stringify(localCart))
+        // localStorage.setItem('hexy_cart', JSON.stringify(localCart))
+        setLocalStorage('hexy_cart', localCart)
     }, [])
 
     useEffect(() => {
-        const currentCart = JSON.parse(localStorage.getItem('hexy_cart'))
+        // const currentCart = JSON.parse(localStorage.getItem('hexy_cart'))
+        const currentCart = getLocalStorage('hexy_cart')
         setCart(currentCart)
         // console.log(currentCart)
     }, [])
@@ -410,7 +388,8 @@ const App = React.memo(({ history, location, match }) => {
         // see here: https://github.com/facebook/react/issues/14326
         let didCancel = false
 
-        const thisUser = JSON.parse(localStorage.getItem('hexy_user'))
+        // const thisUser = JSON.parse(localStorage.getItem('hexy_user'))
+        const thisUser = getLocalStorage('hexy_user')
 
         if (user && !thisUser) {
             var userRef = db.collection('users').doc(user.uid)
@@ -422,10 +401,11 @@ const App = React.memo(({ history, location, match }) => {
                         // console.log('Document data:', doc.data())
 
                         setCurrentUser(doc.data())
-                        localStorage.setItem(
-                            'hexy_user',
-                            JSON.stringify(doc.data())
-                        )
+                        // localStorage.setItem(
+                        //     'hexy_user',
+                        //     JSON.stringify(doc.data())
+                        // )
+                        setLocalStorage('hexy_user', doc.data())
                     }
                 })
                 .catch(err => {
@@ -438,8 +418,6 @@ const App = React.memo(({ history, location, match }) => {
             didCancel = true
         }
     }, [user])
-
-    // console.log(currentUser && currentUser)
 
     return (
         <div className="App">
@@ -551,17 +529,22 @@ const App = React.memo(({ history, location, match }) => {
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
                                     paletteWasSaved={paletteWasSaved}
+                                    paletteExported={paletteExported}
+                                    setPaletteExported={setPaletteExported}
                                 />
                             )}
                         />
-                        <Route exact path="/reset-password" component={ResetPassword} />
+                        <Route
+                            exact
+                            path="/reset-password"
+                            component={ResetPassword}
+                        />
                         <Route exact path="/faq" component={FAQ} />
                         <Route
                             exact
                             path="/user"
                             render={props => <CurrentUser {...props} />}
                         />
-                    
                     </Switch>
                     <DragDropContext
                         onDragStart={onDragStart}
@@ -573,6 +556,7 @@ const App = React.memo(({ history, location, match }) => {
                             clearFavorites={clearFavorites}
                             setFavorites={setFavorites}
                             getFavorites={getFavorites}
+                            handleSidebarToggle={handleSidebarToggle}
                             isSidebarVisible={isSidebarVisible}
                             transition={transition}
                             dragEnded={dragEnded}
@@ -583,6 +567,11 @@ const App = React.memo(({ history, location, match }) => {
                 </div>
                 <Footer currentUser={currentUser} />
             </Wrapper>
+            {favoritesError && (
+                <Modali.Modal {...errorModal} animated={true} centered={true}>
+                    {favoritesErrorContent(user, currentUser, numFaves)}
+                </Modali.Modal>
+            )}
         </div>
     )
 })

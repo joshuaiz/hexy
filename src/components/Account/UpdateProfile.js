@@ -1,6 +1,12 @@
 import React from 'react'
 
-const UpdateProfile = ({ handleUpdate, active, setActive, setRef }) => {
+const UpdateProfile = ({
+    handleUpdate,
+    active,
+    setActive,
+    usernameError,
+    setRef
+}) => {
     return (
         <div className="update-profile-inner">
             <span className="update-profile-trigger">Update Your Profile</span>
@@ -14,7 +20,13 @@ const UpdateProfile = ({ handleUpdate, active, setActive, setRef }) => {
                         name="username"
                         type="text"
                         placeholder="Username (no spaces or special characters)"
+                        className={`${
+                            usernameError && usernameError.length ? 'error' : ''
+                        }`}
                     />
+                    {usernameError && (
+                        <span class="input-error">{usernameError}</span>
+                    )}
                 </label>
                 <label>
                     <div className="input-label">Email</div>

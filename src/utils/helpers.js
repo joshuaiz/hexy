@@ -1,6 +1,7 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 import namedColors from 'color-name-list'
 import * as tinycolor from 'tinycolor2'
-// import nearestColor from 'nearest-color'
 import moment from 'moment'
 
 /* eslint-disable */
@@ -27,16 +28,22 @@ export function humanize(str) {
     return frags.join(' ')
 }
 
-export function isEmail(email) { 
-    return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(email);
-} 
+export function isEmail(email) {
+    return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(
+        email
+    )
+}
+
+export function onlyLetters(str) {
+    return str.match('^[A-z0-9]+$')
+}
 
 export function checkInputChars(text) {
     var pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/) //unacceptable chars
     if (pattern.test(text)) {
-        alert(
-            'Palette names may only use standard characters ("A-Z", "a-z", "_", "0-9" ).'
-        )
+        // alert(
+        //     'Palette names may only use standard characters ("A-Z", "a-z", "_", "0-9" ).'
+        // )
         return false
     }
     return true //good user input
@@ -62,6 +69,102 @@ export function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
     })
+}
+
+export const getNumberOfFavorites = (user, currentUser) => {
+    let numFaves = 5
+    if (user && currentUser) {
+        const accountType = currentUser.accountType
+
+        if (accountType) {
+            if (accountType === 'pro') {
+                numFaves = 10
+            } else if (
+                accountType === 'pro_unlimited' ||
+                accountType === 'pro_lifetime'
+            ) {
+                numFaves = 15
+            }
+        }
+    }
+    return numFaves
+}
+
+export const favoritesErrorContent = (user, currentUser, numFaves) => {
+    const phrases = [
+        'Whoa there...slow your roll.',
+        'Hey...mucho take it easy.',
+        'More colors would be sweet.'
+    ]
+
+    const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)]
+
+    return (
+        <div className="error-message">
+            <h2>{randomPhrase}</h2>
+            <h3>The maximum number of favorites is {numFaves}.</h3>
+            {!user && (
+                <div>
+                    <p>
+                        <Link to="/account">Log in</Link> or get a{' '}
+                        <Link to="/pro">Hexy Pro</Link> account to save up to 15
+                        favorites.
+                    </p>
+                    <p>
+                        Plus a lot of really cool other features like private
+                        palettes, export to SCSS and more.
+                    </p>
+                    <button className="button">
+                        <Link to="/pro">Go Pro</Link>
+                    </button>
+                </div>
+            )}
+            {user && currentUser && currentUser.accountType === 'standard' && (
+                <div>
+                    <p>
+                        Get a <Link to="/pro">Hexy Pro</Link> account to save up
+                        to 15 favorites plus a lot of really cool other features
+                        like private palettes, export to SCSS and more.
+                    </p>
+                    <button className="button">
+                        <Link to="/pro">Go Pro</Link>
+                    </button>
+                </div>
+            )}
+            {user && currentUser && currentUser.accountType === 'pro' && (
+                <p>
+                    Upgrade your <Link to="/pro">Hexy Pro</Link> account to save
+                    up to 15 favorites.
+                </p>
+            )}
+        </div>
+    )
+}
+
+export const setSessionStorage = (identifier, item) => {
+    // console.log('setSessionStorage', identifier, item)
+    const storageItem = JSON.stringify(item)
+    sessionStorage.setItem(identifier, storageItem)
+}
+
+export const getSessionStorage = identifier => {
+    // console.log('getSessionStorage', identifier)
+    const cachedItem = sessionStorage.getItem(identifier)
+    const parsedCachedItem = JSON.parse(cachedItem)
+    return parsedCachedItem
+}
+
+export const setLocalStorage = (identifier, item) => {
+    // console.log('setSessionStorage', identifier, item)
+    const storageItem = JSON.stringify(item)
+    localStorage.setItem(identifier, storageItem)
+}
+
+export const getLocalStorage = identifier => {
+    // console.log('getSessionStorage', identifier)
+    const cachedItem = localStorage.getItem(identifier)
+    const parsedCachedItem = JSON.parse(cachedItem)
+    return parsedCachedItem
 }
 
 export const hexColors = getHexArray(namedColors)

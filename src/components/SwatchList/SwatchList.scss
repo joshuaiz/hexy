@@ -4,14 +4,18 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr) ) ;
+            // display: flex;
+            // flex-wrap: wrap;
+            // justify-content: flex-start;
             li {
-                margin: 5px;
-                min-width: 180px;
+                // width: 198px;
+                // margin: 5px;
+                min-width: 198px;
                 max-width: 198px;
-                flex: 1;
+                // flex: 1;
                     .swatch-color {
                         height: 80px;
                     }

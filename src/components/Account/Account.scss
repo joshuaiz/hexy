@@ -2,32 +2,39 @@
     .content {
         transition: all .6s ease;
     }
-    .content.no-sidebar {
+    .content.sidebar {
         .page-account {
             width: 100%;
+            min-height: 800px;
+        }
+        .user-palettes {
+            
+            .palettes-list {
+                
+            }
+        }
+    }
+    .content.no-sidebar {
+        .page-account {
+            // width: 100%;
         }
     }
 }
 
 .account-page {
     .page-account {
-        width: 80%;
+        // width: 80%;
         // padding: 1.5em;
         .not-logged-in {
             max-width: 600px;
             margin: 2em auto;
             .login-tabs {
-                .forgot-password-link {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 14px;
-                }
+                
             }
         }
         .user-info {
             // margin: 1.5em 0;
-            padding: 2.2em;
+            padding: 1.5em;
             background: #f5f5f5;
             .user-content-wrap {
                 display: flex;
@@ -86,22 +93,7 @@
                     }
                 }
                 
-                .file-uploader {
-                    // margin: 1em 0 1.5em;
-                    padding: 1em;
-                    border: 1px solid #ddd;
-                    background: #fefefe;
-                    border-radius: 4px;
-                    width: 170px;
-                    // align-self: start;
-                    p {
-                        margin-top: 0;
-                        font-size: 13px;
-                    }
-                    input {
-                        display: inline-block;
-                    }
-                }
+                
             }
             .profile-updated {
                 p {
@@ -116,15 +108,31 @@
                 border-radius: 4px;
                 background: #fff;
                 margin-right: 1.5em;
-                align-self: start;
+                // align-self: start;
                 min-width: 250px;
-                // min-height: 120px;
+                // min-height: 142px;
                 h3 {
                     margin: 0;
                 }
             }
             .account-email, .start-date, .account-level, .account-expiration {
                 font-size: 14px;
+            }
+
+            .file-uploader {
+                // margin: 1em 0 1.5em;
+                padding: 1em;
+                border: 1px solid #ddd;
+                background: #fefefe;
+                border-radius: 4px;
+                // align-self: start;
+                p {
+                    margin-top: 0;
+                    font-size: 13px;
+                }
+                input {
+                    display: inline-block;
+                }
             }
 
             .update-profile-outer {
@@ -151,7 +159,7 @@
                     padding: 2em 1.5em;
                     background: #fefefe;
                     border: 1px solid #efefef;
-                    width: 400px;
+                    // width: 400px;
                     position: relative;
                     .close-update {
                         position: absolute;
@@ -186,6 +194,16 @@
                         background: #efefef;
                         border: 1px solid #f2f2f2;
                     }
+                    input.error {
+                        background: #fff5be;
+                        border: 2px dotted #f98379;
+                    }
+                    .input-error {
+                        color: #f98379;
+                        font-size: 13px;
+                        line-height: normal;
+                        display: block;
+                    }
                     button {
                         margin-bottom: 0;
                         display: block;
@@ -202,15 +220,18 @@
             
     }
     .user-palettes {
-        padding: 2.2em;
+        padding: 1.5em;
         padding-top: 1.5em;
         border-top: 1px dotted #ccc;
         // padding: 1em;
         // border: 1px solid #ccc;
         .user-palettes-header {
             display: flex;
+            h3 {
+                margin-right: 1.5em;
+            }
             .feed-toggle {
-                margin-left: auto;
+                // margin-left: auto;
                 label {
                     display: flex;
                     align-items: center;
@@ -233,10 +254,11 @@
             // flex-wrap: wrap;
            
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(313px, 1fr) );
+            grid-template-columns: repeat(auto-fill, minmax(305px, 1fr) );
             grid-template-rows: auto; 
-            grid-column-gap: 16px;
-            grid-row-gap: 16px; 
+            grid-column-gap: 10px;
+            grid-row-gap: 10px; 
+            justify-items: center;
             .palette-wrap {
                 padding: 5px 10px 10px;
                 background: #f2f2f2;
@@ -246,10 +268,39 @@
                 width: 300px;
                 .palette-title-bar {
                     display: flex;
+                    justify-content: space-between;
                     .palette-name {
                         font-size: 13px;
                         font-weight: 600;
                         padding-bottom: 5px;
+                    }
+                    .palette-utilities-top {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                    }
+                    .share-palette {
+                        cursor: pointer;
+                        margin-left: auto;
+                        align-self: center;
+                        margin-right: 6px;
+                        svg {
+                            width: 16px;
+                            height: auto;
+                            path {
+                                fill: #aaa;
+                            }
+                        }
+                        span {
+                            display: none;
+                        }
+                        &:hover {
+                            svg {
+                               path {
+                                    fill: #777;
+                               } 
+                            }
+                        }
                     }
                     .palette-pdf, .favorites-pdf {
                         margin-left: auto;
@@ -415,6 +466,8 @@
             margin-right: 4px;
         }
     }
+    .palette-message {
+    }
 }
 
 @media only screen and (max-width: 1029px) {
@@ -425,7 +478,7 @@
                 width: 100%;
                 .user-content-wrap {
                     flex-wrap: wrap;
-                    .user-avatar, .user-meta {
+                    .user-avatar, .user-meta, .user-actions {
                         margin-bottom: 2.2em;
                     }
                     .user-meta {
@@ -436,13 +489,14 @@
                     .palettes-list {
                         align-items: center;
                         justify-content: center;
+                        grid-template-columns: inherit;
                     }
                 }
             }
         }
         .favorites,
         .sidebar-toggle {
-            display: none;
+            // display: none;
         }
     }
 }

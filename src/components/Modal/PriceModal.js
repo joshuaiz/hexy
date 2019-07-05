@@ -53,8 +53,7 @@ const PriceModal = React.memo(function PriceModal({
     }, [currentUser, accountType])
 
     return (
-        <Component initialState={{ showDialog: false }}>
-            {({ state, setState }) => (
+        
                 <div>
                     <button
                         className={`button ${disabled ? `disabled` : null}`}
@@ -68,20 +67,7 @@ const PriceModal = React.memo(function PriceModal({
                             ? 'Current Account'
                             : `Get ${humanize(accountType)}!`}
                     </button>
-                    <Dialog
-                        isOpen={state.showDialog}
-                        onDismiss={() =>
-                            setState({
-                                showDialog: false
-                            })
-                        }
-                    >
-                        <span
-                            className="modal-close"
-                            onClick={() => setState({ showDialog: false })}
-                        >
-                            &times;
-                        </span>
+                   
                         <div className="modal-content">
                             <h3>
                                 Hexy {humanize(accountType)} added to your cart!
@@ -91,7 +77,7 @@ const PriceModal = React.memo(function PriceModal({
                                 <Link to="/checkout">Checkout &rarr;</Link>.
                             </p>
                         </div>
-                    </Dialog>
+                    
                 </div>
             )}
         </Component>

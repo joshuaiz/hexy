@@ -6,14 +6,15 @@ import 'firebase/storage'
 import 'firebase/auth'
 import { format } from 'date-fns'
 import { login, signup } from '../../utils/user'
-import Modal from '../Modal'
+// import Modal from '../Modal'
+import Modali, { useModali } from 'modali'
 
 const Login = () => {
     const { user } = useAuthState(firebase.auth())
     const [tab1Active, setTab1Active] = useState(true)
     const [error, setError] = useState()
     const [modalContent, setModalContent] = useState()
-
+    const [loginErrorModal, toggleLoginErrorModal] = useModali()
 
     const handleLogin = async event => {
         event.preventDefault()
@@ -24,6 +25,7 @@ const Login = () => {
             setModalContent(() => {
                 return <div className="error-message">{error.message}</div>
             })
+            toggleLoginErrorModal(true)
         })
     }
 
@@ -32,6 +34,7 @@ const Login = () => {
     }
 
     const handleSignUp = async event => {
+        toggleLoginErrorModal(false)
         event.preventDefault()
         const { email, password, username } = event.target.elements
 
@@ -50,12 +53,11 @@ const Login = () => {
             setModalContent(() => {
                 return <div className="error-message">{error.message}</div>
             })
+            toggleLoginErrorModal(true)
         })
     }
 
-    const forgotPassword = () => {
-
-    }
+    const forgotPassword = () => {}
 
     // const updatePassword = () => {
     //     // var auth = firebase.auth();
@@ -138,7 +140,9 @@ const Login = () => {
                                 </div>
                             </div>
                             <div className="forgot-password-link">
-                                <Link to="/reset-password">Forgot your password?</Link>
+                                <Link to="/reset-password">
+                                    Forgot your password?
+                                </Link>
                             </div>
                         </div>
                         <div
@@ -195,7 +199,15 @@ const Login = () => {
                     </div>
                 </div>
             )}
-            {error && <Modal content={modalContent} />}
+            {error && (
+                <Modali.Modal
+                    animated={true}
+                    centered={true}
+                    {...loginErrorModal}
+                >
+                    {modalContent}
+                </Modali.Modal>
+            )}
         </div>
     )
 }

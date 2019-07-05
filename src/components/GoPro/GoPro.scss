@@ -1,13 +1,13 @@
 .pro-page {
+    .favorites, .sidebar-toggle {
+        display: none;
+    }
     .content {
         max-width: 1200px;
         margin: 0 auto;
     }
-    .favorites, .sidebar-toggle {
-        display: none;
-    }
     .gopro {
-        // max-width: 1200px;
+        max-width: 1200px;
         margin: 2.2em 0;
         width: 100%;
         .page-title {
@@ -186,18 +186,36 @@
     }
 }
 
+.price-modal {
+    .checkout-link {
+        color: #555;
+        font-weight: 600;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #0088cc;
+        display: inline-block;
+        cursor: pointer;
+        &:hover, &:focus {
+            color: #0088cc;
+        }
+    }
+}
+
 @media only screen and (max-width: 899px) {
     .pro-page {
         .gopro {
-            margin-top: 0;
-            padding: 0 1.5em;
+            // margin-top: 1.5em;
+            padding: 1.5em 1.5em;
             .gopro-intro {
                 margin-bottom: 2.2em;
             }
             .account-list {
-                li {
+                top: 0;
+                > li {
                     width: 48%;
                     margin-bottom: 2.2em;
+                    ul > li {
+                        font-size: 13px;
+                    }
                 }
             }
         }

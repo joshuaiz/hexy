@@ -9,6 +9,7 @@ import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
 import { login, logout } from '../../utils/user'
+import { onlyLetters } from '../../utils/helpers'
 import Login from '../Login'
 // import Modal from '../Modal'
 import UserMeta from './UserMeta'
@@ -23,7 +24,9 @@ const Account = React.memo(
         handleFavorites,
         removeFavorite,
         favorites,
-        paletteWasSaved
+        paletteWasSaved,
+        paletteExported,
+        setPaletteExported
     }) => {
         const { initialising, user } = useAuthState(firebase.auth())
         const [currentUser, setCurrentUser] = useState()
@@ -44,6 +47,7 @@ const Account = React.memo(
         const [showUpdate, setShowUpdate] = useState(false)
         const [updateError, setUpdateError] = useState()
         const [loginError, setLoginError] = useState()
+        const [usernameError, setUsernameError] = useState()
         const [authSuccess, setAuthSuccess] = useState()
         const [updating, setUpdating] = useState()
 
@@ -140,13 +144,10 @@ const Account = React.memo(
                     setAvatarURL(url)
                     updateUserProfile(currentUser.displayName, url)
                 })
+                .catch(function(error) {
+                    console.log(error)
+                })
         }
-
-        // const handleSubmit = inputEl => {
-        //     console.log(inputEl)
-        // }
-
-        // console.log('currentUser', currentUser && currentUser)
 
         const updateUserProfile = (displayName, url) => {
             setAvatarUpdated(false)
@@ -161,7 +162,7 @@ const Account = React.memo(
                 })
                 .then(function() {
                     setAvatarUpdated(true)
-
+                    setProfileUpdated(true)
                     setTimeout(() => {
                         setAvatarUpdated(false)
                     }, 4000)
@@ -201,6 +202,7 @@ const Account = React.memo(
 
         const handleUpdate = event => {
             event.preventDefault()
+            // toggleLoginModal(false)
             const { username, email, password } = event.target.elements
 
             console.log(email.value, password.value, username.value)
@@ -209,20 +211,27 @@ const Account = React.memo(
             let activeUser = firebase.auth().currentUser
 
             if (username.value) {
-                activeUser
-                    .updateProfile({
-                        displayName: username.value
-                    })
-                    .then(function() {
-                        setProfileUpdated(true)
-
-                        db.doc(`users/${user.uid}`).update({
+                const re = /^\w+$/
+                if (re.test(username.value)) {
+                    activeUser
+                        .updateProfile({
                             displayName: username.value
                         })
-                    })
-                    .catch(function(error) {
-                        console.log(error)
-                    })
+                        .then(function() {
+                            setProfileUpdated(true)
+
+                            db.doc(`users/${user.uid}`).update({
+                                displayName: username.value
+                            })
+                        })
+                        .catch(function(error) {
+                            console.log(error)
+                        })
+                } else {
+                    const validationError =
+                        'Usernames may only contain letters, numbers and underscores. Please try with a different username.'
+                    setUsernameError(validationError)
+                }
             }
 
             if (email.value) {
@@ -238,7 +247,7 @@ const Account = React.memo(
                     })
                     .catch(function(error) {
                         console.log(error)
-                        setUpdateError(error)
+                        setUpdateError(true)
                         toggleLoginModal(true)
                     })
             }
@@ -251,7 +260,7 @@ const Account = React.memo(
                     })
                     .catch(function(error) {
                         console.log(error)
-                        setUpdateError(error)
+                        setUpdateError(true)
                         toggleLoginModal(true)
                     })
             }
@@ -275,6 +284,7 @@ const Account = React.memo(
             setAuthSuccess(false)
             setUpdating(true)
             event.preventDefault()
+            // toggleLoginModal(false)
             const { email, password } = event.target.elements
             login(email.value, password.value)
                 .then(
@@ -283,12 +293,19 @@ const Account = React.memo(
                     setUpdateError(false)
                 )
                 .catch(error => {
-                    // console.log(error)
-                    setLoginError(error)
-
-                    return <div className="error-message">{error.message}</div>
+                    console.log(error)
+                    // setLoginError(error)
+                    setUpdateError(true)
+                    toggleLoginModal(true)
+                    // return <div className="error-message">{error.message}</div>
                 })
         }
+
+        // console.log('updateError', updateError)
+
+        useEffect(() => {
+            console.log('updateError', updateError)
+        }, [updateError, setUpdateError])
 
         if (initialising) {
             return (
@@ -322,110 +339,98 @@ const Account = React.memo(
                                             alt="user avatar"
                                         />
                                     </div>
-
-                                    <div className="user-actions">
-                                        <ul className="nostyle user-action-list">
-                                            <li
-                                                className={`${
-                                                    active.viewInfo
-                                                        ? 'current'
-                                                        : ''
-                                                }`}
+                                </div>
+                                <div className="user-actions">
+                                    <ul className="nostyle user-action-list">
+                                        <li
+                                            className={`${
+                                                active.viewInfo ? 'current' : ''
+                                            }`}
+                                        >
+                                            <span
+                                                onClick={() =>
+                                                    handleActions('viewInfo')
+                                                }
                                             >
-                                                <span
-                                                    onClick={() =>
-                                                        handleActions(
-                                                            'viewInfo'
-                                                        )
-                                                    }
-                                                >
-                                                    View account info
-                                                </span>
-                                            </li>
-                                            <li
-                                                className={`${
-                                                    active.changeAvatar
-                                                        ? 'current'
-                                                        : ''
-                                                }`}
+                                                View account info
+                                            </span>
+                                        </li>
+                                        <li
+                                            className={`${
+                                                active.changeAvatar
+                                                    ? 'current'
+                                                    : ''
+                                            }`}
+                                        >
+                                            <span
+                                                onClick={() =>
+                                                    handleActions(
+                                                        'changeAvatar'
+                                                    )
+                                                }
                                             >
-                                                <span
-                                                    onClick={() =>
-                                                        handleActions(
-                                                            'changeAvatar'
-                                                        )
-                                                    }
-                                                >
-                                                    Change avatar
-                                                </span>
-                                            </li>
-                                            <li
-                                                className={`${
-                                                    active.updateProfile
-                                                        ? 'current'
-                                                        : ''
-                                                }`}
+                                                Change avatar
+                                            </span>
+                                        </li>
+                                        <li
+                                            className={`${
+                                                active.updateProfile
+                                                    ? 'current'
+                                                    : ''
+                                            }`}
+                                        >
+                                            <span
+                                                onClick={() =>
+                                                    handleActions(
+                                                        'updateProfile'
+                                                    )
+                                                }
                                             >
-                                                <span
-                                                    onClick={() =>
-                                                        handleActions(
-                                                            'updateProfile'
-                                                        )
-                                                    }
-                                                >
-                                                    Update profile
-                                                </span>
-                                            </li>
-                                            <li>
-                                                <span onClick={handleLogout}>
-                                                    Log Out
-                                                </span>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                                Update profile
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span onClick={handleLogout}>
+                                                Log Out
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                                    <div
-                                        className={`file-uploader ${
-                                            active.changeAvatar
-                                                ? 'active'
-                                                : 'inactive'
-                                        }`}
-                                    >
-                                        <p>
-                                            To change your avatar, upload a new
-                                            image:
-                                        </p>
-                                        {isUploading && (
-                                            <p>Progress: {progress}</p>
-                                        )}
+                                <div
+                                    className={`file-uploader ${
+                                        active.changeAvatar
+                                            ? 'active'
+                                            : 'inactive'
+                                    }`}
+                                >
+                                    <p>
+                                        To change your avatar, upload a new
+                                        image:
+                                    </p>
+                                    {isUploading && <p>Progress: {progress}</p>}
 
-                                        <FileUploader
-                                            className="uploader"
-                                            accept="image/*"
-                                            name="avatar"
-                                            ref={inputEl}
-                                            randomizeFilename
-                                            storageRef={firebase
-                                                .storage()
-                                                .ref('avatars')}
-                                            onUploadStart={handleUploadStart}
-                                            onUploadError={handleUploadError}
-                                            onUploadSuccess={
-                                                handleUploadSuccess
-                                            }
-                                            onProgress={handleProgress}
-                                        />
-                                        {avatarUpdated ? (
-                                            <div className="profile-updated">
-                                                <p>
-                                                    Your avatar has been
-                                                    updated!
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            ''
-                                        )}
-                                    </div>
+                                    <FileUploader
+                                        className="uploader"
+                                        accept="image/*"
+                                        name="avatar"
+                                        ref={inputEl}
+                                        randomizeFilename
+                                        storageRef={firebase
+                                            .storage()
+                                            .ref('avatars')}
+                                        onUploadStart={handleUploadStart}
+                                        onUploadError={handleUploadError}
+                                        onUploadSuccess={handleUploadSuccess}
+                                        onProgress={handleProgress}
+                                    />
+                                    {avatarUpdated ? (
+                                        <div className="profile-updated">
+                                            <p>Your avatar has been updated!</p>
+                                        </div>
+                                    ) : (
+                                        ''
+                                    )}
                                 </div>
                                 <UserMeta
                                     currentUser={currentUser}
@@ -441,66 +446,65 @@ const Account = React.memo(
                                     {authSuccess && (
                                         <div className="auth-success">
                                             Authenticated successfully...please
-                                            update your profle below.
+                                            update your profile below.
                                         </div>
                                     )}
-                                    {!updateError ? (
-                                        <UpdateProfile
-                                            handleUpdate={handleUpdate}
-                                            active={active.updateProfile}
-                                            setActive={setActive}
-                                            setRef={form}
-                                        />
-                                    ) : (
-                                        updateError &&
-                                        updateError.message && (
-                                            <Modali.Modal
-                                                {...loginModal}
-                                                animated={true}
-                                                centered={true}
-                                            >
-                                                <div className="login-form update-login">
-                                                    <h3>
-                                                        To update your profile,
-                                                        please log in again:
-                                                    </h3>
-                                                    <form
-                                                        className="tab-form"
-                                                        onSubmit={handleLogin}
+
+                                    <UpdateProfile
+                                        handleUpdate={handleUpdate}
+                                        active={active.updateProfile}
+                                        setActive={setActive}
+                                        setRef={form}
+                                        usernameError={usernameError}
+                                    />
+
+                                    {updateError && (
+                                        <Modali.Modal
+                                            {...loginModal}
+                                            animated={true}
+                                            centered={true}
+                                        >
+                                            <div className="login-form update-login">
+                                                <h3>
+                                                    To update your profile,
+                                                    please log in again:
+                                                </h3>
+                                                <form
+                                                    className="tab-form"
+                                                    onSubmit={handleLogin}
+                                                >
+                                                    <label>
+                                                        <div className="input-label">
+                                                            Email
+                                                        </div>
+                                                        <input
+                                                            name="email"
+                                                            type="email"
+                                                            placeholder="you@youremail.com"
+                                                        />
+                                                    </label>
+                                                    <label>
+                                                        <div className="input-label">
+                                                            Password
+                                                        </div>
+                                                        <input
+                                                            name="password"
+                                                            type="password"
+                                                            placeholder="Password"
+                                                        />
+                                                    </label>
+                                                    <button
+                                                        className="button"
+                                                        type="submit"
+                                                        disabled={updating}
                                                     >
-                                                        <label>
-                                                            <div className="input-label">
-                                                                Email
-                                                            </div>
-                                                            <input
-                                                                name="email"
-                                                                type="email"
-                                                                placeholder="you@youremail.com"
-                                                            />
-                                                        </label>
-                                                        <label>
-                                                            <div className="input-label">
-                                                                Password
-                                                            </div>
-                                                            <input
-                                                                name="password"
-                                                                type="password"
-                                                                placeholder="Password"
-                                                            />
-                                                        </label>
-                                                        <button
-                                                            className="button"
-                                                            type="submit"
-                                                            disabled={updating}
-                                                        >
-                                                            {updating
-                                                                ? 'Logging you in'
-                                                                : 'Log In'}
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </Modali.Modal>
-                                        )
+                                                        {updating
+                                                            ? 'Logging you in'
+                                                            : 'Log In'}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </Modali.Modal>
                                     )}
 
                                     {profileUpdated ? (
@@ -554,6 +558,8 @@ const Account = React.memo(
                             removeFavorite={removeFavorite}
                             favorites={favorites}
                             deletePalette={deletePalette}
+                            paletteExported={paletteExported}
+                            setPaletteExported={setPaletteExported}
                         />
                     </div>
                 </div>

@@ -24,12 +24,6 @@ const Header = ({
     const { user } = useAuthState(firebase.auth())
     const [iconHover, setIconHover] = useState(false)
 
-    // const favoritesContext = useContext(FavoritesContext)
-
-    // console.log(favoritesContext)
-
-    // console.log('header', cart)
-
     const handleLogout = () => {
         firebase.auth().signOut()
     }

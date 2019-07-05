@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { StripeProvider, Elements, stripe } from 'react-stripe-elements'
 // import axios from 'axios'
@@ -14,6 +14,10 @@ import './Checkout.scss'
 const Checkout = ({ cart, setCart }) => {
     const { user } = useAuthState(firebase.auth())
     const [status, setStatus] = useState('default')
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     // console.log('Checkout', cart)
 
