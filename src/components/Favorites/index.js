@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, Fragment } from 'react'
+import { Link } from 'react-router-dom'
 import { Droppable } from 'react-beautiful-dnd'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import Modali, { useModali } from 'modali'
 import useWindowWidth from '../../hooks/useWindowWidth'
 import moment from 'moment'
 import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import FavoritesPDF from './FavoritesPDF'
+import Logo from '../Logo'
+import * as Filter from 'bad-words'
 // import { FavoritesContext } from './FavoritesContext'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
@@ -25,6 +29,7 @@ import './Favorites.scss'
 
 const Favorites = ({
     favorites,
+    currentUser,
     removeFavorite,
     clearFavorites,
     setFavorites,
@@ -44,6 +49,12 @@ const Favorites = ({
     const [paletteErrorMessage, setPaletteErrorMessage] = useState()
 
     const width = useWindowWidth() // Our custom Hook
+
+    const [paletteLimitModal, togglePaletteLimitModal] = useModali()
+
+    const filter = new Filter()
+
+    // console.log(currentUser && currentUser)
 
     const handleBright = () => {
         setLocalStorage('original_favorites', favorites)
@@ -82,6 +93,12 @@ const Favorites = ({
     }, [dragEnded])
 
     const savePalette = () => {
+        const bad = filter.isProfane(paletteName)
+        if (bad) {
+            alert("Don't be a jerk.")
+            setPaletteNameError(true)
+            return
+        }
         if (!paletteName) {
             // alert('Please name your palette')
             setPaletteNameError(true)
@@ -95,6 +112,18 @@ const Favorites = ({
             return
         }
         if (favorites && favorites.length !== 0 && user && paletteName) {
+            if (
+                currentUser &&
+                currentUser.accountType === 'standard' &&
+                currentUser.palettes &&
+                currentUser.palettes.length === 5
+            ) {
+                togglePaletteLimitModal(true)
+                // alert(
+                //     'You may only save 5 palettes with a Standard account. Upgrade to Hexy Pro to save more palettes.'
+                // )
+                return
+            }
             setPaletteNameError(false)
             const date = new Date()
 
@@ -113,6 +142,7 @@ const Favorites = ({
                     // savePaletteToFeed(date, paletteName, favorites)
                     setPaletteSaved(true)
                     setPaletteName('')
+                    setLocalStorage('hexy_user', currentUser)
                 })
                 .then(
                     setTimeout(() => {
@@ -180,123 +210,93 @@ const Favorites = ({
     }
 
     return (
-        <div
-            className={`favorites ${isSidebarVisible ? 'active' : 'inactive'} ${
-                transition ? 'transition' : ''
-            }${width < 1030 ? 'collapsed' : ''}`}
-        >
-            <div className="favorites-wrap">
-                {width < 1030 && (
-                    <span className="close-x" onClick={handleSidebarToggle}>
-                        &times;
-                    </span>
-                )}
-                <div className="favorites-toolbar">
-                    <div className="favorites-heading">Favorites</div>
-                    <div className="favorites-info">
-                        Drag-and-drop to reorder favorites.
-                    </div>
-                    <div className="favorites-toolbar-inner">
-                        <div className="favorites-sort">
-                            <input
-                                type="checkbox"
-                                checked={isBright}
-                                onChange={handleBright}
-                            />
-                            <label>Sort by brightness</label>
+        <Fragment>
+            <div
+                className={`favorites ${
+                    isSidebarVisible ? 'active' : 'inactive'
+                } ${transition ? 'transition' : ''}${
+                    width < 1030 ? 'collapsed' : ''
+                }`}
+            >
+                <div className="favorites-wrap">
+                    {width < 1030 && (
+                        <span className="close-x" onClick={handleSidebarToggle}>
+                            &times;
+                        </span>
+                    )}
+                    <div className="favorites-toolbar">
+                        <div className="favorites-heading">Favorites</div>
+                        <div className="favorites-info">
+                            Drag-and-drop to reorder favorites.
                         </div>
-                        <FavoritesPDF
-                            favorites={favorites && favorites}
-                            paletteName={paletteName && paletteName}
-                            paletteWasExported={paletteWasExported}
-                            setPaletteNameError={setPaletteNameError}
-                        />
-                        <div className="save-palette">
-                            {user && user ? (
-                                <span
-                                    className="save-icon"
-                                    onClick={() => {
-                                        savePalette()
-                                        paletteHasBeenSaved()
-                                    }}
-                                >
-                                    <Palette style={{ color: '#555555' }} />
-                                    <span className="save-text">
-                                        {paletteSaved
-                                            ? 'Palette saved!'
-                                            : 'Save Palette'}
+                        <div className="favorites-toolbar-inner">
+                            <div className="favorites-sort">
+                                <input
+                                    type="checkbox"
+                                    checked={isBright}
+                                    onChange={handleBright}
+                                />
+                                <label>Sort by brightness</label>
+                            </div>
+                            <FavoritesPDF
+                                favorites={favorites && favorites}
+                                currentUser={currentUser}
+                                paletteName={paletteName && paletteName}
+                                paletteWasExported={paletteWasExported}
+                                setPaletteNameError={setPaletteNameError}
+                            />
+                            <div className="save-palette">
+                                {user && user ? (
+                                    <span
+                                        className="save-icon"
+                                        onClick={() => {
+                                            savePalette()
+                                            paletteHasBeenSaved()
+                                        }}
+                                    >
+                                        <Palette style={{ color: '#555555' }} />
+                                        <span className="save-text">
+                                            {paletteSaved
+                                                ? 'Palette saved!'
+                                                : 'Save Palette'}
+                                        </span>
                                     </span>
+                                ) : null}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="favorite-swatches-wrap">
+                        <div className="palette-name">
+                            <input
+                                className={`palette-name-input ${
+                                    paletteNameError ? 'error' : ''
+                                }`}
+                                value={paletteName}
+                                onChange={handlePaletteName}
+                                placeholder="Name your palette"
+                                pattern="[A-Za-z0-9]"
+                                required
+                            />
+                            {paletteNameError && paletteErrorMessage ? (
+                                <span className="error-message">
+                                    {paletteErrorMessage}
                                 </span>
                             ) : null}
                         </div>
-                    </div>
-                </div>
-                <div className="favorite-swatches-wrap">
-                    <div className="palette-name">
-                        <input
-                            className={`palette-name-input ${
-                                paletteNameError ? 'error' : ''
-                            }`}
-                            value={paletteName}
-                            onChange={handlePaletteName}
-                            placeholder="Name your palette"
-                            pattern="[A-Za-z0-9]"
-                            required
-                        />
-                        {paletteNameError && paletteErrorMessage ? (
-                            <span className="error-message">
-                                {paletteErrorMessage}
-                            </span>
-                        ) : null}
-                    </div>
 
-                    <div className="favorites-bar">
-                        {favorites.length === 0 && (
-                            <div className="favorites-placeholder">
-                                <p>Add some favorite colors.</p>
-                            </div>
-                        )}
-                        <Droppable
-                            direction="vertical"
-                            droppableId="favorites-droppable"
-                        >
-                            {provided => (
-                                <ul
-                                    className="nostyle favorites-list"
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    {favorites &&
-                                        favorites.map((color, index) => {
-                                            return (
-                                                <FavoriteSwatch
-                                                    key={`${
-                                                        color.hex
-                                                    }-favorite`}
-                                                    color={color}
-                                                    index={index}
-                                                    isFavorite={true}
-                                                    removeFavorite={
-                                                        removeFavorite
-                                                    }
-                                                />
-                                            )
-                                        })}
-                                    {provided.placeholder}
-                                </ul>
+                        <div className="favorites-bar">
+                            {favorites.length === 0 && (
+                                <div className="favorites-placeholder">
+                                    <p>Add some favorite colors.</p>
+                                </div>
                             )}
-                        </Droppable>
-                    </div>
-
-                    {favorites && favorites.length > 0 && (
-                        <div className="favorite-squares">
                             <Droppable
-                                direction="horizontal"
-                                droppableId="favorite-squares-droppable"
+                                direction="vertical"
+                                droppableId="favorites-droppable"
                             >
                                 {provided => (
                                     <ul
-                                        className="nostyle favorite-squares-list"
+                                        className="nostyle favorites-list"
                                         ref={provided.innerRef}
                                         {...provided.droppableProps}
                                     >
@@ -306,14 +306,13 @@ const Favorites = ({
                                                     <FavoriteSwatch
                                                         key={`${
                                                             color.hex
-                                                        }-favorite-square`}
+                                                        }-favorite`}
                                                         color={color}
                                                         index={index}
                                                         isFavorite={true}
                                                         removeFavorite={
                                                             removeFavorite
                                                         }
-                                                        isSquare={true}
                                                     />
                                                 )
                                             })}
@@ -322,40 +321,107 @@ const Favorites = ({
                                 )}
                             </Droppable>
                         </div>
-                    )}
-                    <div className="bottom-utilities">
-                        {user && user ? (
-                            <div className="export-code">
-                                <span
-                                    className="export-css"
-                                    onClick={exportCode}
+
+                        {favorites && favorites.length > 0 && (
+                            <div className="favorite-squares">
+                                <Droppable
+                                    direction="horizontal"
+                                    droppableId="favorite-squares-droppable"
                                 >
-                                    <Code />
-                                    <span className="export-text">
-                                        Export SCSS
+                                    {provided => (
+                                        <ul
+                                            className="nostyle favorite-squares-list"
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                        >
+                                            {favorites &&
+                                                favorites.map(
+                                                    (color, index) => {
+                                                        return (
+                                                            <FavoriteSwatch
+                                                                key={`${
+                                                                    color.hex
+                                                                }-favorite-square`}
+                                                                color={color}
+                                                                index={index}
+                                                                isFavorite={
+                                                                    true
+                                                                }
+                                                                removeFavorite={
+                                                                    removeFavorite
+                                                                }
+                                                                isSquare={true}
+                                                            />
+                                                        )
+                                                    }
+                                                )}
+                                            {provided.placeholder}
+                                        </ul>
+                                    )}
+                                </Droppable>
+                            </div>
+                        )}
+                        <div className="bottom-utilities">
+                            {user && user ? (
+                                <div className="export-code">
+                                    <span
+                                        className="export-css"
+                                        onClick={exportCode}
+                                    >
+                                        <Code />
+                                        <span className="export-text">
+                                            Export SCSS
+                                        </span>
+                                    </span>
+                                </div>
+                            ) : null}
+                            <div className="clear-fav">
+                                <span
+                                    className="clear-favorites"
+                                    onClick={clearFavorites}
+                                >
+                                    <TimesCircle
+                                        style={{
+                                            color: '#f35336'
+                                        }}
+                                    />
+                                    <span className="clear-text">
+                                        Clear Favorites
                                     </span>
                                 </span>
                             </div>
-                        ) : null}
-                        <div className="clear-fav">
-                            <span
-                                className="clear-favorites"
-                                onClick={clearFavorites}
-                            >
-                                <TimesCircle
-                                    style={{
-                                        color: '#f35336'
-                                    }}
-                                />
-                                <span className="clear-text">
-                                    Clear Favorites
-                                </span>
-                            </span>
                         </div>
+                        {user && user && (
+                            <div className="account-link">
+                                <Link to="/account">
+                                    View your palettes &rarr;
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
-        </div>
+            <Modali.Modal
+                {...paletteLimitModal}
+                animated={true}
+                centered={true}
+            >
+                <div className="error-message">
+                    <div className="error-header">
+                        <Logo />
+                        <h3>Palette limit reached.</h3>
+                    </div>
+                    <p>
+                        You may only save 5 palettes with a Standard account.
+                        Upgrade to <Link to="/pro">Hexy Pro</Link> to save more
+                        palettes.
+                    </p>
+                    <button className="button">
+                        <Link to="/pro">Go Pro</Link>
+                    </button>
+                </div>
+            </Modali.Modal>
+        </Fragment>
     )
 }
 

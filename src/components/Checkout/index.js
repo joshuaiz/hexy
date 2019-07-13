@@ -11,7 +11,7 @@ import { humanize } from '../../utils/helpers'
 import CardForm from './CardForm'
 import './Checkout.scss'
 
-const Checkout = ({ cart, setCart }) => {
+const Checkout = ({ cart, setCart, setProfileUpdated }) => {
     const { user } = useAuthState(firebase.auth())
     const [status, setStatus] = useState('default')
 
@@ -111,21 +111,32 @@ const Checkout = ({ cart, setCart }) => {
                                 stripe={stripe}
                                 status={status}
                                 setStatus={setStatus}
+                                setProfileUpdated={setProfileUpdated}
                             />
                         </Elements>
                     </Fragment>
                 ) : (
                     <div className="cart-empty">
-                        <h3>Your cart is empty.</h3>
-                        <p>
-                            See our Hexy Pro{' '}
-                            <Link to="/pro">plans & pricing</Link>.
-                        </p>
+                        {status !== 'complete' ? (
+                            <div>
+                                <h3>Your cart is empty.</h3>
+                                <p>
+                                    See our Hexy Pro{' '}
+                                    <Link to="/pro">plans & pricing</Link>.
+                                </p>
+                            </div>
+                        ) : (
+                            <h3>Purchase complete.</h3>
+                        )}
                     </div>
                 )}
                 {status === 'complete' ? (
                     <div className="CheckoutForm-complete">
-                        Payment successful!
+                        <h3>Payment successful. Thank you!</h3>
+                        <p>
+                            Go to your <Link to="/account">Account page</Link>{' '}
+                            or <Link to="/colors">find more colors</Link>.
+                        </p>
                     </div>
                 ) : null}
             </div>

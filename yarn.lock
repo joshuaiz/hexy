@@ -2399,6 +2399,18 @@ backoff@^2.5.0:
   dependencies:
     precond "0.2"
 
+bad-words@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/bad-words/-/bad-words-3.0.2.tgz#866de8f4be545eaea073a1e47d9ff67d3bb402ee"
+  integrity sha512-FwZAyyBOzCbt2Zw6R6vjZgoK2BDVTg0XjsobRkkNlKc/jIHW49j3Kjwtwyb2hxQBZor2aQaQ/NGzf6s7888wlQ==
+  dependencies:
+    badwords-list "^1.0.0"
+
+badwords-list@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/badwords-list/-/badwords-list-1.0.0.tgz#5e9856dbf13482a295c3b0b304afb9d4cfc5c579"
+  integrity sha1-XphW2/E0gqKVw7CzBK+51M/FxXk=
+
 bail@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/bail/-/bail-1.0.4.tgz#7181b66d508aa3055d3f6c13f0a0c720641dde9b"

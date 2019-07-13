@@ -389,6 +389,9 @@
                                 height: 12px;
                             }
                         }
+                        .swatch-content {
+                            word-break: break-word;
+                        }
                     }
                 }
             }
@@ -467,6 +470,9 @@
         }
     }
     .palette-message {
+        .like-link {
+            color: #0088cc;
+        }
     }
 }
 

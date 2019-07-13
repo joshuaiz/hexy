@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState, Fragment } from 'react'
+import { Link, withRouter } from 'react-router-dom'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import Modali, { useModali } from 'modali'
+import * as Filter from 'bad-words'
 import moment from 'moment'
 import * as jsPDF from 'jspdf'
 import { db } from '../../config/firebaseconfig'
@@ -10,13 +13,20 @@ import { checkInputChars } from '../../utils/helpers'
 import { ReactComponent as Download } from '../../images/download.svg'
 
 const FavoritesPDF = ({
+    history,
     favorites,
+    currentUser,
     paletteName,
     fromFeed,
     paletteWasExported,
     setPaletteNameError
 }) => {
     const { user } = useAuthState(firebase.auth())
+    const [accountError, setAccountError] = useState(false)
+    const [accountModal, toggleAccountModal] = useModali({
+        onHide: () => setAccountError(false)
+    })
+
     let now = new Date()
 
     let dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
@@ -24,6 +34,8 @@ const FavoritesPDF = ({
     let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
 
     let name = paletteName
+
+    const filter = new Filter()
 
     // console.log('paletteWasExported FavoritesPDF', paletteWasExported)
 
@@ -56,6 +68,17 @@ const FavoritesPDF = ({
     }
 
     function handlePDF() {
+        const bad = filter.isProfane(paletteName)
+        if (bad) {
+            alert("Don't be a jerk.")
+            setPaletteNameError(true)
+            return
+        }
+        if (!user) {
+            setAccountError(true)
+            toggleAccountModal(true)
+            return
+        }
         if (!paletteName) {
             alert('Please name your palette')
             setPaletteNameError(true)
@@ -69,7 +92,12 @@ const FavoritesPDF = ({
             return
         } else {
             doc.save('HexyFavorites.pdf')
-            if (!user && !fromFeed) {
+            if (
+                user &&
+                currentUser &&
+                currentUser.accountType === 'standard' &&
+                !fromFeed
+            ) {
                 savePaletteToFeed()
                 paletteWasExported()
             }
@@ -107,17 +135,67 @@ const FavoritesPDF = ({
 
     // doc.save('test.pdf')
 
+    const handleButtonClick = () => {
+        toggleAccountModal(false)
+        setAccountError(false)
+        setTimeout(() => {
+            history.push('/account')
+        }, 500)
+    }
+
+    const handleLinkClick = () => {
+        toggleAccountModal(false)
+        setAccountError(false)
+        setTimeout(() => {
+            history.push('/pro')
+        }, 500)
+    }
+
+    window.onbeforeunload = () => {
+        toggleAccountModal(false)
+        setAccountError(false)
+    }
+
     return (
-        <div className="favorites-pdf">
-            <Download
-                className="download-favorites"
-                // onClick={handlePDF}
-                onClick={handlePDF}
-                style={{ fill: '#555555' }}
-            />
-            <span>Export to PDF</span>
-        </div>
+        <Fragment>
+            <div className="favorites-pdf">
+                <Download
+                    className="download-favorites"
+                    // onClick={handlePDF}
+                    onClick={handlePDF}
+                    style={{ fill: '#555555' }}
+                />
+                <span>Export to PDF</span>
+            </div>
+            {accountError && (
+                <Modali.Modal {...accountModal} animated={true} centered={true}>
+                    <div className="error-message">
+                        <h3>
+                            Exporting palettes requires a (free) Hexy account.
+                        </h3>
+                        <p>
+                            <button
+                                className="button"
+                                onClick={handleButtonClick}
+                            >
+                                Log In/Sign Up
+                            </button>
+                        </p>
+                        <p>
+                            See{' '}
+                            <span
+                                className="like-link"
+                                onClick={handleLinkClick}
+                            >
+                                Hexy account levels and pricing &rarr;
+                            </span>
+                            .
+                        </p>
+                    </div>
+                </Modali.Modal>
+            )}
+        </Fragment>
     )
 }
 
-export default FavoritesPDF
+export default withRouter(FavoritesPDF)

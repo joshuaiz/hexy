@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import * as firebase from 'firebase/app'
+import 'firebase/storage'
+import 'firebase/auth'
 import { ReactComponent as Sync } from '../../images/sync.svg'
 import SwatchList from '../SwatchList'
+import { getNumberOfNamedColors } from '../../utils/helpers'
 import './Colors.scss'
 
 const Colors = ({
@@ -17,9 +22,15 @@ const Colors = ({
     handleBright,
     sortBright,
     history,
-    getRandoms
+    getRandoms,
+    handleAllColors,
+    loadMoreColors,
+    currentUser
 }) => {
     const [rotate, setRotate] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [pro, setPro] = useState(false)
+    const { user } = useAuthState(firebase.auth())
 
     const handleReload = event => {
         getRandoms(event)
@@ -33,13 +44,49 @@ const Colors = ({
         }
     }
 
+    const handleLoading = () => {
+        setIsLoading(true)
+    }
+
+    useEffect(() => {
+        if (colors && colors.length > 1000) {
+            setIsLoading(false)
+        }
+        return () => {
+            setIsLoading(false)
+        }
+    }, [colors])
+
+    useEffect(() => {
+        if (currentUser && currentUser) {
+            if (currentUser.accountType !== 'standard') {
+                setPro(true)
+            }
+        }
+        // return () => {
+
+        // }
+    }, [currentUser])
+
+    const handleScroll = () => {
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        })
+    }
+
     return (
         <div className="colors">
             <div className="colors-header">
                 <div className="colors-header-text">
                     {!searchSubmitted ? (
                         <p>
-                            Showing 1000 random colors.{' '}
+                            Showing{' '}
+                            {colors && colors.length === 1000
+                                ? '1000 random'
+                                : colors && colors.length}{' '}
+                            colors.{' '}
                             <span
                                 className={`more-trigger ${
                                     rotate ? 'rotate' : ''
@@ -49,6 +96,18 @@ const Colors = ({
                                 <Sync />
                             </span>{' '}
                             Reload for a new set.{' '}
+                            {currentUser && pro && (
+                                <span
+                                    className="all-colors like-link"
+                                    onClick={() => {
+                                        handleAllColors()
+                                        handleLoading()
+                                    }}
+                                >
+                                    See all {getNumberOfNamedColors()} colors
+                                    (really slow).
+                                </span>
+                            )}
                         </p>
                     ) : searchSubmitted ? (
                         <p className="search-results-text">
@@ -76,17 +135,44 @@ const Colors = ({
                     <label>Sort by brightness (perceptual)</label>
                 </div>
             </div>
-            <SwatchList
-                noMatch={noMatch}
-                colors={colors}
-                handleFavorites={handleFavorites}
-                removeFavorite={removeFavorite}
-                favorites={favorites}
-                favoriteSwatches={favoriteSwatches}
-                setFavoriteSwatches={setFavoriteSwatches}
-                searchSubmitted={searchSubmitted}
-                sortBright={sortBright}
-            />
+            {!isLoading ? (
+                <SwatchList
+                    noMatch={noMatch}
+                    colors={colors}
+                    handleFavorites={handleFavorites}
+                    removeFavorite={removeFavorite}
+                    favorites={favorites}
+                    favoriteSwatches={favoriteSwatches}
+                    setFavoriteSwatches={setFavoriteSwatches}
+                    searchSubmitted={searchSubmitted}
+                    sortBright={sortBright}
+                />
+            ) : (
+                <div className="loading">
+                    <h3>
+                        Loading all {getNumberOfNamedColors()} colors...please
+                        be patient.
+                    </h3>
+                </div>
+            )}
+            {colors && colors.length > 1000 && (
+                <div className="load-more">
+                    <button
+                        className="button"
+                        onClick={() => loadMoreColors(colors.length)}
+                    >
+                        Load More Colors
+                    </button>
+                    <button className="button" onClick={handleReload}>
+                        Reload 1000 random colors
+                    </button>
+                    <div className="scroll-to-top">
+                        <span className="like-link" onClick={handleScroll}>
+                            Scroll to top
+                        </span>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

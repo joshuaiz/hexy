@@ -42,6 +42,7 @@
             grid-column-gap: 10px;
             grid-row-gap: 10px;
             justify-items: center;
+            margin-bottom: 3em;
             .feed-item {
                 padding: 5px 10px 10px;
                 background: #f2f2f2;
@@ -143,6 +144,11 @@
                                     width: 12px;
                                     height: 12px;
                                 }
+                            }
+                            .swatch-content {
+                                // overflow-wrap: break-word;
+                                word-break: break-word;
+                                
                             }
                         }
                     }

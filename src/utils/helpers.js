@@ -236,6 +236,10 @@ export function getRandomColors(num) {
     return randomColors
 }
 
+export function getAllColors() {
+    return namedColors
+}
+
 export function sortLightness(colors) {
     const brightSort = colors.sort(function(a, b) {
         let color1 = tinycolor(a.hex)

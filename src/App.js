@@ -23,6 +23,7 @@ import Feed from './components/Feed'
 import GoPro from './components/GoPro'
 import Checkout from './components/Checkout'
 import FAQ from './components/FAQ'
+import Terms from './components/Terms'
 import NoMatch from './components/NoMatch'
 // import {
 //     FavoritesContext,
@@ -40,7 +41,8 @@ import {
     favoritesErrorContent,
     getColorByHex,
     hexColors,
-    getCurrentDateTime
+    getCurrentDateTime,
+    getAllColors
 } from './utils/helpers'
 import { createID, getUser } from './utils/user'
 import 'react-tippy/dist/tippy.css'
@@ -66,6 +68,7 @@ const App = React.memo(({ history, location, match }) => {
     const [dragEnded, setDragEnded] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
     const [paletteExported, setPaletteExported] = useState(false)
+    const [profileUpdated, setProfileUpdated] = useState(false)
     const [cart, setCart] = useState()
     const [currentUser, setCurrentUser] = useState()
     const [favoritesError, setFavoritesError] = useState(false)
@@ -91,6 +94,32 @@ const App = React.memo(({ history, location, match }) => {
         } else {
             setColors(cachedRandoms)
         }
+    }
+
+    const handleAllColors = () => {
+        const allColors = getAllColors()
+        const size = 1001
+        const items = allColors.slice(0, size).map(item => {
+            return item
+        })
+        setColors(items)
+        setSessionStorage('hexy_all', allColors)
+    }
+
+    const loadMoreColors = start => {
+        // console.log('loadMoreColors: start', start)
+        const allColors = getAllColors()
+        const size = 1001 + start
+        const items = allColors.slice(start, size).map(item => {
+            return item
+        })
+        // console.log('loadMoreColors: items', items)
+
+        // console.log('loadMoreColors', colors)
+        let newColors = [...colors, ...items]
+        // console.log('loadMoreColors: newColors', newColors)
+
+        setColors(newColors)
     }
 
     // clear saved random colors on refresh
@@ -391,7 +420,7 @@ const App = React.memo(({ history, location, match }) => {
         // const thisUser = JSON.parse(localStorage.getItem('hexy_user'))
         const thisUser = getLocalStorage('hexy_user')
 
-        if (user && !thisUser) {
+        if (user) {
             var userRef = db.collection('users').doc(user.uid)
 
             userRef
@@ -411,9 +440,10 @@ const App = React.memo(({ history, location, match }) => {
                 .catch(err => {
                     console.log('Error getting documents', err)
                 })
-        } else if (thisUser) {
-            setCurrentUser(thisUser)
         }
+        // else if (thisUser) {
+        //     setCurrentUser(thisUser)
+        // }
         return () => {
             didCancel = true
         }
@@ -481,6 +511,9 @@ const App = React.memo(({ history, location, match }) => {
                                     handleBright={handleBright}
                                     sortBright={sortBright}
                                     getRandoms={getRandoms}
+                                    handleAllColors={handleAllColors}
+                                    loadMoreColors={loadMoreColors}
+                                    currentUser={currentUser}
                                 />
                             )}
                         />
@@ -500,6 +533,7 @@ const App = React.memo(({ history, location, match }) => {
                                     stripe={stripe}
                                     cart={cart}
                                     setCart={setCart}
+                                    setProfileUpdated={setProfileUpdated}
                                 />
                             )}
                         />
@@ -531,6 +565,8 @@ const App = React.memo(({ history, location, match }) => {
                                     paletteWasSaved={paletteWasSaved}
                                     paletteExported={paletteExported}
                                     setPaletteExported={setPaletteExported}
+                                    profileUpdated={profileUpdated}
+                                    setProfileUpdated={setProfileUpdated}
                                 />
                             )}
                         />
@@ -540,6 +576,7 @@ const App = React.memo(({ history, location, match }) => {
                             component={ResetPassword}
                         />
                         <Route exact path="/faq" component={FAQ} />
+                        <Route exact path="/terms" component={Terms} />
                         <Route
                             exact
                             path="/user"
@@ -552,6 +589,7 @@ const App = React.memo(({ history, location, match }) => {
                     >
                         <Favorites
                             favorites={favorites}
+                            currentUser={currentUser}
                             removeFavorite={removeFavorite}
                             clearFavorites={clearFavorites}
                             setFavorites={setFavorites}

@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import { db } from '../../config/firebaseconfig'
 import FeedList from './FeedList'
+import { getLocalStorage, setLocalStorage } from '../../utils/helpers'
 import './Feed.scss'
 
 const Feed = ({
@@ -16,6 +17,8 @@ const Feed = ({
     const [feed, setFeed] = useState([])
     const [paletteLiked, setPaletteLiked] = useState(false)
     const [swatchInfo, setSwatchInfo] = useState(true)
+
+    console.log(paletteExported)
 
     useEffect(() => {
         // used to cancel async fetch on unmount
@@ -51,9 +54,7 @@ const Feed = ({
         const decrement = firebase.firestore.FieldValue.increment(-1)
         let palette = db.doc(`palettes/${pid}`)
 
-        const likedPalettes = JSON.parse(
-            localStorage.getItem('hexy_liked_palettes')
-        )
+        const likedPalettes = getLocalStorage('hexy_liked_palettes')
 
         let addedPalette = {
             name: paletteName,
@@ -66,10 +67,7 @@ const Feed = ({
             // console.log(found)
             if (!found) {
                 const newPalettes = [...likedPalettes, { ...addedPalette }]
-                localStorage.setItem(
-                    'hexy_liked_palettes',
-                    JSON.stringify(newPalettes)
-                )
+                setLocalStorage('hexy_liked_palettes', newPalettes)
                 palette.update({ likes: increment })
                 setPaletteLiked(true)
                 setTimeout(() => {
@@ -80,10 +78,7 @@ const Feed = ({
                     item => item.name !== paletteName
                 )
 
-                localStorage.setItem(
-                    'hexy_liked_palettes',
-                    JSON.stringify(filteredPalettes)
-                )
+                setLocalStorage('hexy_liked_palettes', filteredPalettes)
                 palette.update({ likes: decrement })
                 setPaletteLiked(true)
                 setTimeout(() => {
@@ -91,10 +86,7 @@ const Feed = ({
                 }, 1000)
             }
         } else if (!likedPalettes || likedPalettes.length === 0) {
-            localStorage.setItem(
-                'hexy_liked_palettes',
-                JSON.stringify([{ ...addedPalette }])
-            )
+            setLocalStorage('hexy_liked_palettes', [{ ...addedPalette }])
             palette.update({ likes: increment })
             setPaletteLiked(true)
             setTimeout(() => {

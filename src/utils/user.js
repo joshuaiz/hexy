@@ -54,7 +54,8 @@ export async function signup({
             uid: user.uid,
             email: email,
             photoURL: photoURL,
-            startDate: startDate
+            startDate: startDate,
+            accountType: 'standard'
         })
     } catch (error) {
         console.log(error)

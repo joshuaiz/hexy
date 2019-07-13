@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { format } from 'date-fns'
+import { setLocalStorage } from '../../utils/helpers'
 import { login, signup } from '../../utils/user'
 // import Modal from '../Modal'
 import Modali, { useModali } from 'modali'
 
-const Login = () => {
+const Login = ({ setProfileUpdated, history }) => {
     const { user } = useAuthState(firebase.auth())
     const [tab1Active, setTab1Active] = useState(true)
     const [error, setError] = useState()
@@ -47,14 +48,22 @@ const Login = () => {
             password: password.value,
             displayName: username.value,
             startDate: date
-        }).catch(error => {
-            // console.log(error)
-            setError(error)
-            setModalContent(() => {
-                return <div className="error-message">{error.message}</div>
-            })
-            toggleLoginErrorModal(true)
         })
+            .then(
+                setTimeout(() => {
+                    setProfileUpdated(true)
+                }, 2000),
+                setLocalStorage('hexy_user', null),
+                toggleLoginErrorModal(false)
+            )
+            .catch(error => {
+                // console.log(error)
+                setError(error)
+                setModalContent(() => {
+                    return <div className="error-message">{error.message}</div>
+                })
+                toggleLoginErrorModal(true)
+            })
     }
 
     const forgotPassword = () => {}
@@ -152,6 +161,20 @@ const Login = () => {
                         >
                             <div className="login-form">
                                 <div className="tab-content">
+                                    {history.location.pathname !==
+                                        '/checkout' && (
+                                        <p>
+                                            A Standard Hexy Account is free and
+                                            allows you to save up to 5 colors at
+                                            a time and up to 5 palettes to your
+                                            profile. To unlock more colors,
+                                            palettes, and additional saving and
+                                            sharing features, get a{' '}
+                                            <Link to="/pro">Hexy Pro</Link>{' '}
+                                            account.
+                                        </p>
+                                    )}
+
                                     <form
                                         className="tab-form"
                                         onSubmit={handleSignUp}
@@ -193,6 +216,14 @@ const Login = () => {
                                             Sign Up
                                         </button>
                                     </form>
+                                    {history.location.pathname !==
+                                        '/checkout' && (
+                                        <p className="more-link">
+                                            Need more than 5 colors at a
+                                            time?&nbsp;
+                                            <Link to="/pro">Go Pro &rarr;</Link>
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -212,4 +243,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default withRouter(Login)

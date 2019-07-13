@@ -26,7 +26,9 @@ const Account = React.memo(
         favorites,
         paletteWasSaved,
         paletteExported,
-        setPaletteExported
+        setPaletteExported,
+        profileUpdated,
+        setProfileUpdated
     }) => {
         const { initialising, user } = useAuthState(firebase.auth())
         const [currentUser, setCurrentUser] = useState()
@@ -42,7 +44,7 @@ const Account = React.memo(
         // const [userPalettes, setUserPalettes] = useState([])
         const [swatchInfo, setSwatchInfo] = useState(true)
         const [avatarUpdated, setAvatarUpdated] = useState(false)
-        const [profileUpdated, setProfileUpdated] = useState(false)
+        // const [profileUpdated, setProfileUpdated] = useState(false)
         const [paletteRemoved, setPaletteRemoved] = useState(false)
         const [showUpdate, setShowUpdate] = useState(false)
         const [updateError, setUpdateError] = useState()
@@ -58,6 +60,12 @@ const Account = React.memo(
 
         // let viewInfo, changeAvatar, updateProfile
 
+        // useEffect(() => {
+        //     toggleLoginModal(null)
+        // }, [])
+
+        // console.log(loginModal)
+
         useEffect(() => {
             // used to cancel async fetch on unmount
             // see here: https://github.com/facebook/react/issues/14326
@@ -70,7 +78,7 @@ const Account = React.memo(
                     .get()
                     .then(function(doc) {
                         if (doc.exists) {
-                            // console.log('Document data:', doc.data())
+                            console.log('Document data:', doc.data())
 
                             setCurrentUser(doc.data())
                         }
@@ -271,7 +279,9 @@ const Account = React.memo(
         useEffect(() => {
             if (profileUpdated) {
                 // console.log(profileUpdated)
-                form.current.reset()
+                if (form) {
+                    form.current.reset()
+                }
                 setShowUpdate(false)
                 setTimeout(() => {
                     setProfileUpdated(false)
@@ -290,7 +300,8 @@ const Account = React.memo(
                 .then(
                     setUpdating(false),
                     setAuthSuccess(true),
-                    setUpdateError(false)
+                    setUpdateError(false),
+                    toggleLoginModal(false)
                 )
                 .catch(error => {
                     console.log(error)
@@ -308,6 +319,7 @@ const Account = React.memo(
         }, [updateError, setUpdateError])
 
         if (initialising) {
+            // toggleLoginModal(false)
             return (
                 <div className="page-account">
                     <p>Loading...</p>
@@ -321,7 +333,8 @@ const Account = React.memo(
                         <h2>
                             Welcome,{' '}
                             <strong>
-                                {user.displayName && user.displayName}
+                                {(user.displayName && user.displayName) ||
+                                    (currentUser && currentUser.displayName)}
                             </strong>
                             !
                         </h2>
@@ -525,30 +538,41 @@ const Account = React.memo(
 
                     <div className="user-palettes">
                         <div className="user-palettes-header">
-                            {currentUser && currentUser.palettes ? (
+                            {currentUser &&
+                            currentUser.palettes &&
+                            currentUser.palettes.length > 0 ? (
                                 <h3>
                                     Saved Palettes (
                                     {currentUser.palettes.length})
                                 </h3>
                             ) : (
                                 <p>
-                                    You don't have any saved palettes.{' '}
-                                    <Link to="/colors">Find colors &rarr;</Link>
+                                    You don't have any saved palettes. Use the{' '}
+                                    <strong>Save Palette</strong> feature in the
+                                    Favorites sidebar to save your current
+                                    palette or{' '}
+                                    <Link to="/colors">
+                                        find more colors &rarr;
+                                    </Link>
                                 </p>
                             )}
-                            <div className="feed-toggle">
-                                <label>
-                                    <Toggle
-                                        defaultChecked={!swatchInfo}
-                                        icons={false}
-                                        onChange={handleToggle}
-                                    />
-                                    <span>
-                                        {swatchInfo ? 'Show' : 'Hide'} swatch
-                                        info
-                                    </span>
-                                </label>
-                            </div>
+                            {currentUser &&
+                                currentUser.palettes &&
+                                currentUser.palettes.length > 0 && (
+                                    <div className="feed-toggle">
+                                        <label>
+                                            <Toggle
+                                                defaultChecked={!swatchInfo}
+                                                icons={false}
+                                                onChange={handleToggle}
+                                            />
+                                            <span>
+                                                {swatchInfo ? 'Show' : 'Hide'}{' '}
+                                                swatch info
+                                            </span>
+                                        </label>
+                                    </div>
+                                )}
                         </div>
 
                         <UserPalettes
@@ -570,7 +594,7 @@ const Account = React.memo(
             <div className="page-account">
                 <div className="not-logged-in">
                     <h2>Please Log In or Sign Up</h2>
-                    <Login />
+                    <Login setProfileUpdated={setProfileUpdated} />
                 </div>
             </div>
         )

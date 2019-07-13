@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import { Tooltip } from 'react-tippy'
 import Swatch from '../Swatch'
 import FavoritesPDF from '../Favorites/FavoritesPDF'
 import Modali, { useModali } from 'modali'
@@ -61,6 +62,8 @@ const UserPalettes = ({
             }`}
         >
             {currentUser &&
+                currentUser.palettes &&
+                currentUser.palettes.length > 0 &&
                 currentUser.palettes
                     .slice(0)
                     .reverse()
@@ -76,24 +79,40 @@ const UserPalettes = ({
                                     </div>
                                     <div className="palette-utilities-top">
                                         <div className="share-palette">
-                                            <Share
-                                                onClick={() =>
-                                                    sharePalette(
-                                                        palette.name,
-                                                        palette.palette
-                                                    )
+                                            <Tooltip
+                                                // options
+                                                title="Share to public palettes"
+                                                position="top"
+                                                trigger="mouseenter"
+                                                arrow={true}
+                                            >
+                                                <Share
+                                                    onClick={() =>
+                                                        sharePalette(
+                                                            palette.name,
+                                                            palette.palette
+                                                        )
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <Tooltip
+                                            // options
+                                            title="Export to PDF"
+                                            position="top"
+                                            trigger="mouseenter"
+                                            arrow={true}
+                                        >
+                                            <FavoritesPDF
+                                                favorites={
+                                                    palette.palette &&
+                                                    palette.palette
+                                                }
+                                                paletteName={
+                                                    palette.name && palette.name
                                                 }
                                             />
-                                        </div>
-                                        <FavoritesPDF
-                                            favorites={
-                                                palette.palette &&
-                                                palette.palette
-                                            }
-                                            paletteName={
-                                                palette.name && palette.name
-                                            }
-                                        />
+                                        </Tooltip>
                                     </div>
                                 </div>
 

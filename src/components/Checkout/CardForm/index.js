@@ -7,7 +7,14 @@ import Login from '../../Login'
 import { getDateString } from '../../../utils/helpers'
 import { ReactComponent as StripeBadge } from '../../../images/stripe_badge.svg'
 
-const CardForm = ({ cart, setCart, stripe, status, setStatus }) => {
+const CardForm = ({
+    cart,
+    setCart,
+    stripe,
+    status,
+    setStatus,
+    setProfileUpdated
+}) => {
     const { user } = useAuthState(firebase.auth())
     let total = parseInt(cart.price) * 100
 
@@ -70,7 +77,7 @@ const CardForm = ({ cart, setCart, stripe, status, setStatus }) => {
             {!user ? (
                 <Fragment>
                     <p>Please Log In or Sign Up:</p>
-                    <Login />
+                    <Login setProfileUpdated={setProfileUpdated} />
                 </Fragment>
             ) : (
                 <div className="checkout-form-wrap">
