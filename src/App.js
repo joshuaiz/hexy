@@ -203,35 +203,19 @@ const App = React.memo(({ history, location, match }) => {
             if (!found && !favorites.length) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
-                // localStorage.setItem(
-                //     'hexy_favorites',
-                //     JSON.stringify(newFavorites)
-                // )
                 setLocalStorage('hexy_favorites', newFavorites)
             } else if (user && !found && favorites.length < numFaves) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
-                // localStorage.setItem(
-                //     'hexy_favorites',
-                //     JSON.stringify(newFavorites)
-                // )
                 setLocalStorage('hexy_favorites', newFavorites)
             } else if (user && favorites && favorites.length === numFaves) {
-                // alert('The maximum number of favorites is 15.')
                 setFavoritesError(true)
                 toggleErrorModal(true)
             } else if (!user && !found && favorites.length < 5) {
                 let newFavorites = [color, ...favorites]
                 setFavorites(newFavorites)
-                // localStorage.setItem(
-                //     'hexy_favorites',
-                //     JSON.stringify(newFavorites)
-                // )
                 setLocalStorage('hexy_favorites', newFavorites)
             } else if (!user && favorites && favorites.length === 5) {
-                // alert(
-                //     'The maximum number of favorites is 5. Get a Pro account to save up to 15 favorites.'
-                // )
                 setFavoritesError(true)
                 toggleErrorModal(true)
             }
@@ -291,8 +275,9 @@ const App = React.memo(({ history, location, match }) => {
         setTimeout(() => {
             setIsSidebarVisible(!isSidebarVisible)
         }, 200)
-
         setTransition(true)
+
+        // needed to reenable drag-and-drop
         setTimeout(() => {
             setTransition(false)
         }, 2000)

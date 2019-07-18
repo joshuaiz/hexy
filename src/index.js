@@ -11,9 +11,6 @@ import './index.css'
 import App from './App'
 // import * as serviceWorker from './serviceWorker'
 
-// const firebaseAppAuth = firebaseApp.auth()
-
-// export const db = firebase.firestore()
 
 const providers = {
     googleProvider: new firebase.auth.GoogleAuthProvider()

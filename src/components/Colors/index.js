@@ -163,10 +163,12 @@ const Colors = ({
                     >
                         Load More Colors
                     </button>
-                    <button className="button" onClick={handleReload}>
-                        Reload 1000 random colors
-                    </button>
-                    <div className="scroll-to-top">
+
+                    <div className="colors-links">
+                        <span className="like-link" onClick={handleReload}>
+                            Reload 1000 random colors
+                        </span>
+                        &nbsp;|&nbsp;
                         <span className="like-link" onClick={handleScroll}>
                             Scroll to top
                         </span>
