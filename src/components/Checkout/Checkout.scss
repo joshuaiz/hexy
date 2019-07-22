@@ -7,6 +7,7 @@
         margin: 2em auto;
         min-width: 600px;
         .cart-table {
+            max-width: 600px;
             table, thead, tbody, tr, th, td {
                 width: 100%;
                 border-collapse: collapse;
@@ -27,7 +28,48 @@
                     padding: 1.5em;
                 }
             }
-            .table-total {
+            .coupon-code {
+                // width: 100%;
+                background: #f9f9f9;
+                td {
+                    .coupon-content {
+                        display: flex;
+                        align-items: center;
+                        // width: 100%;
+                        label {
+                            font-size: 14px;
+                            margin-right: 8px;
+                        }
+                        input {
+                            height: 30px;
+                            width: 200px;
+                            margin-right: 1em;
+                            padding: 3px;
+                            font-size: 16px;
+                            background: #f2f2f2;
+                            border: 1px solid #dedede;
+                            &:focus {
+                                background: #fff;
+                            }
+                        }
+                        button {
+                            font-size: 14px; 
+                        }
+                    }
+                   
+                }
+                .coupon-feedback, .coupon-code {
+                    max-width: 488px;
+                    font-size: 14px;
+                }
+                .success {
+                    color: green;
+                }
+                .error {
+                    color: orange;
+                }
+            }
+            .table-total, .coupon-code {
                 border-top: 1px solid #efefef;
             }
             .total-price {
@@ -63,6 +105,7 @@
         }
     }
     .checkout-form-wrap {
+        max-width: 600px;
         p {
             margin-top: 0;
             font-size: 13px;
@@ -89,4 +132,5 @@
         position: relative;
         top: 10px;
     }
+    
 }

@@ -1,19 +1,23 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { StripeProvider, Elements, stripe } from 'react-stripe-elements'
-// import axios from 'axios'
+import axios from 'axios'
 import { useAuthState } from 'react-firebase-hooks/auth'
-// import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
-import { humanize } from '../../utils/helpers'
+import { db } from '../../config/firebaseconfig'
+import { humanize, setLocalStorage } from '../../utils/helpers'
 import CardForm from './CardForm'
 import './Checkout.scss'
 
-const Checkout = ({ cart, setCart, setProfileUpdated }) => {
+const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
     const { user } = useAuthState(firebase.auth())
     const [status, setStatus] = useState('default')
+    const [couponInput, setCouponInput] = useState('')
+    const [currentCoupon, setCurrentCoupon] = useState()
+    const [updatedPrice, setUpdatedPrice] = useState()
+    const [couponError, setCouponError] = useState()
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -44,6 +48,52 @@ const Checkout = ({ cart, setCart, setProfileUpdated }) => {
     // if (status === 'complete') {
     //     return <div className="CheckoutForm-complete">Payment successful!</div>
     // }
+
+    const handleCouponInput = event => {
+        setCouponInput(event.target.value)
+    }
+
+    const handleCoupon = () => {
+        if (!couponInput) {
+            alert('Please enter a coupon code.')
+            return
+        }
+        let couponRef = db.collection('coupons').doc(couponInput)
+        let getDoc = couponRef
+            .get()
+            .then(doc => {
+                if (!doc.exists) {
+                    // console.log('No such document!')
+                    setCouponError("Sorry, that's not a valid coupon.")
+                } else {
+                    setCurrentCoupon(doc.data())
+                    // console.log('Document data:', doc.data())
+                }
+            })
+            .catch(err => {
+                // console.log('Error getting document', err)
+                setCouponError(err)
+            })
+    }
+
+    const handleDiscount = () => {
+        if (currentCoupon) {
+            let discountValue = parseFloat(currentCoupon.value) / 100.0
+            let discount = cart.price * discountValue
+            let newPrice = cart.price - discount
+            setUpdatedPrice(newPrice.toFixed(2))
+            setCouponInput('')
+            const newCart = { ...cart, total: newPrice.toFixed(2) }
+            setCart(newCart)
+            setLocalStorage('hexy_cart', newCart)
+        } else {
+            console.log('no coupon')
+        }
+    }
+
+    useEffect(() => {
+        handleDiscount()
+    }, [currentCoupon])
 
     return (
         <StripeProvider apiKey="pk_test_Q8j9ieOEWFZAnuSox9yqNyrG">
@@ -81,6 +131,41 @@ const Checkout = ({ cart, setCart, setProfileUpdated }) => {
                                             ) : null}
                                         </td>
                                     </tr>
+                                    <tr className="coupon-code">
+                                        <td>
+                                            <div className="coupon-content">
+                                                <label htmlFor="coupon">
+                                                    Coupon Code:
+                                                </label>
+                                                <input
+                                                    name="coupon"
+                                                    type="text"
+                                                    value={couponInput}
+                                                    onChange={handleCouponInput}
+                                                />
+                                                <button
+                                                    className="button"
+                                                    onClick={handleCoupon}
+                                                >
+                                                    Apply
+                                                </button>
+                                            </div>
+                                            <div className="coupon-feedback">
+                                                {currentCoupon && (
+                                                    <span className="success">
+                                                        Your coupon has been
+                                                        applied!
+                                                    </span>
+                                                )}
+                                                {couponError && (
+                                                    <span className="error">
+                                                        {couponError}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td />
+                                    </tr>
                                     <tr className="table-total">
                                         <td>
                                             {cart && cart.price ? (
@@ -89,8 +174,21 @@ const Checkout = ({ cart, setCart, setProfileUpdated }) => {
                                         </td>
                                         <td>
                                             <span className="total-price">
-                                                {cart && cart.price ? (
-                                                    <span>${cart.price}</span>
+                                                {cart && cart.total ? (
+                                                    <span>
+                                                        $
+                                                        {updatedPrice ? (
+                                                            <Fragment>
+                                                                <span className="strikethrough">
+                                                                    {cart.price}
+                                                                </span>
+                                                                &nbsp; $
+                                                                {updatedPrice}
+                                                            </Fragment>
+                                                        ) : (
+                                                            cart.total
+                                                        )}
+                                                    </span>
                                                 ) : null}
                                             </span>
                                         </td>
@@ -112,6 +210,7 @@ const Checkout = ({ cart, setCart, setProfileUpdated }) => {
                                 status={status}
                                 setStatus={setStatus}
                                 setProfileUpdated={setProfileUpdated}
+                                currentUser={currentUser}
                             />
                         </Elements>
                     </Fragment>

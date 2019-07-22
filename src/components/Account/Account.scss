@@ -302,9 +302,30 @@
                             }
                         }
                     }
+                    .export-code {
+                        svg {
+                            width: 21px;
+                            height: auto;
+                            circle {
+                                fill: #aaa;
+                            }
+                            path {
+                                fill: #fff;
+                            }
+                        }
+                       
+                        &:hover {
+                            cursor: pointer;
+                            svg {
+                               circle {
+                                    fill: #777;
+                               } 
+                            }
+                        }
+                    }
                     .palette-pdf, .favorites-pdf {
                         margin-left: auto;
-                        margin-right: 10px;
+                        margin-right: 5px; 
                         width: 21px;
                         
                             cursor: pointer;

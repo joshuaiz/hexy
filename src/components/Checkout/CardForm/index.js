@@ -13,22 +13,27 @@ const CardForm = ({
     stripe,
     status,
     setStatus,
-    setProfileUpdated
+    setProfileUpdated,
+    currentUser
 }) => {
     const { user } = useAuthState(firebase.auth())
     let total = parseInt(cart.price) * 100
 
-    // console.log(total)
+    // console.log(cart)
 
     const submit = async e => {
         e.preventDefault()
 
         setStatus('submitting')
 
+        // console.log('in submit')
+
         let response
 
         try {
-            let { token } = await stripe.createToken({ name: 'Name' })
+            let { token } = await stripe.createToken({
+                name: (currentUser && currentUser.displayName) || 'Name'
+            })
 
             response = await fetch('/.netlify/functions/charge', {
                 // crossDomain: true,
@@ -36,7 +41,9 @@ const CardForm = ({
                 // headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     amount: total,
-                    token: token.id
+                    token: token.id,
+                    desc: cart.accountType,
+                    email: currentUser && currentUser.email
                 })
             })
 
@@ -81,6 +88,13 @@ const CardForm = ({
                 </Fragment>
             ) : (
                 <div className="checkout-form-wrap">
+                    {cart && cart.total === '0.00' && (
+                        <p>
+                            Even though your total is $0.00, please enter your
+                            card details to complete the transaction securely
+                            via Stripe. Your card will not be charged.
+                        </p>
+                    )}
                     <form className="checkout-form" onSubmit={submit}>
                         <div className="checkout-form-inner">
                             <CardElement />

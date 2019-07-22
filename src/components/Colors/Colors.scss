@@ -50,7 +50,29 @@
             margin-left: 1em;
         }
     }
+    .scroll-to-top {
+        text-align: right;
+        margin: 1em 0 0;
+    }
 }
+
+// styling for viewing all colors (grid can't show more than 1000 rows)
+.colors-page {
+    .content {
+        .colors.all-colors {
+            .swatch-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                li {
+                    margin-bottom: 10px;
+                    max-width: 198px;
+                }
+            }
+        }
+    }
+}
+
 
 @media only screen and (max-width: 899px) {
     .content .colors .swatch-list li {

@@ -362,7 +362,8 @@ const Favorites = ({
                             </div>
                         )}
                         <div className="bottom-utilities">
-                            {user && user ? (
+                            {currentUser &&
+                            currentUser.accountType !== 'standard' ? (
                                 <div className="export-code">
                                     <span
                                         className="export-css"

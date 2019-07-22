@@ -24,6 +24,7 @@ import GoPro from './components/GoPro'
 import Checkout from './components/Checkout'
 import FAQ from './components/FAQ'
 import Terms from './components/Terms'
+import Contact from './components/Contact'
 import NoMatch from './components/NoMatch'
 // import {
 //     FavoritesContext,
@@ -107,7 +108,7 @@ const App = React.memo(({ history, location, match }) => {
     }
 
     const loadMoreColors = start => {
-        // console.log('loadMoreColors: start', start)
+        console.log('loadMoreColors: start', start)
         const allColors = getAllColors()
         const size = 1001 + start
         const items = allColors.slice(start, size).map(item => {
@@ -382,7 +383,8 @@ const App = React.memo(({ history, location, match }) => {
         const localCart = {
             accountType,
             price: price.toFixed(2),
-            dateAdded: date
+            dateAdded: date,
+            total: price.toFixed(2)
         }
 
         setCart(localCart)
@@ -519,6 +521,7 @@ const App = React.memo(({ history, location, match }) => {
                                     cart={cart}
                                     setCart={setCart}
                                     setProfileUpdated={setProfileUpdated}
+                                    currentUser={currentUser}
                                 />
                             )}
                         />
@@ -562,6 +565,7 @@ const App = React.memo(({ history, location, match }) => {
                         />
                         <Route exact path="/faq" component={FAQ} />
                         <Route exact path="/terms" component={Terms} />
+                        <Route exact path="/contact" component={Contact} />
                         <Route
                             exact
                             path="/user"

@@ -15,9 +15,6 @@ import { ReactComponent as Info } from '../../images/info.svg'
 import { ReactComponent as HeartCircle } from '../../images/heart_circle.svg'
 import Hero from './Hero'
 import RandomSwatches from '../RandomSwatches'
-import abstract2 from '../../images/abstract2.png'
-import abstract3 from '../../images/abstract3.png'
-import abstract4 from '../../images/abstract4.png'
 import './Home.scss'
 
 const Home = ({
@@ -89,7 +86,7 @@ const Home = ({
                 })
             }
         }
-    }, [useScroll, scrollY])
+    }, [useScroll, scrollY, scrollDirection])
 
     // console.log(scrollY, scrolledTo, scrollDirection)
 

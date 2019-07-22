@@ -4,7 +4,7 @@ import SiteID from '../SiteID'
 import './Footer.scss'
 
 const Footer = ({ currentUser }) => {
-    // console.log(currentUser)
+    // console.log('Current User from Footer', currentUser)
 
     const year = new Date().getFullYear()
 
@@ -18,6 +18,7 @@ const Footer = ({ currentUser }) => {
                         <NavLink to="/palettes">Palettes</NavLink>
                         <NavLink to="/pro">Go Pro</NavLink>
                         <NavLink to="/faq">FAQ</NavLink>
+                        <NavLink to="/contact">Contact Us</NavLink>
                     </nav>
                     <div className="footer-social-links">
                         <ul className="nostyle social-links">

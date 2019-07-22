@@ -6,11 +6,13 @@ exports.handler = (event, context, callback) => {
         return callback(null, { statusCode: 405, body: 'Method Not Allowed' })
     }
 
-    console.log('called')
+    // console.log('called')
 
     const data = JSON.parse(event.body)
 
     console.log('charge.js', data)
+
+    const accountType = data.desc.toUpperCase()
 
     if (!data.token || parseInt(data.amount) < 1) {
         return callback(null, {
@@ -28,8 +30,13 @@ exports.handler = (event, context, callback) => {
             .create({
                 amount: data.amount,
                 currency: 'usd',
-                description: 'Example charge',
-                source: token
+                description: data.desc,
+                source: token,
+                receipt_email: data.email,
+                statement_descriptor: `HEXYIO*${accountType}`,
+                metadata: {
+                    email: data.email
+                }
             })
             .then(({ status }) => {
                 return callback(null, {

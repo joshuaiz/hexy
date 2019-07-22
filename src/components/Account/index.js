@@ -9,7 +9,7 @@ import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
 import { login, logout } from '../../utils/user'
-import { onlyLetters } from '../../utils/helpers'
+// import { onlyLetters } from '../../utils/helpers'
 import Login from '../Login'
 // import Modal from '../Modal'
 import UserMeta from './UserMeta'
@@ -279,7 +279,7 @@ const Account = React.memo(
         useEffect(() => {
             if (profileUpdated) {
                 // console.log(profileUpdated)
-                if (form) {
+                if (form && form.current) {
                     form.current.reset()
                 }
                 setShowUpdate(false)
@@ -288,7 +288,7 @@ const Account = React.memo(
                     // console.log(form)
                 }, 4000)
             }
-        }, [profileUpdated])
+        }, [profileUpdated, setProfileUpdated])
 
         const handleLogin = async event => {
             setAuthSuccess(false)

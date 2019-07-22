@@ -158,8 +158,12 @@
                     margin-right: 4px;
                     .react-switch-bg {
                         > div {
+                            position: relative;
                             > svg {
-                                display: none;
+                                // display: none;
+                                position: absolute;
+                                top: 7px;
+                                left: 7px;
                             }
                         }
                     }
@@ -169,6 +173,23 @@
                 font-size: 11px;
                 color: #fff;
                 width: 60px;
+            }
+            .sidebar-label {
+                // display: none;
+            }
+        }
+        .sidebar-toggle.visible {
+            svg {
+                path {
+                    fill: rgb(139, 209, 118);
+                }
+            }
+        }
+        .sidebar-toggle.hidden {
+            svg {
+                path {
+                    fill: #555
+                }
             }
         }
         
@@ -317,13 +338,13 @@
             .header-tagline {
                 font-size: 13px;
                 margin-right: 8px;
-                max-width: 200px;
+                max-width: 180px;
             }
             .searchbox {
                 margin-right: 24px;
                 .searchform {
                     input {
-                        width: 300px;
+                        width: 280px;
                     }
                 }
             }

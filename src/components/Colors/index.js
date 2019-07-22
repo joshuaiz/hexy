@@ -76,8 +76,14 @@ const Colors = ({
         })
     }
 
+    // console.log('Colors', colors && colors.length)
+
     return (
-        <div className="colors">
+        <div
+            className={`colors ${
+                colors && colors.length > 1000 ? 'all-colors' : 'random-colors'
+            }`}
+        >
             <div className="colors-header">
                 <div className="colors-header-text">
                     {!searchSubmitted ? (
@@ -165,16 +171,17 @@ const Colors = ({
                     </button>
 
                     <div className="colors-links">
-                        <span className="like-link" onClick={handleReload}>
+                        <button className="button" onClick={handleReload}>
                             Reload 1000 random colors
-                        </span>
-                        &nbsp;|&nbsp;
-                        <span className="like-link" onClick={handleScroll}>
-                            Scroll to top
-                        </span>
+                        </button>
                     </div>
                 </div>
             )}
+            <div className="scroll-to-top">
+                <button className="button" onClick={handleScroll}>
+                    Scroll to top
+                </button>
+            </div>
         </div>
     )
 }

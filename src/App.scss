@@ -77,6 +77,11 @@ a, .like-link {
     font-size: 14px;
 }
 
+.strikethrough {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
 .App {
     
     
@@ -121,13 +126,15 @@ a, .like-link {
         }
         .favorites {
             // width: 400px;
-            // min-width: 400px;
+            // // min-width: 400px;
             // width: 20%;
             position: -webkit-sticky;
             position: sticky;
             top: 0;
             right: -420px;
+            // right: 0;
             transition: all .6s ease-in-out;
+            // align-self: flex-end;
             .favorites-toolbar {
             }
         }
@@ -156,7 +163,7 @@ a, .like-link {
     .favorites.inactive {
         position: fixed;
         width: 400px;
-        right: -400px;
+        right: -420px;
         
     }
 }
@@ -493,6 +500,9 @@ a, .like-link {
         }
         .content.sidebar {
             width: 100vw;
+            .colors, .color-page {
+                width: initial;
+            }
             .favorites {
                 // box-sizing: content-box;
                 // // width: ;

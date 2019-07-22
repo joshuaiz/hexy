@@ -8,7 +8,9 @@ import SearchBox from './SearchBox'
 import SiteID from '../SiteID'
 import { ReactComponent as UserCircle } from '../../images/user-circle.svg'
 import { ReactComponent as Cart } from '../../images/cart.svg'
+import { ReactComponent as Heart } from '../../images/heart.svg'
 import { getNumberOfNamedColors, humanize } from '../../utils/helpers'
+
 import './Header.scss'
 
 let num = getNumberOfNamedColors()
@@ -87,13 +89,19 @@ const Header = ({
                         </ul>
                     )}
                 </nav>
-                <div className="sidebar-toggle">
+                <div
+                    className={`sidebar-toggle ${
+                        isSidebarVisible ? 'visible' : 'hidden'
+                    }`}
+                >
                     <label>
                         <Switch
                             onChange={handleSidebarToggle}
                             checked={isSidebarVisible}
+                            checkedIcon={<Heart />}
+                            uncheckedIcon={<Heart />}
                         />
-                        <span>Sidebar</span>
+                        <span className="sidebar-label">Sidebar</span>
                     </label>
                 </div>
             </div>
