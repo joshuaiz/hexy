@@ -1,0 +1,16 @@
+.no-match {
+    .content.sidebar {
+        // width: 100%;
+        display: flex;
+        
+    }
+    .not-found-page {
+        padding: 1.5em;
+        width: 100%;
+        .not-found-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    }
+}
+

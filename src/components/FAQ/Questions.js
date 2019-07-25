@@ -83,6 +83,20 @@ const Questions = () => {
                         color creations.
                     </p>
                 </dd>
+                <dt>
+                    Why can't I share a palette with more than 5 colors
+                    publicly?
+                </dt>
+                <dd>
+                    <p>
+                        In order to keep the{' '}
+                        <Link to="/palettes">Palettes page</Link> consistent, we
+                        currently don't allow Hexy Pro users to share palettes
+                        with more than 5 colors. Hexy Pro account holders *can*
+                        however save palettes with more than 5 colors to your
+                        profile.
+                    </p>
+                </dd>
             </dl>
         </div>
     )

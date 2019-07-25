@@ -10,6 +10,7 @@ import { ReactComponent as UserCircle } from '../../images/user-circle.svg'
 import { ReactComponent as Cart } from '../../images/cart.svg'
 import { ReactComponent as Heart } from '../../images/heart.svg'
 import { getNumberOfNamedColors, humanize } from '../../utils/helpers'
+import { logout } from '../../utils/user'
 
 import './Header.scss'
 
@@ -27,7 +28,7 @@ const Header = ({
     const [iconHover, setIconHover] = useState(false)
 
     const handleLogout = () => {
-        firebase.auth().signOut()
+        logout()
     }
 
     const handleMouseEnter = () => {

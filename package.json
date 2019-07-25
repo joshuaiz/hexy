@@ -11,6 +11,7 @@
     "color-convert": "^2.0.0",
     "color-name-list": "^4.7.1",
     "date-fns": "^2.0.0-alpha.27",
+    "emailjs-com": "^2.3.2",
     "file-saver": "^2.0.2",
     "firebase": "^6.0.2",
     "http-proxy-middleware": "^0.19.1",

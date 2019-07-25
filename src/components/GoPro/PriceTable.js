@@ -141,7 +141,7 @@ const PriceTable = ({ cart, addToCart, history }) => {
                     </div>
                     <div className="account-features">
                         <div className="account-meta">
-                            <div className="account-price">$49.00/year</div>
+                            <div className="account-price">$29.00/year</div>
                             <div className="account-payment">paid yearly</div>
                             <div className="account-license">
                                 1-year license
@@ -179,7 +179,7 @@ const PriceTable = ({ cart, addToCart, history }) => {
                                     : null
                             }
                             onClick={() => {
-                                addToCart('pro_unlimited', 49)
+                                addToCart('pro_unlimited', 29)
                                 triggerModal('Pro Unlimited')
                             }}
                         >
@@ -201,7 +201,7 @@ const PriceTable = ({ cart, addToCart, history }) => {
                     </div>
                     <div className="account-features">
                         <div className="account-meta">
-                            <div className="account-price">$199.00</div>
+                            <div className="account-price">$99.00</div>
                             <div className="account-info">
                                 <div className="account-payment">
                                     one-time payment
@@ -243,7 +243,7 @@ const PriceTable = ({ cart, addToCart, history }) => {
                                     : null
                             }
                             onClick={() => {
-                                addToCart('pro_lifetime', 199)
+                                addToCart('pro_lifetime', 99)
                                 triggerModal('Pro Lifetime')
                             }}
                         >

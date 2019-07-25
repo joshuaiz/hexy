@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import ScrollAnimation from 'react-animate-on-scroll'
 import ScrollableAnchor from 'react-scrollable-anchor'
@@ -15,6 +15,7 @@ import { ReactComponent as Info } from '../../images/info.svg'
 import { ReactComponent as HeartCircle } from '../../images/heart_circle.svg'
 import Hero from './Hero'
 import RandomSwatches from '../RandomSwatches'
+import Testimonials from '../Testimonials'
 import './Home.scss'
 
 const Home = ({
@@ -93,7 +94,6 @@ const Home = ({
     return (
         <div className="page-home">
             <Hero />
-
             <div className="home-content">
                 <div className="home-features">
                     <div className="features-1 features">
@@ -316,6 +316,7 @@ const Home = ({
                     setFavoriteSwatches={setFavoriteSwatches}
                 />
             </div>
+            <Testimonials />
         </div>
     )
 }

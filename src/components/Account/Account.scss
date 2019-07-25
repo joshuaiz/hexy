@@ -279,6 +279,31 @@
                         align-items: center;
                         justify-content: flex-end;
                     }
+                    .share-link {
+                        cursor: pointer;
+                        margin-left: auto;
+                        align-self: center;
+                        margin-right: 6px;
+                        position: relative;
+                        top: 1px;
+                        svg {
+                            width: 18px;
+                            height: auto;
+                            circle {
+                                fill: #aaa;
+                            }
+                            path {
+                                fill: #fff;
+                            }
+                        }
+                        &:hover {
+                            svg {
+                               circle {
+                                    fill: #777;
+                               } 
+                            }
+                        }
+                    }
                     .share-palette {
                         cursor: pointer;
                         margin-left: auto;
@@ -320,6 +345,25 @@
                                circle {
                                     fill: #777;
                                } 
+                            }
+                        }
+                        .export-css.disabled {
+                            svg {
+                                circle {
+                                    fill: #ccc;
+                                }
+                                path {
+                                    fill: #fff;
+                                }
+                            }
+
+                            &:hover {
+                                // cursor: not-allowed;
+                                svg {
+                                   circle {
+                                        fill: #ccc;
+                                   } 
+                                }
                             }
                         }
                     }

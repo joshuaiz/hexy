@@ -21,6 +21,7 @@ const Colors = ({
     setFavoriteSwatches,
     handleBright,
     sortBright,
+    setSortBright,
     history,
     getRandoms,
     handleAllColors,
@@ -35,6 +36,7 @@ const Colors = ({
     const handleReload = event => {
         getRandoms(event)
         setRotate(true)
+        setSortBright(!sortBright)
         const timeout = setTimeout(() => {
             setRotate(false)
         }, 500)

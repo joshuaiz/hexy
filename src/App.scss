@@ -211,6 +211,37 @@ a, .like-link {
     
 }
 
+.export-css.disabled {
+    svg {
+        circle {
+            fill: #ccc;
+        }
+        path {
+            fill: #fff;
+        }
+    }
+
+    &:hover {
+        // cursor: not-allowed;
+        svg {
+           circle {
+                fill: #ccc !important;
+           } 
+        }
+    }
+}
+
+
+.not-found-page {
+    padding: 1.5em;
+    width: 100%;
+    .not-found-inner {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+
 .button {
     background: #65318e;
     padding: 0.5em 2em;
@@ -229,6 +260,8 @@ a, .like-link {
         padding: 0.5em 2em;
         border: 0;
         color: #fff;
+        text-decoration: none;
+        border-bottom: 0;
     }
 }
 

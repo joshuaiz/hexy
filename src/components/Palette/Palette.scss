@@ -1,0 +1,32 @@
+[class*='palette'] {
+    .content.sidebar {
+        .palette-page {
+            width: 100%;
+        }
+    }
+    .content.no-sidebar {
+        .palette-page {
+            width: inherit;
+        }
+    }
+    .palette-page {
+        padding: 2.2em;
+        // width: 100%;
+        .palette-date {
+            font-weight: 500;
+            color: #aaa;
+        }
+        .user-palette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            li {
+                width: 18%;
+                height: 100px;
+                .swatch-color {
+                    height: 100%;
+                }
+            }
+        }
+    }
+}

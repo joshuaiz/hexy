@@ -9,9 +9,7 @@ import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
 import { login, logout } from '../../utils/user'
-// import { onlyLetters } from '../../utils/helpers'
 import Login from '../Login'
-// import Modal from '../Modal'
 import UserMeta from './UserMeta'
 import UserPalettes from './UserPalettes'
 import UpdateProfile from './UpdateProfile'
@@ -206,6 +204,7 @@ const Account = React.memo(
 
         const handleLogout = () => {
             logout()
+            localStorage.removeItem('hexy_user')
         }
 
         const handleUpdate = event => {
@@ -314,9 +313,9 @@ const Account = React.memo(
 
         // console.log('updateError', updateError)
 
-        useEffect(() => {
-            console.log('updateError', updateError)
-        }, [updateError, setUpdateError])
+        // useEffect(() => {
+        //     console.log('updateError', updateError)
+        // }, [updateError, setUpdateError])
 
         if (initialising) {
             // toggleLoginModal(false)

@@ -1,7 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
 
-const Wrapper = ({ children, location, user }) => {
+const Wrapper = ({ children, location, match, user }) => {
+    // console.log(location)
+    let key = location.key
     let currentPath = window.location.pathname
 
     if (currentPath === '/') {
@@ -11,7 +13,11 @@ const Wrapper = ({ children, location, user }) => {
     }
 
     return (
-        <div className={`${currentPath}-page ${user ? 'user' : 'no-user'}`}>
+        <div
+            className={`${currentPath}-page ${user ? 'user' : 'no-user'} ${
+                key && key.length ? 'match' : 'no-match'
+            }`}
+        >
             {children}
         </div>
     )

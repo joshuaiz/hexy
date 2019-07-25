@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Droppable } from 'react-beautiful-dnd'
 import { db } from '../../config/firebaseconfig'
@@ -23,7 +23,8 @@ import {
     slugify,
     checkInputChars,
     setLocalStorage,
-    getLocalStorage
+    getLocalStorage,
+    makeid
 } from '../../utils/helpers'
 import './Favorites.scss'
 
@@ -47,12 +48,20 @@ const Favorites = ({
     const [paletteName, setPaletteName] = useState('')
     const [paletteNameError, setPaletteNameError] = useState()
     const [paletteErrorMessage, setPaletteErrorMessage] = useState()
+    const [accountLevel, setAccountLevel] = useState()
 
     const width = useWindowWidth() // Our custom Hook
 
     const [paletteLimitModal, togglePaletteLimitModal] = useModali()
+    const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
 
     const filter = new Filter()
+
+    const smallAccounts = ['standard', 'pro']
+
+    // if (currentUser) {
+    //     console.log(smallAccounts.indexOf(currentUser.accountType))
+    // }
 
     // console.log(currentUser && currentUser)
 
@@ -93,6 +102,7 @@ const Favorites = ({
     }, [dragEnded])
 
     const savePalette = () => {
+        const id = makeid(16)
         const bad = filter.isProfane(paletteName)
         if (bad) {
             alert("Don't be a jerk.")
@@ -135,7 +145,8 @@ const Favorites = ({
                     palettes: firebase.firestore.FieldValue.arrayUnion({
                         date: date,
                         name: paletteName,
-                        palette: favorites
+                        palette: favorites,
+                        id: id
                     })
                 })
                 .then(() => {
@@ -174,6 +185,13 @@ const Favorites = ({
     }
 
     const exportCode = () => {
+        if (
+            currentUser &&
+            smallAccounts.indexOf(currentUser.accountType) === 1
+        ) {
+            toggleUpgradeAccountModal(true)
+            return
+        }
         if (!paletteName) {
             // alert('Please name your palette')
             setPaletteNameError(true)
@@ -207,6 +225,18 @@ const Favorites = ({
             let paletteTitle = slugify(paletteName)
             saveAs(blob, `${paletteTitle}_${dateStringSlug}.txt`)
         }
+    }
+
+    useEffect(() => {
+        if (currentUser && currentUser.accountType) {
+            if (smallAccounts.indexOf(currentUser.accountType) !== 1) {
+                setAccountLevel('high')
+            }
+        }
+    }, [currentUser])
+
+    window.onbeforeunload = () => {
+        toggleUpgradeAccountModal(false)
     }
 
     return (
@@ -362,20 +392,21 @@ const Favorites = ({
                             </div>
                         )}
                         <div className="bottom-utilities">
-                            {currentUser &&
-                            currentUser.accountType !== 'standard' ? (
-                                <div className="export-code">
-                                    <span
-                                        className="export-css"
-                                        onClick={exportCode}
-                                    >
-                                        <Code />
-                                        <span className="export-text">
-                                            Export SCSS
-                                        </span>
+                            <div className="export-code">
+                                <span
+                                    className={`export-css ${
+                                        accountLevel && accountLevel === 'high'
+                                            ? 'enabled'
+                                            : 'disabled'
+                                    }`}
+                                    onClick={exportCode}
+                                >
+                                    <Code />
+                                    <span className="export-text">
+                                        Export SCSS
                                     </span>
-                                </div>
-                            ) : null}
+                                </span>
+                            </div>
                             <div className="clear-fav">
                                 <span
                                     className="clear-favorites"
@@ -419,6 +450,35 @@ const Favorites = ({
                     </p>
                     <button className="button">
                         <Link to="/pro">Go Pro</Link>
+                    </button>
+                </div>
+            </Modali.Modal>
+            <Modali.Modal
+                {...upgradeAccountModal}
+                animated={true}
+                centered={true}
+            >
+                <div className="error-message">
+                    <div className="error-header">
+                        <Logo />
+                        <h3>Please upgrade your account.</h3>
+                    </div>
+                    <p>
+                        Exporting to SCSS code is available to Hexy Pro
+                        Unlimited and Hexy Pro Lifetime accounts.{' '}
+                        <Link
+                            to="/pro"
+                            onClick={() => toggleUpgradeAccountModal(false)}
+                        >
+                            Upgrade now
+                        </Link>{' '}
+                        to export SCSS.
+                    </p>
+                    <button
+                        className="button"
+                        onClick={() => toggleUpgradeAccountModal(false)}
+                    >
+                        <Link to="/pro">Upgrade</Link>
                     </button>
                 </div>
             </Modali.Modal>

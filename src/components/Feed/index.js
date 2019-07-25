@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
+import React, { useState, useEffect, Fragment } from 'react'
+import { withRouter, Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
@@ -116,14 +116,26 @@ const Feed = ({
                     </label>
                 </div>
             </div>
-
-            <FeedList
-                feed={feed}
-                handleLike={handleLike}
-                handleFavorites={handleFavorites}
-                removeFavorites={removeFavorite}
-                swatchInfo={swatchInfo}
-            />
+            {feed && feed.length ? (
+                <FeedList
+                    feed={feed}
+                    handleLike={handleLike}
+                    handleFavorites={handleFavorites}
+                    removeFavorites={removeFavorite}
+                    swatchInfo={swatchInfo}
+                />
+            ) : (
+                <Fragment>
+                    <h3>
+                        Welp, it looks like palettes aren't loading right now.
+                        Check back later.
+                    </h3>
+                    <h4>
+                        In the meantime, check out some{' '}
+                        <Link to="/colors">colors</Link>.
+                    </h4>
+                </Fragment>
+            )}
         </div>
     )
 }

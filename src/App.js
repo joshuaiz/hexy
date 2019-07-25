@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react'
-import { Route, Switch, withRouter, Link } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../src/config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
-import { Elements, StripeProvider, stripe } from 'react-stripe-elements'
+import { stripe } from 'react-stripe-elements'
 import Modali, { useModali } from 'modali'
 import nearestColor from 'nearest-color'
 import Wrapper from './components/Wrapper'
@@ -22,6 +22,7 @@ import Footer from './components/Footer'
 import Feed from './components/Feed'
 import GoPro from './components/GoPro'
 import Checkout from './components/Checkout'
+import Palette from './components/Palette'
 import FAQ from './components/FAQ'
 import Terms from './components/Terms'
 import Contact from './components/Contact'
@@ -438,7 +439,7 @@ const App = React.memo(({ history, location, match }) => {
 
     return (
         <div className="App">
-            <Wrapper user={user}>
+            <Wrapper user={user} match={match}>
                 <Header
                     handleSearch={handleSearch}
                     handleSearchInput={handleSearchInput}
@@ -497,6 +498,7 @@ const App = React.memo(({ history, location, match }) => {
                                     setFavoriteSwatches={setFavoriteSwatches}
                                     handleBright={handleBright}
                                     sortBright={sortBright}
+                                    setSortBright={setSortBright}
                                     getRandoms={getRandoms}
                                     handleAllColors={handleAllColors}
                                     loadMoreColors={loadMoreColors}
@@ -559,6 +561,16 @@ const App = React.memo(({ history, location, match }) => {
                             )}
                         />
                         <Route
+                            path="/palette/:palette"
+                            render={() => (
+                                <Palette
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    favorites={favorites}
+                                />
+                            )}
+                        />
+                        <Route
                             exact
                             path="/reset-password"
                             component={ResetPassword}
@@ -571,6 +583,8 @@ const App = React.memo(({ history, location, match }) => {
                             path="/user"
                             render={props => <CurrentUser {...props} />}
                         />
+
+                        <Route render={props => <NoMatch {...props} />} />
                     </Switch>
                     <DragDropContext
                         onDragStart={onDragStart}
