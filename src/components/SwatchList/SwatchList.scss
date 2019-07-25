@@ -30,98 +30,32 @@
     }
 }
 
-@media screen and (max-width : 767px) {
-    .content {
-        .colors {
-            .swatch-list {
-                li {
-                    width: 47%;
-                }
-            }
-        }
-    }
-}
+// @media screen and (max-width : 767px) {
+//     .content {
+//         .colors {
+//             .swatch-list {
+//                 li {
+//                     width: 47%;
+//                 }
+//             }
+//         }
+//     }
+// }
 
-@media screen and (min-width: 1240px) and (max-width: 1440) {
-    .colors-page {
-        .content.sidebar {
-            .colors {
-                .swatch-list {
-                    li.swatch {
-                        .swatch-color {
-                            max-width: 20%;
-                        }
-                    }
-                }
-            }
-        }
-    }
+// @media screen and (min-width: 1240px) and (max-width: 1440) {
+//     .colors-page {
+//         .content.sidebar {
+//             .colors {
+//                 .swatch-list {
+//                     li.swatch {
+//                         .swatch-color {
+//                             max-width: 20%;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
     
-}
+// }
 
-@media screen and (min-width : 1240px) {
-    .content.sidebar {
-        .colors {
-            .swatch-list {
-                li {
-                    // width: 23%;
-                }
-                .swatch {
-                    
-                }
-                .swatch-color {
-                    // width: 100%;
-                }
-            }
-        }
-    }
-    .content.no-sidebar {
-        .colors {
-            .swatch-list {
-                li {
-                    width: 19%;
-                }
-                .swatch {
-
-                }
-                .swatch-color {
-                    // width: 100%;
-                }
-            }
-        }
-    }
-}
-
-@media screen and (min-width : 1600px) {
-    .content.sidebar {
-        .colors {
-            .swatch-list {
-                li {
-                    width: 13.56%;
-                   
-                }
-                .swatch {
-                    
-                }
-                .swatch-color {
-                    // width: 100%;
-                }
-            }
-        }
-    }
-    .content.no-sidebar {
-        .colors {
-            .swatch-list {
-                li {
-                    width: 11.8%;
-                }
-                .swatch {
-
-                }
-                .swatch-color {
-                    // width: 100%;
-                }
-            }
-        }
-    }
-}
