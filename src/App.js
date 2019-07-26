@@ -242,7 +242,7 @@ const App = React.memo(({ history, location, match }) => {
         } else {
             setFavorites([])
         }
-    })
+    }, [])
 
     const removeFavorite = useCallback(
         color => {

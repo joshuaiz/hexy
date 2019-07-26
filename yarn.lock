@@ -1515,6 +1515,14 @@
     "@svgr/plugin-svgo" "^4.0.3"
     loader-utils "^1.1.0"
 
+"@tippy.js/react@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@tippy.js/react/-/react-2.2.2.tgz#a0fbc646958cdb002d7d227f7b18dca346c76f2e"
+  integrity sha512-ex6IEy1cFC1a1MqbRaNZqo/MRK/GQOfa/VO5jydYeBrxnxJ3I/3gCX098dUHRLZmB6aFKVY39TwgnQRCbLUG4Q==
+  dependencies:
+    prop-types "^15.6.2"
+    tippy.js "^4.3.4"
+
 "@types/babel__core@^7.1.0":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.2.tgz#608c74f55928033fce18b99b213c16be4b3d114f"
@@ -8458,7 +8466,7 @@ pnp-webpack-plugin@1.2.1:
   dependencies:
     ts-pnp "^1.0.0"
 
-popper.js@^1.11.1:
+popper.js@^1.11.1, popper.js@^1.14.7:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
   integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
@@ -11146,6 +11154,13 @@ tinycolor2@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
   integrity sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g=
+
+tippy.js@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-4.3.4.tgz#9a91fd5ce8c401f181b7adaa6b2c27f3d105f3ba"
+  integrity sha512-O2ukxHOJTLVYZ/TfHjNd8WgAWoefX9uk5QiWRdHfX2PR2lBpUU4BJQLl7U2Ykc8K7o16gTeHEElpuRfgD5b0aA==
+  dependencies:
+    popper.js "^1.14.7"
 
 tmp@^0.0.33:
   version "0.0.33"

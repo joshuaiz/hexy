@@ -39,34 +39,6 @@ const FavoritesPDF = ({
 
     // console.log('paletteWasExported FavoritesPDF', paletteWasExported)
 
-    const doc = new jsPDF({
-        orientation: 'landscape',
-        unit: 'in',
-        format: 'letter',
-        fontSize: 12
-    })
-
-    doc.text(
-        `Hexy Favorites ${dateStringWithTime}${name ? ': ' + name : ''}`,
-        1,
-        0.5
-    )
-
-    let n = favorites.length
-
-    // let i = 0
-
-    const yValues = [1, 3.5, 6]
-
-    for (let i = 0; i < n && i < 15; i++) {
-        const x = 1 + (i % 5) * 1.875
-        const y = yValues[Math.floor(i / 5)]
-        doc.setFillColor(favorites[i].hex)
-        doc.rect(x, y, 1.5, 1, 'F')
-        doc.text(favorites[i].name.toString(), x, y + 1.25)
-        doc.text(favorites[i].hex.toString(), x, y + 1.5)
-    }
-
     function handlePDF() {
         const bad = filter.isProfane(paletteName)
         if (bad) {
@@ -91,7 +63,40 @@ const FavoritesPDF = ({
             setPaletteNameError(true)
             return
         } else {
-            doc.save('HexyFavorites.pdf')
+            if (!Array.isArray(favorites) || !favorites.length) {
+                const doc = new jsPDF({
+                    orientation: 'landscape',
+                    unit: 'in',
+                    format: 'letter',
+                    fontSize: 12
+                })
+
+                doc.text(
+                    `Hexy Favorites ${dateStringWithTime}${
+                        name ? ': ' + name : ''
+                    }`,
+                    1,
+                    0.5
+                )
+
+                let n = favorites.length
+
+                // let i = 0
+
+                const yValues = [1, 3.5, 6]
+
+                for (let i = 0; i < n && i < 15; i++) {
+                    const x = 1 + (i % 5) * 1.875
+                    const y = yValues[Math.floor(i / 5)]
+
+                    doc.setFillColor(favorites[i].hex)
+                    doc.rect(x, y, 1.5, 1, 'F')
+                    doc.text(favorites[i].name.toString(), x, y + 1.25)
+                    doc.text(favorites[i].hex.toString(), x, y + 1.5)
+                }
+                doc.save('HexyFavorites.pdf')
+            }
+
             if (
                 user &&
                 currentUser &&

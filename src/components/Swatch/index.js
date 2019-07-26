@@ -1,8 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import SwatchActions from './SwatchActions'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Heart } from '../../images/heart.svg'
+import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import { getReadableColor, getNamedColor } from '../../utils/helpers'
 import './Swatch.scss'
 
@@ -15,6 +17,7 @@ const Swatch = ({
     favorites
 }) => {
     const [namedColor, setNamedColor] = useState()
+    const [actions, setActions] = useState()
     const readableColor = getReadableColor(color)
 
     const params = {
@@ -35,11 +38,56 @@ const Swatch = ({
         }
     }, [color])
 
+    // useEffect(() => {
+    //     let timeout
+    //     document.onmousemove = function() {
+    //         clearTimeout(timeout)
+    //         timeout = setTimeout(() => {
+    //             setActions(false)
+    //         }, 5000)
+    //     }
+    // })
+
+    // const addFavorite = color => {
+    //     handleFavorites({
+    //         name:
+    //             namedColor && namedColor.length
+    //                 ? namedColor[0].name
+    //                 : color.name,
+    //         hex: color.hex
+    //     })
+    // }
+
+    // const minusFavorite = color => {
+    //     removeFavorite(color)
+    // }
+
+    // console.log(actions)
+
     return (
         <li
             className={`swatch ${isFavorite ? 'favorite' : ''}`}
             key={color.hex + isFavorite ? '-favorite' : null}
         >
+            <span
+                className="actions-trigger"
+                onMouseEnter={() => setActions(true)}
+            >
+                <Ellipsis style={{ fill: readableColor }} />
+            </span>
+            {actions && (
+                <div className="actions-wrap">
+                    <SwatchActions
+                        handleFavorites={handleFavorites}
+                        removeFavorite={removeFavorite}
+                        isFavorite={isFavorite}
+                        readableColor={readableColor}
+                        namedColor={namedColor}
+                        color={color}
+                        setActions={setActions}
+                    />
+                </div>
+            )}
             <div
                 className="swatch-color"
                 style={{
@@ -47,35 +95,10 @@ const Swatch = ({
                     background: color.hex
                 }}
             >
-                {!isFavorite ? (
-                    <span
-                        className="add-favorite"
-                        onClick={() => {
-                            handleFavorites({
-                                name:
-                                    namedColor && namedColor.length
-                                        ? namedColor[0].name
-                                        : color.name,
-                                hex: color.hex
-                            })
-                        }}
-                    >
-                        <PlusCircle style={{ fill: readableColor }} />
+                {isFavorite && (
+                    <span className="favorite-heart">
+                        <Heart style={{ fill: readableColor }} />
                     </span>
-                ) : (
-                    <Fragment>
-                        <span className="favorite-heart">
-                            <Heart style={{ fill: readableColor }} />
-                        </span>
-                        <span
-                            className="remove-favorite"
-                            onClick={() => {
-                                removeFavorite(color)
-                            }}
-                        >
-                            <TimesCircle style={{ fill: readableColor }} />
-                        </span>
-                    </Fragment>
                 )}
                 <div className="swatch-content">
                     <Link to={params}>

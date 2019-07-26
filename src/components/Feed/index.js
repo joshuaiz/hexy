@@ -125,16 +125,7 @@ const Feed = ({
                     swatchInfo={swatchInfo}
                 />
             ) : (
-                <Fragment>
-                    <h3>
-                        Welp, it looks like palettes aren't loading right now.
-                        Check back later.
-                    </h3>
-                    <h4>
-                        In the meantime, check out some{' '}
-                        <Link to="/colors">colors</Link>.
-                    </h4>
-                </Fragment>
+                <h3>Loading...</h3>
             )}
         </div>
     )
