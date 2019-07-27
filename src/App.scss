@@ -53,6 +53,19 @@ a, .like-link {
     }
 }
 
+.linkish {
+    text-decoration: none;
+    color: #65318e;
+    &:hover,
+    &:focus {
+        color: #0088cc;
+        cursor: pointer;
+    }
+    &:active {
+        color: #0088cc;
+    }
+}
+
 .nostyle {
     list-style: none;
     padding: 0;
@@ -463,6 +476,15 @@ a, .like-link {
         }
     }
 }
+
+.tippy-popper {
+    .tippy-tooltip {
+        .tippy-content {
+            font-size: 12px !important;
+        }
+    }
+}
+
   
 .tippy-popper {
     .tippy-tooltip.dark-theme {

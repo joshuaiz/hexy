@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import SwatchActions from '../Swatch/SwatchActions'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
+import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import { getReadableColor } from '../../utils/helpers'
 import './Swatch.scss'
 
@@ -13,6 +15,7 @@ const FavoriteSwatch = ({
     removeFavorite,
     isSquare
 }) => {
+    const [actions, setActions] = useState()
     const readableColor = getReadableColor(color)
 
     let key = ''
@@ -20,6 +23,22 @@ const FavoriteSwatch = ({
         key = color.hex + '-favorite'
     } else {
         key = color.hex + '-square'
+    }
+
+    // actions menu can get stuck so let's hide it if so after mouse stopped
+    useEffect(() => {
+        let timeout
+        document.onmousemove = function() {
+            // console.log('mouse stopped!')
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                setActions(false)
+            }, 5000)
+        }
+    })
+
+    window.onbeforeunload = e => {
+        setActions(false)
     }
 
     return (
@@ -42,25 +61,30 @@ const FavoriteSwatch = ({
                             background: color.hex
                         }}
                     >
-                        {!isFavorite ? (
-                            <span
-                                className="add-favorite"
-                                onClick={() => handleFavorites(color)}
-                            >
-                                <PlusCircle style={{ fill: readableColor }} />
-                            </span>
-                        ) : (
-                            <span
-                                className="remove-favorite"
-                                onClick={() => removeFavorite(color)}
-                            >
-                                <TimesCircle style={{ fill: readableColor }} />
-                            </span>
-                        )}
                         <div className="swatch-content">
                             <div className="swatch-hex">{color.hex}</div>
                             <div className="swatch-name">{color.name}</div>
                         </div>
+                        <span
+                            className="actions-trigger"
+                            aria-haspopup="true"
+                            aria-expanded={`${actions ? 'true' : 'false'}`}
+                            onMouseEnter={() => setActions(true)}
+                        >
+                            <Ellipsis style={{ fill: readableColor }} />
+                        </span>
+                        {actions && (
+                            <div className="actions-wrap">
+                                <SwatchActions
+                                    removeFavorite={removeFavorite}
+                                    isFavorite={true}
+                                    readableColor={readableColor}
+                                    // namedColor={namedColor}
+                                    color={color}
+                                    setActions={setActions}
+                                />
+                            </div>
+                        )}
                     </div>
                 </li>
             )}

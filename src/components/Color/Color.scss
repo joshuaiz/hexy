@@ -1,5 +1,19 @@
 .color-page {
     padding: 1.5em;
+    .swatch {
+        .actions-wrap {
+            height: auto;
+            .swatch-actions {
+                width: 150px;
+                .actions-list {
+                    li {
+                        min-width: inherit;
+                        // width: auto;
+                    }
+                }
+            }
+        }
+    }
     .color-main {
         display: flex;
         flex-wrap: wrap;
@@ -18,6 +32,7 @@
                 }
             }
         }
+        
         .main-swatches {
             width: 100%;
             display: flex;
@@ -27,8 +42,9 @@
                     max-width: 300px;
                     height: 120px;
                     list-style: none;
-                    box-sizing: border-box;
+                    // box-sizing: border-box;
                     margin-right: 2.2em;
+                    
                     .swatch-color {
                         height: 100%;
                     }
@@ -50,13 +66,17 @@
                     display: flex;
                     justify-content: space-between;
 
-                    li {
+                    .swatch {
                         width: 15%;
                         min-width: 100px;
                         box-sizing: border-box;
                         font-size: 12px;
-                        // padding: 8px;
-                        // flex: 1;
+                        position: relative;
+                        .actions-wrap {
+                            .swatch-actions {
+                                top: -45px;
+                            }
+                        }
                         .swatch-color {
                             min-height: 48px;
                             padding: 5px;
@@ -228,6 +248,14 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        .actions-wrap {
+            .swatch-actions {
+                top: -45px;
+                right: 0;
+                margin: 0;
+                left: auto;
+            }
+        }
         .color-harmony {
             padding: 1.5em 0;
             border-top: 1px solid #ccc;
@@ -239,7 +267,7 @@
                 display: flex;
                 justify-content: space-between;
 
-                li {
+                .swatch {
                     width: 15%;
                     max-width: 32%;
                     min-width: 100px;
@@ -247,6 +275,7 @@
                     font-size: 12px;
                     // padding: 8px;
                     flex: 1;
+                    
                     .swatch-color {
                         min-height: 48px;
                         padding: 5px;
@@ -283,7 +312,7 @@
         .spins {
             .swatch-list {
                 flex-wrap: wrap;
-                li {
+                .swatch {
                     max-width: 23.5%;
                     // flex: 1;
                     margin-bottom: 16px;

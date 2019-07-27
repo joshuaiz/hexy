@@ -38,31 +38,17 @@ const Swatch = ({
         }
     }, [color])
 
-    // useEffect(() => {
-    //     let timeout
-    //     document.onmousemove = function() {
-    //         clearTimeout(timeout)
-    //         timeout = setTimeout(() => {
-    //             setActions(false)
-    //         }, 5000)
-    //     }
-    // })
-
-    // const addFavorite = color => {
-    //     handleFavorites({
-    //         name:
-    //             namedColor && namedColor.length
-    //                 ? namedColor[0].name
-    //                 : color.name,
-    //         hex: color.hex
-    //     })
-    // }
-
-    // const minusFavorite = color => {
-    //     removeFavorite(color)
-    // }
-
-    // console.log(actions)
+    // actions menu can get stuck so let's hide it if so after mouse stopped
+    useEffect(() => {
+        let timeout
+        document.onmousemove = function() {
+            // console.log('mouse stopped!')
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                setActions(false)
+            }, 5000)
+        }
+    })
 
     return (
         <li
@@ -71,6 +57,8 @@ const Swatch = ({
         >
             <span
                 className="actions-trigger"
+                aria-haspopup="true"
+                aria-expanded={`${actions ? 'true' : 'false'}`}
                 onMouseEnter={() => setActions(true)}
             >
                 <Ellipsis style={{ fill: readableColor }} />

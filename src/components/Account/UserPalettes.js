@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
+import Tippy from '@tippy.js/react'
 import { Tooltip } from 'react-tippy'
 import Swatch from '../Swatch'
 import FavoritesPDF from '../Favorites/FavoritesPDF'
@@ -206,10 +207,10 @@ const UserPalettes = ({
                                     </div>
                                     <div className="palette-utilities-top">
                                         <div className="share-link">
-                                            <Tooltip
+                                            <Tippy
                                                 // options
-                                                title="Get shareable link"
-                                                position="top"
+                                                content="Get shareable link"
+                                                placement="top"
                                                 trigger="mouseenter"
                                                 arrow={true}
                                             >
@@ -226,14 +227,14 @@ const UserPalettes = ({
                                                 >
                                                     <Links />
                                                 </span>
-                                            </Tooltip>
+                                            </Tippy>
                                         </div>
                                         {palette.palette.length <= 5 && (
                                             <div className="share-palette">
-                                                <Tooltip
+                                                <Tippy
                                                     // options
-                                                    title="Share to public palettes"
-                                                    position="top"
+                                                    content="Share to public palettes"
+                                                    placement="top"
                                                     trigger="mouseenter"
                                                     arrow={true}
                                                 >
@@ -245,7 +246,7 @@ const UserPalettes = ({
                                                             )
                                                         }
                                                     />
-                                                </Tooltip>
+                                                </Tippy>
                                             </div>
                                         )}
 
@@ -268,10 +269,10 @@ const UserPalettes = ({
                                         </Tooltip>
 
                                         <div className="export-code">
-                                            <Tooltip
+                                            <Tippy
                                                 // options
-                                                title="Export SCSS code"
-                                                position="top"
+                                                content="Export SCSS code"
+                                                placement="top"
                                                 trigger="mouseenter"
                                                 arrow={true}
                                             >
@@ -291,7 +292,7 @@ const UserPalettes = ({
                                                 >
                                                     <Code />
                                                 </span>
-                                            </Tooltip>
+                                            </Tippy>
                                         </div>
                                     </div>
                                 </div>

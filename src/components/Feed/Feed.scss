@@ -132,6 +132,20 @@
                         font-size: 9px;
                         font-weight: 500;
                         line-height: 1.2;
+                        .actions-trigger {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            top: -2px;
+                            left: 0;
+                            right: 0;
+                            margin: auto
+                        }
+                        .swatch-actions {
+                            width: 100px;
+                            left: -20px;
+                            // top: 60px;
+                        }
                         .swatch-color {
                             padding: 2px;
                             width: 50px;

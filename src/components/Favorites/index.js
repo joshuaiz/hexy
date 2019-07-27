@@ -7,17 +7,20 @@ import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Modali, { useModali } from 'modali'
+import Tippy from '@tippy.js/react'
 import useWindowWidth from '../../hooks/useWindowWidth'
 import moment from 'moment'
 import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import FavoritesPDF from './FavoritesPDF'
 import Logo from '../Logo'
+import FavoriteActions from './FavoriteActions'
 import * as Filter from 'bad-words'
 // import { FavoritesContext } from './FavoritesContext'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
 import { ReactComponent as Code } from '../../images/code.svg'
+import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import {
     sortLightness,
     slugify,
@@ -49,6 +52,7 @@ const Favorites = ({
     const [paletteNameError, setPaletteNameError] = useState()
     const [paletteErrorMessage, setPaletteErrorMessage] = useState()
     const [accountLevel, setAccountLevel] = useState()
+    const [actions, setActions] = useState()
 
     const width = useWindowWidth() // Our custom Hook
 
@@ -185,6 +189,10 @@ const Favorites = ({
     }
 
     const exportCode = () => {
+        if (!user) {
+            toggleUpgradeAccountModal(true)
+            return
+        }
         if (
             currentUser &&
             smallAccounts.indexOf(currentUser.accountType) === 1
@@ -236,8 +244,19 @@ const Favorites = ({
     }, [currentUser])
 
     window.onbeforeunload = () => {
-        toggleUpgradeAccountModal(false)
+        toggleUpgradeAccountModal(!!false)
     }
+
+    // useEffect(() => {
+    //     let timeout
+    //     document.onmousemove = function() {
+    //         // console.log('mouse stopped!')
+    //         clearTimeout(timeout)
+    //         timeout = setTimeout(() => {
+    //             setActions(false)
+    //         }, 5000)
+    //     }
+    // })
 
     return (
         <Fragment>
@@ -260,39 +279,53 @@ const Favorites = ({
                             Drag-and-drop to reorder favorites.
                         </div>
                         <div className="favorites-toolbar-inner">
-                            <div className="favorites-sort">
-                                <input
-                                    type="checkbox"
-                                    checked={isBright}
-                                    onChange={handleBright}
-                                />
-                                <label>Sort by brightness</label>
-                            </div>
-                            <FavoritesPDF
-                                favorites={favorites && favorites}
-                                currentUser={currentUser}
-                                paletteName={paletteName && paletteName}
-                                paletteWasExported={paletteWasExported}
-                                setPaletteNameError={setPaletteNameError}
-                            />
-                            <div className="save-palette">
-                                {user && user ? (
-                                    <span
-                                        className="save-icon"
-                                        onClick={() => {
-                                            savePalette()
-                                            paletteHasBeenSaved()
-                                        }}
-                                    >
-                                        <Palette style={{ color: '#555555' }} />
-                                        <span className="save-text">
-                                            {paletteSaved
-                                                ? 'Palette saved!'
-                                                : 'Save Palette'}
-                                        </span>
-                                    </span>
-                                ) : null}
-                            </div>
+                            <Tippy
+                                // options
+                                content="Favorites Actions"
+                                placement="top"
+                                trigger="mouseenter"
+                                size="small"
+                                offset="0, 10"
+                                sticky={true}
+                                arrow={true}
+                            >
+                                <span
+                                    className="actions-trigger"
+                                    aria-haspopup="true"
+                                    aria-expanded={`${
+                                        actions ? 'true' : 'false'
+                                    }`}
+                                    onMouseEnter={() => setActions(true)}
+                                >
+                                    <Ellipsis />
+                                </span>
+                            </Tippy>
+                            {actions && (
+                                <div className="actions-wrap">
+                                    <FavoriteActions
+                                        favorites={favorites}
+                                        clearFavorites={clearFavorites}
+                                        user={user && user}
+                                        currentUser={currentUser && currentUser}
+                                        paletteName={paletteName}
+                                        paletteWasExported={paletteWasExported}
+                                        setPaletteNameError={
+                                            setPaletteNameError
+                                        }
+                                        isBright={isBright}
+                                        handleBright={handleBright}
+                                        savePalette={savePalette}
+                                        paletteHasBeenSaved={
+                                            paletteHasBeenSaved
+                                        }
+                                        paletteSaved={paletteSaved}
+                                        exportCode={exportCode}
+                                        accountLevel={accountLevel}
+                                        actions={actions}
+                                        setActions={setActions}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="favorite-swatches-wrap">
@@ -389,45 +422,6 @@ const Favorites = ({
                                         </ul>
                                     )}
                                 </Droppable>
-                            </div>
-                        )}
-                        <div className="bottom-utilities">
-                            <div className="export-code">
-                                <span
-                                    className={`export-css ${
-                                        accountLevel && accountLevel === 'high'
-                                            ? 'enabled'
-                                            : 'disabled'
-                                    }`}
-                                    onClick={exportCode}
-                                >
-                                    <Code />
-                                    <span className="export-text">
-                                        Export SCSS
-                                    </span>
-                                </span>
-                            </div>
-                            <div className="clear-fav">
-                                <span
-                                    className="clear-favorites"
-                                    onClick={clearFavorites}
-                                >
-                                    <TimesCircle
-                                        style={{
-                                            color: '#f35336'
-                                        }}
-                                    />
-                                    <span className="clear-text">
-                                        Clear Favorites
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                        {user && user && (
-                            <div className="account-link">
-                                <Link to="/account">
-                                    View your palettes &rarr;
-                                </Link>
                             </div>
                         )}
                     </div>

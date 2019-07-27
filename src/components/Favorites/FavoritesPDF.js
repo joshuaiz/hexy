@@ -164,13 +164,18 @@ const FavoritesPDF = ({
     return (
         <Fragment>
             <div className="favorites-pdf">
-                <Download
-                    className="download-favorites"
-                    // onClick={handlePDF}
-                    onClick={handlePDF}
-                    style={{ fill: '#555555' }}
-                />
-                <span>Export to PDF</span>
+                <span className="icon-wrap">
+                    <Download
+                        className="download-favorites"
+                        // onClick={handlePDF}
+                        onClick={handlePDF}
+                        style={{ fill: '#555555' }}
+                    />
+                </span>
+
+                <span className="linkish" onClick={handlePDF}>
+                    Export to PDF
+                </span>
             </div>
             {accountError && (
                 <Modali.Modal {...accountModal} animated={true} centered={true}>

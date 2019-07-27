@@ -37,6 +37,8 @@ const SwatchActions = React.memo(
             }, 1000)
         }
 
+        // console.log('SwatchActions', isFavorite)
+
         return (
             <div className={`swatch-actions`} onMouseLeave={leaveActions}>
                 <ul className="actions-list nostyle">
@@ -47,6 +49,9 @@ const SwatchActions = React.memo(
                                 content="Add color to Favorites"
                                 placement="top"
                                 trigger="mouseenter"
+                                size="small"
+                                offset="0, 10"
+                                sticky={true}
                                 arrow={true}
                             >
                                 <span
@@ -71,7 +76,9 @@ const SwatchActions = React.memo(
                                 // options
                                 content="Remove from Favorites"
                                 placement="top"
+                                size="small"
                                 trigger="mouseenter"
+                                offset="0, 10"
                                 arrow={true}
                             >
                                 <span
@@ -89,13 +96,17 @@ const SwatchActions = React.memo(
                     <li>
                         <Tippy
                             // options
-                            content={copySuccess ? 'Copied!' : 'Copy hex code'}
+                            content={
+                                copySuccess
+                                    ? `${color.hex} copied!`
+                                    : 'Copy hex code'
+                            }
                             placement="top"
                             trigger="mouseenter"
-                            // hideDelay={2000}
-                            // duration={0}
+                            size="small"
                             delay={[0, 1000]}
                             arrow={true}
+                            offset="0, 10"
                             hideOnClick="toggle"
                         >
                             <span className="copy-hex" onClick={copyHexCode}>
@@ -109,7 +120,9 @@ const SwatchActions = React.memo(
                             content="Color detail page"
                             placement="top"
                             trigger="mouseenter"
+                            size="small"
                             arrow={true}
+                            offset="0, 10"
                             delay={[0, 1000]}
                         >
                             <span className="color-link">

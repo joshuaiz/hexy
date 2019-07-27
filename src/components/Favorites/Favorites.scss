@@ -11,7 +11,8 @@
     
     // width: 80%;
     // top: 302px;
-    max-width: 400px;
+    max-width: 420px;
+    min-width: 380px;
     z-index: 9999999;
     right: 0;
     // height: 100%;
@@ -37,11 +38,11 @@
     }
 }
 
-.no-user {
-    .favorites-pdf {
-        margin-left: auto;
-    }
-}
+// .no-user {
+//     .favorites-pdf {
+//         margin-left: auto;
+//     }
+// }
 
 .favorites {
     background-color: #ededed;
@@ -65,63 +66,248 @@
         }
         .favorites-toolbar-inner {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            // align-items: center;
+            // justify-content: space-between;
             padding: 10px 10px 0;
             background: #ddd;
             margin-top: 8px;
-            .favorites-sort {
-                font-size: 12px;
-                margin-right: 4px;
-                color: #777;
-            }
-            .favorites-pdf {
-                display: flex;
-                align-items: center;
-                margin-right: 4px;
-                color: #777;
-                span {
-                    font-size: 12px;
-                }
+            position: relative;
+            height: 30px;
+            .actions-trigger {
+                position: absolute;
+                right: 15px;
+                top: 12px;
+                display: block;
                 svg {
-                    width: 24px;
-                    margin-right: 2px;
-                    opacity: 0.7;
-                }
-                &:hover, &:focus {
-                    svg {
-                        opacity: 1;
+                    width: 36px;
+                    height: auto;
+                    cursor: pointer;
+                    path {
+                        fill: #777;
+                    }
+                    &:hover {
+                        path {
+                            fill: #222;
+                        }
                     }
                 }
             }
-            .download-favorites {
-                width: 32px;
-                height: auto;
-                cursor: pointer;
+            .actions-wrap {
+                // position: relative;
 
-            }
-            .save-palette {
-                display: flex;
-                align-items: center;
-                margin-right: 4px;
-                color: #777;
-                cursor: pointer;
-                span {
-                    font-size: 12px;
+                .favorite-actions {
+                    opacity: 0.96;
+                    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+                    z-index: 9999;
+                    transition: all 0.3s ease-in-out;
+                    position: absolute;
+                    // margin: 0 auto;
+                    // left: 0;
+                    right: 10px;
+                    top: 50px;
+                    height: auto;
+                    width: 250px;
+                    border-radius: 3px;
+                    background-color: #f0f0f0;
+                    z-index: 99;
+
                 }
-                svg {
-                    width: 14px;
-                    margin-right: 4px;
-                    opacity: 0.7;
-                    position: relative;
-                    top: 2px;
-                }
-                &:hover, &:focus {
-                    svg {
-                        opacity: 1;
+                .actions-list {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    overflow: hidden;
+                    width: 250px;
+                    li {
+                        padding: 12px 8px;
+                        font-size: 14px;
+                        color: #777;
+                        height: 32px;
+                        display: flex;
+                        align-items: center;
+                        border-bottom: 1px solid #ccc;
+                        width: 100%;
+                        &:hover {
+                            background-color: #fff;
+                        }
+                        svg {
+                            cursor: pointer;
+                        }
+                        .icon-wrap {
+                            width: 40px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0;
+                        }
+                        .account-link {
+                            display: flex;
+                            align-items: center;
+                            .link-wrap {
+                                display: flex;
+                                align-items: center;
+                            }
+                            svg {
+                                width: 19px;
+                                position: relative;
+                                top: 1px;
+                                path {
+                                    fill: #777;
+                                }
+                                &:hover {
+                                    path {
+                                        fill: #222;
+                                    }
+                                }
+                            }
+                            a {
+                                text-decoration: none;
+                                border: none;
+                                &:hover {
+                                    text-decoration: none;
+                                    border: none;
+                                    padding: 0;
+                                }
+                            }
+                        }
+                        .favorites-sort {
+                            display: flex;
+                            align-items: center;
+                            input[type="checkbox"] {
+                                width: 32px;
+                                height: 16px;
+                                position: relative;
+                                left: 7px;
+                            }
+                        }
+                        .favorites-pdf {
+                            display: flex;
+                            align-items: center;
+                            .download-favorites {
+                                width: 24px;
+                            }
+                        }
+                        
+                        .save-palette {
+                            display: flex;
+                            align-items: center;
+                            .palette-icon {
+                                width: 19px;
+                                path {
+                                    fill: #777;
+                                }
+                                &:hover {
+                                    fill: #222;
+                                }
+                            }
+                        }
+                        .export-code, .clear-fav {
+                            margin: 0;
+                            display: flex;
+                            align-items: center;
+                        }
+                        .export-code {
+                            svg {
+                                width: 28px;
+                                height: 28px;
+                                color: #777;
+                                circle {
+                                    fill: #777;
+                                }
+                                path {
+                                    fill: #fff;
+                                }
+                                &:hover {
+                                    circle {
+                                        fill: #222 !important;
+                                    }
+                                }
+                            }
+                            
+                        }
+                        .clear-fav {
+                            svg {
+                                width: 21px;
+                                height: 21px;
+                                font-size: 24px;
+                                fill:  #f35336;
+                                cursor: pointer;
+                                opacity: 0.7;
+                                circle {
+                                    fill: transparent;
+                                    color: #f35336;
+                                }
+                                &:hover {
+                                    circle {
+                                        fill: #f35336;
+                                        
+                                    }
+                                    path, polygon {
+                                        fill: #fff;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .view-palettes {
+                        border-bottom: none;
+                        background: #dedede;
                     }
                 }
+                // .favorites-sort {
+                //     font-size: 12px;
+                //     margin-right: 4px;
+                //     color: #777;
+                // }
+                // .favorites-pdf {
+                //     display: flex;
+                //     align-items: center;
+                //     margin-right: 4px;
+                //     color: #777;
+                //     span {
+                //         font-size: 12px;
+                //     }
+                //     svg {
+                //         width: 24px;
+                //         margin-right: 2px;
+                //         opacity: 0.7;
+                //     }
+                //     &:hover, &:focus {
+                //         svg {
+                //             opacity: 1;
+                //         }
+                //     }
+                // }
+                // .download-favorites {
+                //     width: 32px;
+                //     height: auto;
+                //     cursor: pointer;
+
+                // }
+                // .save-palette {
+                //     display: flex;
+                //     align-items: center;
+                //     margin-right: 4px;
+                //     color: #777;
+                //     cursor: pointer;
+                //     span {
+                //         font-size: 12px;
+                //     }
+                //     svg {
+                //         width: 14px;
+                //         margin-right: 4px;
+                //         opacity: 0.7;
+                //         position: relative;
+                //         top: 2px;
+                //     }
+                //     &:hover, &:focus {
+                //         svg {
+                //             opacity: 1;
+                //         }
+                //     }
+                // }
             }
+            
         }
         .favorites-info {
             padding: 4px 0;
@@ -188,6 +374,15 @@
                 background: #ccc !important;
                 height: 30px;
                 display: block;
+                .actions-wrap {
+                    .swatch-actions {
+                        width: 125px;
+                        margin: 0;
+                        left: auto;
+                        right: 0;
+                        top: -35px;
+                    }
+                }
                     .swatch-color {
                         width: 97.5%;
                         height: 20px;
@@ -195,9 +390,9 @@
                         padding: 5px;
                         align-items: center;
                         justify-content: flex-start;
-                        .remove-favorite {
-                            top: 6px;
-                        }
+                        // .remove-favorite {
+                        //     top: 6px;
+                        // }
                         .swatch-content {
                             display: flex;
                             justify-content: flex-start;
@@ -227,8 +422,22 @@
             margin: 0 auto;
             background-color: #fff;
             padding: 10px;
-            li {
+            .swatch {
                 // margin: 4px;
+                .actions-trigger {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    top: -2px;
+                    left: 0;
+                    right: 0;
+                    margin: auto
+                }
+                .swatch-actions {
+                    width: 100px;
+                    left: -14px;
+                    // top: 60px;
+                }
                     .swatch-color {
                         min-width: 36px;
                         min-height: 36px;
@@ -238,11 +447,11 @@
                         .favorite-heart {
                             display: none;
                         }
-                        .remove-favorite {
-                            position: relative;
-                            top: 0;
-                            right: 0;
-                        }
+                        // .remove-favorite {
+                        //     position: relative;
+                        //     top: 0;
+                        //     right: 0;
+                        // }
                         .swatch-hex, .swatch-name {
                             display: none;
                         }
@@ -253,71 +462,71 @@
         }
         
     }
-    .bottom-utilities {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .export-code {
-        margin: 1em 0 0;
-        display: flex;
-        justify-content: flex-start;
-        .export-css {
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        svg {
-            width: 32px;
-            height: 32px;
-            circle {
-                fill: #bbb;
-            }
-            path {
-                fill: #fff;
-            }
-        }
-        svg:hover {
-            opacity: 0.7;
-        }
-    }
-    .clear-fav {
-        margin: 1em 0 0;
-        display: flex;
-        justify-content: flex-end;
-        .clear-favorites {
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            svg {
-                margin-right: 2px;
-                font-size: 18px;
-                width: 18px;
-                height: 18px;
-                width: 24px;
-                fill:  #f35336;
-                cursor: pointer;
-                opacity: 0.7;
-                circle {
-                    fill: transparent;
-                    color: #f35336;
-                }
-            }
-            &:hover, &:focus {
-                svg {
-                    opacity: 1;
-                }
-            }
-        }
+    // .bottom-utilities {
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: space-between;
+    // }
+    // .export-code {
+    //     margin: 1em 0 0;
+    //     display: flex;
+    //     justify-content: flex-start;
+    //     .export-css {
+    //         font-size: 18px;
+    //         display: flex;
+    //         align-items: center;
+    //         cursor: pointer;
+    //     }
+    //     svg {
+    //         width: 32px;
+    //         height: 32px;
+    //         circle {
+    //             fill: #bbb;
+    //         }
+    //         path {
+    //             fill: #fff;
+    //         }
+    //     }
+    //     svg:hover {
+    //         opacity: 0.7;
+    //     }
+    // }
+    // .clear-fav {
+    //     margin: 1em 0 0;
+    //     display: flex;
+    //     justify-content: flex-end;
+    //     .clear-favorites {
+    //         font-size: 18px;
+    //         display: flex;
+    //         align-items: center;
+    //         svg {
+    //             margin-right: 2px;
+    //             font-size: 18px;
+    //             width: 18px;
+    //             height: 18px;
+    //             width: 24px;
+    //             fill:  #f35336;
+    //             cursor: pointer;
+    //             opacity: 0.7;
+    //             circle {
+    //                 fill: transparent;
+    //                 color: #f35336;
+    //             }
+    //         }
+    //         &:hover, &:focus {
+    //             svg {
+    //                 opacity: 1;
+    //             }
+    //         }
+    //     }
         
-    }
-    .clear-text, .export-text {
-        font-size: 12px;
-        color: #777;
-    }
-    .account-link {
-        font-size: 13px;
-        margin: 1em 0 0 4px;;
-    }
+    // }
+    // .clear-text, .export-text {
+    //     // font-size: 12px;
+    //     // color: #777;
+    // }
+    // .account-link {
+    //     font-size: 13px;
+    //     // margin: 1em 0 0 4px;;
+    // }
 }

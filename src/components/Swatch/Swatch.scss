@@ -20,29 +20,15 @@
     .actions-wrap {
         display: flex;
         align-items: center;
-        // justify-content: center;
         height: 100%;
-        // width: 100%;
+        // position: relative;
     }
-    // .swatch-actions {
-    //     // right: 24px;
-    //     top: 20px;
-    //     opacity: 0.96;
-    //     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-    //     opacity: 1;
-    //     z-index: 9999;
-    //     // display: block;
-    // }
     .swatch-actions {
-        // top: 20px;
         opacity: 0.96;
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        // opacity: 1;
         z-index: 9999;
         transition: all 0.3s ease-in-out;
         position: absolute;
-        // top: 0;
-        // right: 24px;
         margin: 0 auto;
         left: 0;
         right: 0;
@@ -50,22 +36,14 @@
         height: 40px;
         width: 80%;
         border-radius: 32px;
-        // padding: 4px;
         background: #efefef;
-        // height: 100%;
         z-index: 99;
         display: flex;
-        // flex-direction: column;
         align-items: center;
         justify-content: center;
-        // display: none;
-        // opacity: 0;
-        // z-index: -1;
-        
         .actions-list {
             width: inherit;
             display: flex;
-            // flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
@@ -93,15 +71,35 @@
                     fill: #777;
                 }
                 &:hover, &:focus {
-                    fill: #222;
+                    path {
+                        fill: #222;
+                    }
                 }
             }
         }
         .remove-favorite {
             svg.timesCircle {
+                width: 18px;
                 circle {
-                        fill: transparent;
+                        fill: #777;
                     }
+                path, rect, polygon {
+                    fill: #fff;
+                }
+                &:hover, &:focus {
+                    circle {
+                        fill: #222;
+                    }
+                    path, rect, polygon {
+                        fill: #fff;
+                    }
+                }
+            }
+        }
+        .copy-hex {
+            svg.hashtag {
+                width: 15px;
+                height: auto;
                 path, g {
                     fill: #777;
                 }
@@ -112,18 +110,13 @@
                 }
             }
         }
-        .copy-hex {
-            svg.hashtag {
-                width: 15px;
-                height: auto;
-                // circle {
-                //         fill: #777;
-                //     }
-                path, g {
+        .color-link {
+            svg {
+                path {
                     fill: #777;
                 }
                 &:hover, &:focus {
-                    circle {
+                    path {
                         fill: #222;
                     }
                 }
@@ -196,29 +189,29 @@
             -webkit-animation-duration: 0.5s;animation-duration: 0.5s;
             -webkit-animation-fill-mode: both;animation-fill-mode: both;
         }
-        .add-favorite, .remove-favorite {
-            display: none;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            font-size: 18px;
-            cursor: pointer !important;
-            z-index: 99;
-            &:focus {
-                outline: none;
-            }
-            svg {
-                width: 18px;
-                height: 18px;
-                circle {
-                    fill: transparent;
-                }
-            }
-        }
+        // .add-favorite, .remove-favorite {
+        //     display: none;
+        //     position: absolute;
+        //     top: 5px;
+        //     right: 5px;
+        //     font-size: 18px;
+        //     cursor: pointer !important;
+        //     z-index: 99;
+        //     &:focus {
+        //         outline: none;
+        //     }
+        //     svg {
+        //         width: 18px;
+        //         height: 18px;
+        //         circle {
+        //             fill: transparent;
+        //         }
+        //     }
+        // }
         &:hover {
-            .add-favorite, .remove-favorite {
-                display: block;
-            }
+            // .add-favorite, .remove-favorite {
+            //     display: block;
+            // }
         }
         .favorite-heart {
             position: absolute;
