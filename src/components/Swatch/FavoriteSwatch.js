@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
+import HoverIntent from 'react-hoverintent'
 import SwatchActions from '../Swatch/SwatchActions'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
@@ -25,16 +26,29 @@ const FavoriteSwatch = ({
         key = color.hex + '-square'
     }
 
+    const onMouseOver = () => {
+        setActions(true)
+    }
+
+    // required by hoverIntent but we're not using it
+    const onMouseOut = () => {}
+
+    // const handleMouseEnter = () => {
+    //     var timer = setTimeout(() => {
+    //         setActions(true)
+    //     }, 500)
+    // }
+
     // actions menu can get stuck so let's hide it if so after mouse stopped
     useEffect(() => {
-        let timeout
-        document.onmousemove = function() {
-            // console.log('mouse stopped!')
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                setActions(false)
-            }, 5000)
-        }
+        // let timeout
+        // document.onmousemove = function() {
+        //     // console.log('mouse stopped!')
+        //     clearTimeout(timeout)
+        //     timeout = setTimeout(() => {
+        //         setActions(false)
+        //     }, 5000)
+        // }
     })
 
     window.onbeforeunload = e => {
@@ -65,14 +79,22 @@ const FavoriteSwatch = ({
                             <div className="swatch-hex">{color.hex}</div>
                             <div className="swatch-name">{color.name}</div>
                         </div>
-                        <span
-                            className="actions-trigger"
-                            aria-haspopup="true"
-                            aria-expanded={`${actions ? 'true' : 'false'}`}
-                            onMouseEnter={() => setActions(true)}
+                        <HoverIntent
+                            onMouseOver={onMouseOver}
+                            onMouseOut={onMouseOut}
+                            sensitivity={5}
+                            interval={300}
+                            timeout={0}
                         >
-                            <Ellipsis style={{ fill: readableColor }} />
-                        </span>
+                            <span
+                                className="actions-trigger"
+                                aria-haspopup="true"
+                                aria-expanded={`${actions ? 'true' : 'false'}`}
+                                // onMouseEnter={handleMouseEnter}
+                            >
+                                <Ellipsis style={{ fill: readableColor }} />
+                            </span>
+                        </HoverIntent>
                         {actions && (
                             <div className="actions-wrap">
                                 <SwatchActions

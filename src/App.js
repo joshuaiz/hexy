@@ -44,7 +44,8 @@ import {
     getColorByHex,
     hexColors,
     getCurrentDateTime,
-    getAllColors
+    getAllColors,
+    arrayDiffByKey
 } from './utils/helpers'
 import { createID, getUser } from './utils/user'
 import 'react-tippy/dist/tippy.css'
@@ -225,6 +226,37 @@ const App = React.memo(({ history, location, match }) => {
         [favorites, user]
     )
 
+    const handleAddPaletteToFavorites = useCallback(
+        palette => {
+            let newFavorites
+
+            if (!palette) {
+                return
+            }
+
+            let newPalette = arrayDiffByKey('hex', palette, favorites)
+            // let difference = arrayDiffByKey('hex', newPalette, favorites)
+
+            if (newPalette.length > 15 || favorites.length > 15) {
+                alert('The maximum number of favorites is 15.')
+                return
+            }
+
+            if (user && favorites.length < numFaves) {
+                newFavorites = [...favorites, ...newPalette]
+                setFavorites(newFavorites)
+                setLocalStorage('hexy_favorites', newFavorites)
+            } else if (favorites.length) {
+                setFavorites(newPalette)
+                setLocalStorage('hexy_favorites', newPalette)
+            } else {
+                setFavorites(palette)
+                setLocalStorage('hexy_favorites', palette)
+            }
+        },
+        [favorites, user]
+    )
+
     const checkIfFavorite = color => {
         let found
         if (favorites && favorites.length) {
@@ -267,6 +299,7 @@ const App = React.memo(({ history, location, match }) => {
         setFavorites([])
         setFavoriteSwatches([])
         localStorage.removeItem('hexy_favorites')
+        localStorage.removeItem('hexy_added_palettes')
     }
 
     useEffect(() => {
@@ -475,6 +508,9 @@ const App = React.memo(({ history, location, match }) => {
                             render={() => (
                                 <Feed
                                     handleFavorites={handleFavorites}
+                                    handleAddPaletteToFavorites={
+                                        handleAddPaletteToFavorites
+                                    }
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
                                     paletteExported={paletteExported}

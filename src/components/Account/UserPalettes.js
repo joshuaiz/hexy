@@ -3,6 +3,7 @@ import { withRouter, Link } from 'react-router-dom'
 import Tippy from '@tippy.js/react'
 import { Tooltip } from 'react-tippy'
 import Swatch from '../Swatch'
+import PaletteActions from '../PaletteActions'
 import FavoritesPDF from '../Favorites/FavoritesPDF'
 import Modali, { useModali } from 'modali'
 import * as emailjs from 'emailjs-com'
@@ -18,6 +19,7 @@ import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Share } from '../../images/share.svg'
 import { ReactComponent as Code } from '../../images/code.svg'
 import { ReactComponent as Links } from '../../images/link.svg'
+import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import Logo from '../Logo'
 
 const UserPalettes = ({
@@ -32,6 +34,7 @@ const UserPalettes = ({
     setPaletteExported
 }) => {
     // const { user } = useAuthState(firebase.auth())
+
     const [existing, setExisting] = useState(true)
     const [paletteModal, togglePaletteModal] = useModali()
     const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
@@ -182,6 +185,26 @@ const UserPalettes = ({
             })
     }
 
+    // const handleMouseEnter = index => {
+    //     setHover({
+    //         hover: true,
+    //         [index]: true
+    //     })
+    // }
+
+    // useEffect(() => {
+    //     let timeout
+    //     document.onmousemove = function() {
+    //         // console.log('mouse stopped!')
+    //         clearTimeout(timeout)
+    //         timeout = setTimeout(() => {
+    //             // setActions(false)
+    //         }, 5000)
+    //     }
+    // })
+
+    // console.log(actions)
+
     return (
         <div
             className={`nostyle palettes-list ${
@@ -205,96 +228,18 @@ const UserPalettes = ({
                                     <div className="palette-name">
                                         {palette.name && palette.name}
                                     </div>
-                                    <div className="palette-utilities-top">
-                                        <div className="share-link">
-                                            <Tippy
-                                                // options
-                                                content="Get shareable link"
-                                                placement="top"
-                                                trigger="mouseenter"
-                                                arrow={true}
-                                            >
-                                                <span
-                                                    className={`export-css ${
-                                                        accountLevel &&
-                                                        accountLevel === 'high'
-                                                            ? 'enabled'
-                                                            : 'disabled'
-                                                    }`}
-                                                    onClick={() =>
-                                                        shareLink(palette)
-                                                    }
-                                                >
-                                                    <Links />
-                                                </span>
-                                            </Tippy>
-                                        </div>
-                                        {palette.palette.length <= 5 && (
-                                            <div className="share-palette">
-                                                <Tippy
-                                                    // options
-                                                    content="Share to public palettes"
-                                                    placement="top"
-                                                    trigger="mouseenter"
-                                                    arrow={true}
-                                                >
-                                                    <Share
-                                                        onClick={() =>
-                                                            sharePalette(
-                                                                palette.name,
-                                                                palette.palette
-                                                            )
-                                                        }
-                                                    />
-                                                </Tippy>
-                                            </div>
-                                        )}
 
-                                        <Tooltip
-                                            // options
-                                            title="Export to PDF"
-                                            position="top"
-                                            trigger="mouseenter"
-                                            arrow={true}
-                                        >
-                                            <FavoritesPDF
-                                                favorites={
-                                                    palette.palette &&
-                                                    palette.palette
-                                                }
-                                                paletteName={
-                                                    palette.name && palette.name
-                                                }
-                                            />
-                                        </Tooltip>
-
-                                        <div className="export-code">
-                                            <Tippy
-                                                // options
-                                                content="Export SCSS code"
-                                                placement="top"
-                                                trigger="mouseenter"
-                                                arrow={true}
-                                            >
-                                                <span
-                                                    className={`export-css ${
-                                                        accountLevel &&
-                                                        accountLevel === 'high'
-                                                            ? 'enabled'
-                                                            : 'disabled'
-                                                    }`}
-                                                    onClick={() =>
-                                                        exportCode(
-                                                            palette.palette,
-                                                            palette.name
-                                                        )
-                                                    }
-                                                >
-                                                    <Code />
-                                                </span>
-                                            </Tippy>
-                                        </div>
-                                    </div>
+                                    <PaletteActions
+                                        palette={palette}
+                                        currentUser={currentUser}
+                                        accountLevel={accountLevel}
+                                        shareLink={shareLink}
+                                        sharePalette={sharePalette}
+                                        exportCode={exportCode}
+                                        deletePalette={deletePalette}
+                                        // setActions={setActions}
+                                        // actions={actions}
+                                    />
                                 </div>
 
                                 <ul className="user-palette nostyle">
@@ -317,25 +262,6 @@ const UserPalettes = ({
                                         )
                                     })}
                                 </ul>
-                                <div className="palette-utilities">
-                                    <div className="delete-palette">
-                                        <span
-                                            className="palette-delete"
-                                            onClick={() =>
-                                                deletePalette(palette.name)
-                                            }
-                                        >
-                                            <TimesCircle
-                                                style={{
-                                                    color: '#f35336'
-                                                }}
-                                            />
-                                            <span className="clear-text">
-                                                Delete
-                                            </span>
-                                        </span>
-                                    </div>
-                                </div>
                             </div>
                         )
                     })}

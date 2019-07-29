@@ -11,16 +11,10 @@ import * as jsPDF from 'jspdf'
 import { db } from '../../config/firebaseconfig'
 import { checkInputChars } from '../../utils/helpers'
 import { ReactComponent as Download } from '../../images/download.svg'
+import { SFProHB } from '../../fonts/SFProHB'
+import { SFProM } from '../../fonts/SFProM'
 
 const PalettePDF = ({ palette, paletteName }) => {
-    // const { user } = useAuthState(firebase.auth())
-    // const [accountError, setAccountError] = useState(false)
-    // const [accountModal, toggleAccountModal] = useModali({
-    //     onHide: () => setAccountError(false)
-    // })
-
-    // console.log('PalettePDF', palette, typeof palette)
-
     let now = new Date()
 
     let dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
@@ -40,11 +34,30 @@ const PalettePDF = ({ palette, paletteName }) => {
         fontSize: 12
     })
 
-    doc.text(
-        `Hexy Palette ${dateStringWithTime}${name ? ': ' + name : ''}`,
-        1,
-        0.5
-    )
+    // define custom font
+    doc.addFileToVFS('SFProHB.ttf', SFProHB)
+
+    doc.addFont('SFProHB.ttf', 'SFProHB', 'Bold')
+
+    doc.setFont('SFProHB', 'Bold')
+
+    doc.setFontSize(18)
+
+    doc.text(`Hexy Palette${name ? ': ' + name : ''}`, 1, 0.5)
+
+    doc.setTextColor(170, 170, 170)
+
+    doc.text(dateStringWithTime, 7, 0.5)
+
+    doc.addFileToVFS('SFProM.ttf', SFProM)
+
+    doc.addFont('SFProM.ttf', 'SFProM', 'Normal')
+
+    doc.setFont('SFProM', 'Normal')
+
+    doc.setFontSize(11)
+
+    doc.setTextColor(85, 85, 85)
 
     let n = palette && palette.length
     // let n = 5
@@ -67,58 +80,6 @@ const PalettePDF = ({ palette, paletteName }) => {
     function handlePDF() {
         doc.save('HexyPalette.pdf')
     }
-
-    // const savePaletteToFeed = () => {
-    //     if (!paletteName) {
-    //         alert('Please name your palette')
-    //         setPaletteNameError(true)
-    //         return
-    //     } else if (paletteName && paletteName.length > 32) {
-    //         alert(
-    //             'Palette names must be less than 32 characters. Please rename your palette.'
-    //         )
-    //         return
-    //     } else if (paletteName && paletteName.length <= 32) {
-    //         let palettes = db.collection('palettes')
-    //         palettes
-    //             .doc(`${paletteName}_${dateStringSlug}`)
-    //             .set({
-    //                 date: dateStringWithTime,
-    //                 likes: 0,
-    //                 name: paletteName,
-    //                 pid: `${paletteName}_${dateStringSlug}`,
-    //                 palette: favorites
-    //             })
-    //             .catch(err => {
-    //                 console.log('Error saving palette', err)
-    //             })
-    //     } else {
-    //         alert('Sorry your palette could not be exported. Please try again.')
-    //     }
-    // }
-
-    // doc.save('test.pdf')
-
-    // const handleButtonClick = () => {
-    //     toggleAccountModal(false)
-    //     setAccountError(false)
-    //     setTimeout(() => {
-    //         history.push('/account')
-    //     }, 500)
-    // }
-
-    // const handleLinkClick = () => {
-    //     toggleAccountModal(false)
-    //     setAccountError(false)
-    //     setTimeout(() => {
-    //         history.push('/pro')
-    //     }, 500)
-    // }
-
-    // window.onbeforeunload = () => {
-    //     toggleAccountModal(false)
-    //     setAccountError(false)
-    // }
 
     return (
         <div className="favorites-pdf">

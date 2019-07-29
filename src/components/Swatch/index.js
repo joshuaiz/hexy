@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import HoverIntent from 'react-hoverintent'
 import SwatchActions from './SwatchActions'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
@@ -38,6 +39,17 @@ const Swatch = ({
         }
     }, [color])
 
+    const onMouseOver = () => {
+        setActions(true)
+    }
+
+    // required by hoverIntent but we're not using it
+    const onMouseOut = () => {}
+
+    const handleTriggerClick = () => {
+        setActions(true)
+    }
+
     // actions menu can get stuck so let's hide it if so after mouse stopped
     useEffect(() => {
         let timeout
@@ -46,7 +58,7 @@ const Swatch = ({
             clearTimeout(timeout)
             timeout = setTimeout(() => {
                 setActions(false)
-            }, 5000)
+            }, 4000)
         }
     })
 
@@ -55,14 +67,21 @@ const Swatch = ({
             className={`swatch ${isFavorite ? 'favorite' : ''}`}
             key={color.hex + isFavorite ? '-favorite' : null}
         >
-            <span
-                className="actions-trigger"
-                aria-haspopup="true"
-                aria-expanded={`${actions ? 'true' : 'false'}`}
-                onMouseEnter={() => setActions(true)}
+            <HoverIntent
+                onMouseOver={onMouseOver}
+                onMouseOut={onMouseOut}
+                sensitivity={5}
+                interval={300}
+                timeout={0}
             >
-                <Ellipsis style={{ fill: readableColor }} />
-            </span>
+                <span
+                    className={`actions-trigger action-${color.hex}`}
+                    aria-haspopup="true"
+                    aria-expanded={`${actions ? 'true' : 'false'}`}
+                >
+                    <Ellipsis style={{ fill: readableColor }} />
+                </span>
+            </HoverIntent>
             {actions && (
                 <div className="actions-wrap">
                     <SwatchActions

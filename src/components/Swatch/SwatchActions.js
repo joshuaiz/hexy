@@ -37,8 +37,6 @@ const SwatchActions = React.memo(
             }, 1000)
         }
 
-        // console.log('SwatchActions', isFavorite)
-
         return (
             <div className={`swatch-actions`} onMouseLeave={leaveActions}>
                 <ul className="actions-list nostyle">

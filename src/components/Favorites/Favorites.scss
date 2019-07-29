@@ -112,6 +112,20 @@
                     z-index: 99;
 
                 }
+                .favorite-actions:after {
+                    bottom: 100%;
+                    left: 90.8%;
+                    border: solid transparent;
+                    content: " ";
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    pointer-events: none;
+                    border-color: rgba(239, 239, 239, 0);
+                    border-bottom-color: #efefef;
+                    border-width: 12px;
+                    margin-left: -12px;
+                }
                 .actions-list {
                     display: flex;
                     flex-direction: column;
@@ -374,13 +388,31 @@
                 background: #ccc !important;
                 height: 30px;
                 display: block;
+                .actions-trigger {
+                    padding: 4px 6px;
+                }
                 .actions-wrap {
                     .swatch-actions {
                         width: 125px;
                         margin: 0;
                         left: auto;
                         right: 0;
-                        top: -35px;
+                        top: -40px;
+                    }
+                    .swatch-actions:after {
+                        top: 100%;
+                        left: auto;
+                        right: 11px;
+                        border: solid transparent;
+                        content: " ";
+                        height: 0;
+                        width: 0;
+                        position: absolute;
+                        pointer-events: none;
+                        border-color: rgba(239, 239, 239, 0);
+                        border-top-color: #efefef;
+                        border-width: 8px;
+                        margin-left: -8px;
                     }
                 }
                     .swatch-color {
@@ -435,7 +467,8 @@
                 }
                 .swatch-actions {
                     width: 100px;
-                    left: -14px;
+                    left: -16px;
+                    top: 30px;
                     // top: 60px;
                 }
                     .swatch-color {

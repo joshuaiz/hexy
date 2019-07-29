@@ -12,13 +12,15 @@ const Feed = ({
     handleFavorites,
     removeFavorite,
     favorites,
+    setFavorites,
+    handleAddPaletteToFavorites,
     paletteExported
 }) => {
     const [feed, setFeed] = useState([])
     const [paletteLiked, setPaletteLiked] = useState(false)
     const [swatchInfo, setSwatchInfo] = useState(true)
 
-    console.log(paletteExported)
+    // console.log(paletteExported)
 
     useEffect(() => {
         // used to cancel async fetch on unmount
@@ -121,6 +123,7 @@ const Feed = ({
                     feed={feed}
                     handleLike={handleLike}
                     handleFavorites={handleFavorites}
+                    handleAddPaletteToFavorites={handleAddPaletteToFavorites}
                     removeFavorites={removeFavorite}
                     swatchInfo={swatchInfo}
                 />

@@ -6,6 +6,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import HoverIntent from 'react-hoverintent'
 import Modali, { useModali } from 'modali'
 import Tippy from '@tippy.js/react'
 import useWindowWidth from '../../hooks/useWindowWidth'
@@ -62,12 +63,6 @@ const Favorites = ({
     const filter = new Filter()
 
     const smallAccounts = ['standard', 'pro']
-
-    // if (currentUser) {
-    //     console.log(smallAccounts.indexOf(currentUser.accountType))
-    // }
-
-    // console.log(currentUser && currentUser)
 
     const handleBright = () => {
         setLocalStorage('original_favorites', favorites)
@@ -244,7 +239,7 @@ const Favorites = ({
     }, [currentUser])
 
     window.onbeforeunload = () => {
-        toggleUpgradeAccountModal(!!false)
+        toggleUpgradeAccountModal(false)
     }
 
     // useEffect(() => {
@@ -257,6 +252,13 @@ const Favorites = ({
     //         }, 5000)
     //     }
     // })
+
+    const onMouseOver = () => {
+        setActions(true)
+    }
+
+    // required by hoverIntent but we're not using it
+    const onMouseOut = () => {}
 
     return (
         <Fragment>
@@ -289,16 +291,24 @@ const Favorites = ({
                                 sticky={true}
                                 arrow={true}
                             >
-                                <span
-                                    className="actions-trigger"
-                                    aria-haspopup="true"
-                                    aria-expanded={`${
-                                        actions ? 'true' : 'false'
-                                    }`}
-                                    onMouseEnter={() => setActions(true)}
+                                <HoverIntent
+                                    onMouseOver={onMouseOver}
+                                    onMouseOut={onMouseOut}
+                                    sensitivity={5}
+                                    interval={300}
+                                    timeout={0}
                                 >
-                                    <Ellipsis />
-                                </span>
+                                    <span
+                                        className="actions-trigger"
+                                        aria-haspopup="true"
+                                        aria-expanded={`${
+                                            actions ? 'true' : 'false'
+                                        }`}
+                                        // onMouseEnter={() => setActions(true)}
+                                    >
+                                        <Ellipsis />
+                                    </span>
+                                </HoverIntent>
                             </Tippy>
                             {actions && (
                                 <div className="actions-wrap">

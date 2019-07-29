@@ -44,7 +44,26 @@
                     list-style: none;
                     // box-sizing: border-box;
                     margin-right: 2.2em;
-                    
+                    .swatch-actions {
+                        right: 8px;
+                        top: 30px;
+                        margin: 0;
+                        left: auto;
+                    }
+                    .swatch-actions:after {
+                        bottom: 100%;
+                        left: 92%;
+                        border: solid transparent;
+                        content: " ";
+                        height: 0;
+                        width: 0;
+                        position: absolute;
+                        pointer-events: none;
+                        border-color: rgba(239, 239, 239, 0);
+                        border-bottom-color: #efefef;
+                        border-width: 8px;
+                        margin-left: -8px;
+                    }
                     .swatch-color {
                         height: 100%;
                     }
@@ -74,7 +93,25 @@
                         position: relative;
                         .actions-wrap {
                             .swatch-actions {
-                                top: -45px;
+                                top: -40px;
+                                right: 0;
+                                margin: 0;
+                                margin-left: auto;
+                            }
+                            .swatch-actions:after {
+                                top: 98%;
+                                left: auto;
+                                right: 12px;
+                                border: solid transparent;
+                                content: " ";
+                                height: 0;
+                                width: 0;
+                                position: absolute;
+                                pointer-events: none;
+                                border-color: rgba(239, 239, 239, 0);
+                                border-top-color: #efefef;
+                                border-width: 8px;
+                                margin-left: -8px;
                             }
                         }
                         .swatch-color {
@@ -250,10 +287,24 @@
         justify-content: space-between;
         .actions-wrap {
             .swatch-actions {
-                top: -45px;
+                top: -40px;
                 right: 0;
                 margin: 0;
                 left: auto;
+            }
+            .swatch-actions:after {
+                top: 96%;
+                left: 86.2%;
+                border: solid transparent;
+                content: " ";
+                height: 0;
+                width: 0;
+                position: absolute;
+                pointer-events: none;
+                border-color: rgba(239, 239, 239, 0);
+                border-top-color: #efefef;
+                border-width: 8px;
+                margin-left: -8px;
             }
         }
         .color-harmony {

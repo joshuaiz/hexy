@@ -56,20 +56,78 @@
                         font-weight: 600;
                         padding-bottom: 5px;
                     }
+                    .add-favorites-wrap {
+                        margin-right: 10px;
+                        position: relative;
+                        top: 2px;
+                        &:focus, &:active {
+                            outline: 0;
+                        }
+                        svg {
+                            // width: 14px;
+                            &:focus, &:active {
+                                outline: 0;
+                            }
+                            cursor: pointer;
+                            .st0 {
+                                fill: #fff;
+                            }
+                            path {
+                                fill: #777;
+                            }
+                            &:hover {
+                                .st0 {
+                                    fill: #fff;
+                                }
+                                path {
+                                    fill: #222;
+                                }
+                            }
+                        }
+                    }
+                    .add-favorites-wrap.added {
+                        svg {
+                            // width: 14px;
+                            &:focus, &:active {
+                                outline: 0;
+                            }
+                            cursor: pointer;
+                            .st0 {
+                                fill: #fff;
+                            }
+                            path {
+                                fill: #777;
+                            }
+                            &:hover {
+                                .st0 {
+                                    fill: #fff;
+                                }
+                                path {
+                                    fill: #f35336;
+                                }
+                            }
+                        }
+                    }
                     .palette-pdf {
                         margin-left: auto;
                         margin-right: 10px;
                         width: 21px;
                         .favorites-pdf {
                             cursor: pointer;
+                            &:focus, &:active {
+                                outline: 0;
+                            }
                             svg {
                                 width: 21px;
                                 height: auto;
                                 path {
                                     fill: #aaa;
                                 }
+                                &:focus, &:active {
+                                    outline: 0;
+                                }
                             }
-                            span {
+                            .linkish {
                                 display: none;
                             }
                             &:hover {
@@ -86,12 +144,18 @@
                         text-align: right;
                         // margin-left: auto;
                         // align-self: flex-end;
+                        &:focus, &:active {
+                            outline: 0;
+                        }
                         svg {
                             width: 12px;
                             height: 12px;
                             font-size: 12px;
                             position: relative;
                             // top: 2px;
+                            &:focus, &:active {
+                                outline: 0;
+                            }
                             path {
                                 fill: #bbb;
                                 stroke-width: 5;
@@ -100,12 +164,21 @@
                                     fill: red;
                                     cursor: pointer;
                                 }
+                                &:focus, &:active {
+                                    outline: 0;
+                                }
                             }
+                        }
+                        .likes::focus {
+                            outline: 0;
                         }
                         .liked {
                             svg {
                                 path {
                                     fill: red;
+                                }
+                                &:focus, &:active {
+                                    outline: 0;
                                 }
                             }
                         }
@@ -136,15 +209,18 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            top: -2px;
+                            top: -10px;
                             left: 0;
                             right: 0;
                             margin: auto
                         }
                         .swatch-actions {
                             width: 100px;
-                            left: -20px;
-                            // top: 60px;
+                            left: -23px;
+                            top: 25px;
+                            .actions-list {
+                                padding: 10px;
+                            }
                         }
                         .swatch-color {
                             padding: 2px;

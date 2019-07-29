@@ -4,12 +4,13 @@
     // overflow: hidden;
     .actions-trigger {
         position: absolute;
-        top: 5px;
-        right: 10px;
+        top: 0px;
+        right: 2px;
         z-index: 98;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
         opacity: 0;
+        padding: 8px;
         &:hover {
 
         }
@@ -35,7 +36,7 @@
         top: 20px;
         height: 40px;
         width: 80%;
-        border-radius: 32px;
+        border-radius: 4px;
         background: #efefef;
         z-index: 99;
         display: flex;
@@ -88,7 +89,7 @@
                 }
                 &:hover, &:focus {
                     circle {
-                        fill: #222;
+                        fill: #f35336;
                     }
                     path, rect, polygon {
                         fill: #fff;
@@ -129,6 +130,20 @@
                 outline: none;
             }
         }
+    }
+    .swatch-actions:after {
+        bottom: 100%;
+        left: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(239, 239, 239, 0);
+        border-bottom-color: #efefef;
+        border-width: 8px;
+        margin-left: -8px;
     }
     .swatch-color {
         // width: 198px;

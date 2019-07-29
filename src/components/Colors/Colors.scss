@@ -54,6 +54,22 @@
         text-align: right;
         margin: 1em 0 0;
     }
+    .swatch-list {
+        .swatch {
+            .actions-wrap {
+                .swatch-actions {
+                    top: 33px;
+                    right: 5px;
+                    margin: 0;
+                    margin-left: auto;
+                }
+                .swatch-actions:after {
+                    right: 8px;
+                    left: auto;
+                }
+            }
+        }
+    }
 }
 
 // styling for viewing all colors (grid can't show more than 1000 rows)

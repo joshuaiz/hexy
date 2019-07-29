@@ -269,15 +269,111 @@
                 .palette-title-bar {
                     display: flex;
                     justify-content: space-between;
+                    position: relative;
                     .palette-name {
                         font-size: 13px;
                         font-weight: 600;
                         padding-bottom: 5px;
                     }
-                    .palette-utilities-top {
+                    // .palette-utilities-top {
+                    //     display: flex;
+                    //     align-items: center;
+                    //     justify-content: flex-end;
+                    // }
+                    .actions-trigger {
+                        position: absolute;
+                        // top: 5px;
+                        right: 5px;
+                        z-index: 98;
+                        cursor: pointer;
+                        transition: all 0.3s ease-in-out;
+                        // opacity: 0;
+                        &:hover {
+
+                        }
+                        svg {
+                            width: 21px;
+                            path {
+                                fill: #777;
+                            }
+                        }
+                    }
+                    .actions-wrap {
                         display: flex;
                         align-items: center;
-                        justify-content: flex-end;
+                        height: 100%;
+                        width: 100%;
+                        // position: relative;
+                    }
+                    .palette-actions {
+                        opacity: 0.96;
+                        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+                        z-index: 9999;
+                        transition: all 0.3s ease-in-out;
+                        position: absolute;
+                        margin: 0 auto;
+                        left: auto;
+                        right: 0;
+                        top: -50px;
+                        height: 40px;
+                        width: 200px;
+                        border-radius: 3px;
+                        background: #f2f2f2;
+                        z-index: 99;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        
+                        .actions-list {
+                            width: 90%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            position: relative;
+                            justify-content: space-between;
+                            padding: 10px 18px;
+                            top: 3px;
+                            li, span {
+                                &:focus, &:active {
+                                    outline: none;
+                                    outline: 0;
+                                }
+                            }
+                        }
+
+                        svg {
+                            cursor: pointer;
+
+                            &:focus, &:active {
+                                outline: none;
+                                outline: 0;
+                            }
+                        }
+                        .delete-palette {
+                            svg {
+                                position: relative;
+                                top: 1px;
+                                width: 18px;
+                                height: 18px;
+                                font-size: 24px;
+                                fill:  #f35336;
+                                cursor: pointer;
+                                opacity: 0.7;
+                                circle {
+                                    fill: transparent;
+                                    color: #f35336;
+                                }
+                                &:hover {
+                                    circle {
+                                        fill: #f35336;
+
+                                    }
+                                    path, polygon {
+                                        fill: #fff;
+                                    }
+                                }
+                            }
+                        }
                     }
                     .share-link {
                         cursor: pointer;
@@ -393,7 +489,20 @@
                         
                     }
                 }
-
+                .palette-actions:after {
+                        top: 100%;
+                        left: 92%;
+                        border: solid transparent;
+                        content: " ";
+                        height: 0;
+                        width: 0;
+                        position: absolute;
+                        pointer-events: none;
+                        border-color: rgba(239, 239, 239, 0);
+                        border-top-color: #efefef;
+                        border-width: 8px;
+                        margin-left: -8px;
+                }
                 .user-palette {
                     display: flex;
                     // flex-wrap: wrap;
@@ -433,7 +542,7 @@
                         }
                         .swatch-actions {
                             width: 100px;
-                            left: -20px;
+                            left: -23px;
                             // top: 60px;
                         }
                     }

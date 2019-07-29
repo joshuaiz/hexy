@@ -11,6 +11,8 @@ import * as jsPDF from 'jspdf'
 import { db } from '../../config/firebaseconfig'
 import { checkInputChars } from '../../utils/helpers'
 import { ReactComponent as Download } from '../../images/download.svg'
+import { SFProHB } from '../../fonts/SFProHB'
+import { SFProM } from '../../fonts/SFProM'
 
 const FavoritesPDF = ({
     history,
@@ -63,7 +65,7 @@ const FavoritesPDF = ({
             setPaletteNameError(true)
             return
         } else {
-            if (!Array.isArray(favorites) || !favorites.length) {
+            if (Array.isArray(favorites) && favorites.length) {
                 const doc = new jsPDF({
                     orientation: 'landscape',
                     unit: 'in',
@@ -71,13 +73,30 @@ const FavoritesPDF = ({
                     fontSize: 12
                 })
 
-                doc.text(
-                    `Hexy Favorites ${dateStringWithTime}${
-                        name ? ': ' + name : ''
-                    }`,
-                    1,
-                    0.5
-                )
+                // define custom font
+                doc.addFileToVFS('SFProHB.ttf', SFProHB)
+
+                doc.addFont('SFProHB.ttf', 'SFProHB', 'Bold')
+
+                doc.setFont('SFProHB', 'Bold')
+
+                doc.setFontSize(18)
+
+                doc.text(`Hexy Favorites${name ? ': ' + name : ''}`, 1, 0.5)
+
+                doc.setTextColor(170, 170, 170)
+
+                doc.text(dateStringWithTime, 7, 0.5)
+
+                doc.addFileToVFS('SFProM.ttf', SFProM)
+
+                doc.addFont('SFProM.ttf', 'SFProM', 'Normal')
+
+                doc.setFont('SFProM', 'Normal')
+
+                doc.setFontSize(11)
+
+                doc.setTextColor(85, 85, 85)
 
                 let n = favorites.length
 
