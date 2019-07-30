@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { Link, NavLink, withRouter } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { NavLink, withRouter } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
 import { Tooltip } from 'react-tippy'
@@ -43,6 +43,20 @@ const Header = ({
     window.onbeforeunload = () => {
         setIconHover(false)
     }
+
+    // useEffect(() => {
+    //     let timeout
+    //     document.onmousemove = function() {
+    //         // console.log('mouse stopped!')
+    //         clearTimeout(timeout)
+    //         timeout = setTimeout(() => {
+    //             setIconHover(false)
+    //         }, 4000)
+    //     }
+    //     // return () => {
+    //     //     setIconHover(false)
+    //     // }
+    // })
 
     return (
         <div id="top" className="header">

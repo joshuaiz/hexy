@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import { Droppable } from 'react-beautiful-dnd'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
-import 'firebase/storage'
-import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import HoverIntent from 'react-hoverintent'
 import Modali, { useModali } from 'modali'
@@ -13,14 +11,9 @@ import useWindowWidth from '../../hooks/useWindowWidth'
 import moment from 'moment'
 import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
-import FavoritesPDF from './FavoritesPDF'
 import Logo from '../Logo'
 import FavoriteActions from './FavoriteActions'
 import * as Filter from 'bad-words'
-// import { FavoritesContext } from './FavoritesContext'
-import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
-import { ReactComponent as Palette } from '../../images/palette.svg'
-import { ReactComponent as Code } from '../../images/code.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import {
     sortLightness,
@@ -48,7 +41,7 @@ const Favorites = ({
 }) => {
     const [isBright, setIsBright] = useState(false)
     const [paletteSaved, setPaletteSaved] = useState(false)
-    const { initialising, user } = useAuthState(firebase.auth())
+    const { user } = useAuthState(firebase.auth())
     const [paletteName, setPaletteName] = useState('')
     const [paletteNameError, setPaletteNameError] = useState()
     const [paletteErrorMessage, setPaletteErrorMessage] = useState()
@@ -59,6 +52,8 @@ const Favorites = ({
 
     const [paletteLimitModal, togglePaletteLimitModal] = useModali()
     const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
+
+    const cachedFavorites = getLocalStorage('hexy_favorites')
 
     const filter = new Filter()
 
@@ -236,7 +231,7 @@ const Favorites = ({
                 setAccountLevel('high')
             }
         }
-    }, [currentUser])
+    }, [currentUser, smallAccounts])
 
     window.onbeforeunload = () => {
         toggleUpgradeAccountModal(false)
@@ -259,6 +254,10 @@ const Favorites = ({
 
     // required by hoverIntent but we're not using it
     const onMouseOut = () => {}
+
+    // useEffect(() => {
+    //     getFavorites()
+    // }, [cachedFavorites])
 
     return (
         <Fragment>
@@ -312,6 +311,7 @@ const Favorites = ({
                                         aria-expanded={`${
                                             actions ? 'true' : 'false'
                                         }`}
+                                        onClick={() => setActions(true)}
                                         // onMouseEnter={() => setActions(true)}
                                     >
                                         <Ellipsis />
@@ -497,5 +497,7 @@ const Favorites = ({
         </Fragment>
     )
 }
+
+// Favorites.whyDidYouRender = true
 
 export default Favorites

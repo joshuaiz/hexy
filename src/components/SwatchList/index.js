@@ -54,7 +54,7 @@ const SwatchList = React.memo(
                                 index={index}
                                 handleFavorites={handleFavorites}
                                 removeFavorite={removeFavorite}
-                                favorites={favorites}
+                                // favorites={favorites}
                                 isFavorite={isFavorite ? true : false}
                             />
                         )

@@ -1,15 +1,7 @@
-import React, { useState, Fragment } from 'react'
-import { Link, withRouter } from 'react-router-dom'
-import * as firebase from 'firebase/app'
-import 'firebase/storage'
-import 'firebase/auth'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import Modali, { useModali } from 'modali'
-import * as Filter from 'bad-words'
+import React from 'react'
+import { withRouter } from 'react-router-dom'
 import moment from 'moment'
 import * as jsPDF from 'jspdf'
-import { db } from '../../config/firebaseconfig'
-import { checkInputChars } from '../../utils/helpers'
 import { ReactComponent as Download } from '../../images/download.svg'
 import { SFProHB } from '../../fonts/SFProHB'
 import { SFProM } from '../../fonts/SFProM'
@@ -19,11 +11,7 @@ const PalettePDF = ({ palette, paletteName }) => {
 
     let dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
 
-    let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
-
     let name = paletteName
-
-    const filter = new Filter()
 
     // console.log('paletteWasExported FavoritesPDF', paletteWasExported)
 

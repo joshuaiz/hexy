@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import HoverIntent from 'react-hoverintent'
 import SwatchActions from './SwatchActions'
-import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
-import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Heart } from '../../images/heart.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import { getReadableColor, getNamedColor } from '../../utils/helpers'
@@ -15,11 +13,10 @@ const Swatch = ({
     handleFavorites,
     isFavorite,
     removeFavorite,
-    favorites,
     getFavorites
 }) => {
     const [namedColor, setNamedColor] = useState()
-    const [actions, setActions] = useState()
+    const [actions, setActions] = useState(false)
     const readableColor = getReadableColor(color)
 
     const params = {
@@ -47,10 +44,6 @@ const Swatch = ({
     // required by hoverIntent but we're not using it
     const onMouseOut = () => {}
 
-    const handleTriggerClick = () => {
-        setActions(true)
-    }
-
     // actions menu can get stuck so let's hide it if so after mouse stopped
     useEffect(() => {
         let timeout
@@ -61,6 +54,9 @@ const Swatch = ({
                 setActions(false)
             }, 4000)
         }
+        // return () => {
+        //     setActions(false)
+        // }
     })
 
     return (

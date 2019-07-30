@@ -17,6 +17,7 @@ const Colors = React.memo(
         noMatch,
         handleFavorites,
         removeFavorite,
+        // getFavorites,
         favorites,
         favoriteSwatches,
         setFavoriteSwatches,
@@ -78,6 +79,10 @@ const Colors = React.memo(
                 behavior: 'smooth'
             })
         }
+
+        // useEffect(() => {
+        //     getFavorites()
+        // }, [favorites])
 
         // console.log('Colors', colors && colors.length)
 

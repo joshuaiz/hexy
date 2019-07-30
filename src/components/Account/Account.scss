@@ -535,7 +535,7 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            top: -2px;
+                            top: -10px;
                             left: 0;
                             right: 0;
                             margin: auto
@@ -544,6 +544,9 @@
                             width: 100px;
                             left: -23px;
                             // top: 60px;
+                            .actions-list {
+                                padding: 8px;
+                            }
                         }
                     }
                 }

@@ -8,17 +8,15 @@ import FeedList from './FeedList'
 import { getLocalStorage, setLocalStorage } from '../../utils/helpers'
 import './Feed.scss'
 
-const Feed = ({
-    handleFavorites,
-    removeFavorite,
-    favorites,
-    setFavorites,
-    handleAddPaletteToFavorites,
-    paletteExported
-}) => {
+const Feed = React.memo(({ handleFavorites, removeFavorite, // getFavorites,
+    handleAddPaletteToFavorites, paletteExported }) => {
     const [feed, setFeed] = useState([])
     const [paletteLiked, setPaletteLiked] = useState(false)
     const [swatchInfo, setSwatchInfo] = useState(true)
+
+    // const localAddedPalettes = getLocalStorage('hexy_added_palettes')
+
+    // const cachedFavorites = getLocalStorage('hexy_favorites')
 
     // console.log(paletteExported)
 
@@ -101,7 +99,19 @@ const Feed = ({
         setSwatchInfo(!swatchInfo)
     }
 
+    // useEffect(() => {
+    //     getLocalStorage('hexy_added_palettes')
+    // })
+
     // console.log('paletteLiked', paletteLiked)
+
+    // useEffect(() => {
+    //     if (cachedFavorites) {
+    //         setFavorites(cachedFavorites)
+    //     } else {
+    //         setFavorites([])
+    //     }
+    // }, [cachedFavorites])
 
     return (
         <div className="feed">
@@ -132,6 +142,8 @@ const Feed = ({
             )}
         </div>
     )
-}
+})
+
+// Feed.whyDidYouRender = true
 
 export default withRouter(Feed)

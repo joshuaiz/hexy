@@ -545,7 +545,9 @@ const App = React.memo(({ history, location, match }) => {
                                         handleAddPaletteToFavorites
                                     }
                                     removeFavorite={removeFavorite}
-                                    favorites={favorites}
+                                    // setFavorites={setFavorites}
+                                    // // favorites={favorites}
+                                    getFavorites={getFavorites}
                                     paletteExported={paletteExported}
                                 />
                             )}
@@ -562,6 +564,7 @@ const App = React.memo(({ history, location, match }) => {
                                     noMatch={noMatch}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
+                                    // getFavorites={getFavorites}
                                     favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
@@ -636,7 +639,7 @@ const App = React.memo(({ history, location, match }) => {
                                 <Palette
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
-                                    favorites={favorites}
+                                    // favorites={favorites}
                                     handleAddPaletteToFavorites={
                                         handleAddPaletteToFavorites
                                     }

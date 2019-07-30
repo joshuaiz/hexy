@@ -91,6 +91,10 @@
                         box-sizing: border-box;
                         font-size: 12px;
                         position: relative;
+                        .actions-trigger {
+                            top: -6px;
+                            right: -1px;
+                        }
                         .actions-wrap {
                             .swatch-actions {
                                 top: -40px;
@@ -285,10 +289,14 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        .actions-trigger {
+            top: -6px;
+            right: -1px;
+        }
         .actions-wrap {
             .swatch-actions {
                 top: -40px;
-                right: 0;
+                right: -3px;
                 margin: 0;
                 left: auto;
             }
