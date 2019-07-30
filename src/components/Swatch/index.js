@@ -15,7 +15,8 @@ const Swatch = ({
     handleFavorites,
     isFavorite,
     removeFavorite,
-    favorites
+    favorites,
+    getFavorites
 }) => {
     const [namedColor, setNamedColor] = useState()
     const [actions, setActions] = useState()

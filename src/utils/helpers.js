@@ -84,9 +84,9 @@ export function toTitleCase(str) {
     })
 }
 
-export const getNumberOfFavorites = (user, currentUser) => {
+export const getNumberOfFavorites = currentUser => {
     let numFaves = 5
-    if (user && currentUser) {
+    if (currentUser) {
         const accountType = currentUser.accountType
 
         if (accountType) {

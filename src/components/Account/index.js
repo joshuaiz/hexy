@@ -22,6 +22,7 @@ const Account = React.memo(
         handleFavorites,
         removeFavorite,
         favorites,
+        getFavorites,
         paletteWasSaved,
         paletteExported,
         setPaletteExported,
@@ -316,6 +317,10 @@ const Account = React.memo(
         // useEffect(() => {
         //     console.log('updateError', updateError)
         // }, [updateError, setUpdateError])
+
+        useEffect(() => {
+            getFavorites()
+        }, [favorites])
 
         if (initialising) {
             // toggleLoginModal(false)

@@ -49,7 +49,6 @@ const SwatchActions = React.memo(
                                 trigger="mouseenter"
                                 size="small"
                                 offset="0, 10"
-                                sticky={true}
                                 arrow={true}
                             >
                                 <span

@@ -73,6 +73,13 @@
             margin-top: 8px;
             position: relative;
             height: 30px;
+            .favorites-sort {
+                position: relative;
+                top: 12px;
+                font-size: 12px;
+                // margin-right: 4px;
+                color: #777;
+            }
             .actions-trigger {
                 position: absolute;
                 right: 15px;
@@ -268,11 +275,7 @@
                         background: #dedede;
                     }
                 }
-                // .favorites-sort {
-                //     font-size: 12px;
-                //     margin-right: 4px;
-                //     color: #777;
-                // }
+                
                 // .favorites-pdf {
                 //     display: flex;
                 //     align-items: center;

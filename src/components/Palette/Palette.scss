@@ -12,17 +12,139 @@
     .palette-page {
         padding: 2.2em;
         // width: 100%;
+        h1 {
+            margin-bottom: 0;
+        }
         .palette-date {
             font-weight: 500;
             color: #aaa;
+            margin-left: 12px;
+        }
+        .palette-meta {
+            display: flex;
+            align-items: center;
+            .slash {
+                margin: 0 16px;
+            }
+            .palette-link {
+                font-family: 'SF Compact Display', 'SF Pro Display', -apple-system,
+                BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+                'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                font-size: 18px;
+                margin-right: 8px;
+                .copy-icon {
+                    margin-left: 12px;
+                    position: relative;
+                    top: 2px; 
+                    cursor: pointer;
+                    path {
+                        fill: #777;
+                    }
+                    &:hover, &:focus {
+                        path {
+                            fill: #222;
+                        }
+                    }
+                }
+            }
+            .favorites-pdf {
+                display: flex;
+                align-items: center;
+                margin: 1em 0;
+                svg {
+                    width: 28px;
+                    cursor: pointer;
+                    path {
+                        fill: #777;
+                    }
+                    circle {
+                        fill: #fff;
+                    }
+                    &:hover {
+                        path {
+                            fill: #222;
+                        }
+                    }
+                }
+                span {
+                    font-size: 13px;
+                    color: #777;
+                    display: none;
+                }
+            }
+            .add-favorites-wrap {
+                margin-right: 10px;
+                position: relative;
+                top: 3px;
+                &:focus, &:active {
+                    outline: 0;
+                }
+                svg {
+                    width: 21px;
+                    &:focus, &:active {
+                        outline: 0;
+                    }
+                    cursor: pointer;
+                    .st0 {
+                        fill: #fff;
+                    }
+                    path {
+                        fill: #777;
+                    }
+                    &:hover {
+                        .st0 {
+                            fill: #fff;
+                        }
+                        path {
+                            fill: #222;
+                        }
+                    }
+                }
+            }
+            .add-favorites-wrap.added {
+                svg {
+                    // width: 14px;
+                    &:focus, &:active {
+                        outline: 0;
+                    }
+                    cursor: pointer;
+                    .st0 {
+                        fill: #fff;
+                    }
+                    path {
+                        fill: #777;
+                    }
+                    &:hover {
+                        .st0 {
+                            fill: #fff;
+                        }
+                        path {
+                            fill: #f35336;
+                        }
+                    }
+                }
+            }
         }
         .user-palette {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            li {
+            li.swatch {
                 width: 18%;
                 height: 100px;
+                .actions-wrap {
+                    height: initial;
+                    .swatch-actions {
+                        right: 0;
+                        left: auto;
+                        top: 35px;
+                        width: 150px;
+                    }
+                    .swatch-actions:after {
+                        left: auto;
+                        right: 12px;
+                    }
+                }
                 .swatch-color {
                     height: 100%;
                 }

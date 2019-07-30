@@ -281,6 +281,14 @@ const Favorites = ({
                             Drag-and-drop to reorder favorites.
                         </div>
                         <div className="favorites-toolbar-inner">
+                            <span className="favorites-sort">
+                                <input
+                                    type="checkbox"
+                                    checked={isBright}
+                                    onChange={handleBright}
+                                />
+                                <label>Sort by brightness</label>
+                            </span>
                             <Tippy
                                 // options
                                 content="Favorites Actions"
@@ -322,8 +330,8 @@ const Favorites = ({
                                         setPaletteNameError={
                                             setPaletteNameError
                                         }
-                                        isBright={isBright}
-                                        handleBright={handleBright}
+                                        // isBright={isBright}
+                                        // handleBright={handleBright}
                                         savePalette={savePalette}
                                         paletteHasBeenSaved={
                                             paletteHasBeenSaved

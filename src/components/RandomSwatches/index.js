@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as Sync } from '../../images/sync.svg'
+import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import Swatch from '../Swatch'
 
 const RandomSwatches = ({
@@ -76,9 +77,10 @@ const RandomSwatches = ({
                     >
                         <Sync />
                     </span>{' '}
-                    Here's eight random named colors.{' '}
+                    Here's eight random named colors. <br />
                     <span className="swatch-info">
-                        Hover on any color and click <PlusCircle /> to add as a
+                        Hover on any color and then on the <Ellipsis /> on the
+                        top right of each swatch for actions like saving as a
                         favorite.{' '}
                     </span>
                 </h3>

@@ -312,6 +312,9 @@
             justify-content: space-between;
             flex-wrap: wrap;
             // padding: 0 8px;
+            h3 {
+                font-size: 18px;
+            }
             .more-trigger {
                 width: 18px;
                 height: 18px;
@@ -346,14 +349,16 @@
                 }
             }
             .swatch-info {
+                font-weight: 500;
+                color: #777;
+                font-size: 15px;
                 &:focus {
                     outline: none;
                 }
                 svg {
-                    width: 16px;
-                    height: 16px;
+                    width: 21px;
                     position: relative;
-                    top: 2px;
+                    top: 5px;
                     circle {
                         fill: transparent;
                     }
@@ -371,11 +376,21 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            li {
+            li.swatch {
                 margin: 0;
-                // min-width: 180px;
-                // flex: 1;
-                // width: 12%;
+                .actions-wrap {
+                    height: initial;
+                    .swatch-actions {
+                        right: 0;
+                        left: auto;
+                        top: 35px;
+                        width: 150px;
+                    }
+                    .swatch-actions:after {
+                        left: auto;
+                        right: 12px;
+                    }
+                }
                 .swatch-color {
                     height: 80px;
                     .add-favorite,

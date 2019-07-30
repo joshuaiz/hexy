@@ -78,7 +78,9 @@ const App = React.memo(({ history, location, match }) => {
 
     const [errorModal, toggleErrorModal] = useModali()
 
-    const numFaves = getNumberOfFavorites(user, currentUser)
+    const numFaves = getNumberOfFavorites(currentUser && currentUser)
+
+    // console.log(numFaves)
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
@@ -196,6 +198,8 @@ const App = React.memo(({ history, location, match }) => {
         color => {
             let found
 
+            // console.log('in handleFavorites: numFaves', numFaves)
+
             if (!color) {
                 return
             }
@@ -235,27 +239,56 @@ const App = React.memo(({ history, location, match }) => {
             }
 
             let newPalette = arrayDiffByKey('hex', palette, favorites)
-            // let difference = arrayDiffByKey('hex', newPalette, favorites)
+            let difference = arrayDiffByKey('hex', newPalette, favorites)
 
             if (newPalette.length > 15 || favorites.length > 15) {
                 alert('The maximum number of favorites is 15.')
                 return
             }
 
-            if (user && favorites.length < numFaves) {
-                newFavorites = [...favorites, ...newPalette]
-                setFavorites(newFavorites)
-                setLocalStorage('hexy_favorites', newFavorites)
-            } else if (favorites.length) {
+            if (favorites.length) {
                 setFavorites(newPalette)
                 setLocalStorage('hexy_favorites', newPalette)
             } else {
-                setFavorites(palette)
-                setLocalStorage('hexy_favorites', palette)
+                newFavorites = [...favorites, ...newPalette]
+                setFavorites(newFavorites)
+                setLocalStorage('hexy_favorites', newFavorites)
             }
         },
         [favorites, user]
     )
+
+    // const handleAddPaletteToFavorites = useCallback(
+    //     palette => {
+    //         let newFavorites
+
+    //         if (!palette) {
+    //             return
+    //         }
+
+    //         let newPalette = arrayDiffByKey('hex', palette, favorites)
+    //         // let difference = arrayDiffByKey('hex', newPalette, favorites)
+
+    //         if (newPalette.length > 15 || favorites.length > 15) {
+    //             alert('The maximum number of favorites is 15.')
+    //             return
+    //         }
+
+    //         if (user && favorites.length < numFaves) {
+    //             newFavorites = [...favorites, ...newPalette]
+    //             setFavorites(newFavorites)
+    //             setLocalStorage('hexy_favorites', newFavorites)
+    //         } else if (!user && favorites.length && favorites.length < 6) {
+    //             setFavorites(newPalette)
+    //             setLocalStorage('hexy_favorites', newPalette)
+    //         }
+    //         // } else {
+    //         //     setFavorites(palette)
+    //         //     setLocalStorage('hexy_favorites', palette)
+    //         // }
+    //     },
+    //     [favorites, user]
+    // )
 
     const checkIfFavorite = color => {
         let found
@@ -588,6 +621,7 @@ const App = React.memo(({ history, location, match }) => {
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
+                                    getFavorites={getFavorites}
                                     paletteWasSaved={paletteWasSaved}
                                     paletteExported={paletteExported}
                                     setPaletteExported={setPaletteExported}
@@ -603,6 +637,10 @@ const App = React.memo(({ history, location, match }) => {
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
+                                    handleAddPaletteToFavorites={
+                                        handleAddPaletteToFavorites
+                                    }
+                                    getFavorites={getFavorites}
                                 />
                             )}
                         />

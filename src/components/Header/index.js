@@ -49,8 +49,7 @@ const Header = ({
             <div className="header-bar">
                 <SiteID />
                 <div className="header-tagline">
-                    Explore and discover {num ? num : '18,000+'} named hex
-                    colors.
+                    Explore {num ? num : '18,000+'} named hex colors.
                 </div>
                 <SearchBox
                     handleSearch={handleSearch}

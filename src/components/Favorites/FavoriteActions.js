@@ -15,8 +15,8 @@ const FavoriteActions = React.memo(
         paletteName,
         paletteWasExported,
         setPaletteNameError,
-        isBright,
-        handleBright,
+        // isBright,
+        // handleBright,
         savePalette,
         paletteHasBeenSaved,
         paletteSaved,
@@ -78,16 +78,6 @@ const FavoriteActions = React.memo(
                 onMouseLeave={leaveActions}
             >
                 <ul className="actions-list nostyle">
-                    <li>
-                        <span className="favorites-sort">
-                            <input
-                                type="checkbox"
-                                checked={isBright}
-                                onChange={handleBright}
-                            />
-                            <label>Sort by brightness</label>
-                        </span>
-                    </li>
                     <li>
                         <FavoritesPDF
                             favorites={favorites && favorites}
