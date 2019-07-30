@@ -19,19 +19,23 @@ const FeedItem = ({
     const [added, setAdded] = useState(false)
 
     const localAddedPalettes = getLocalStorage('hexy_added_palettes')
-    const localFavorites = getLocalStorage('hexy_favorites')
 
     const handleAddPaletteState = item => {
         const localAddedPalettes = getLocalStorage('hexy_added_palettes')
+        const localFavorites = getLocalStorage('hexy_favorites')
+
+        let favLength = localFavorites.length + 5
 
         let addedPalette = {
             name: item.name,
             pid: item.pid
         }
 
-        if (localFavorites && localFavorites.length === 15) {
+        if (favLength > 15 && !added) {
             return
         }
+
+        console.log('handleAddPaletteState', favLength)
 
         if (localAddedPalettes && localAddedPalettes.length) {
             const found = localAddedPalettes.some(el => el.name === item.name)
@@ -104,8 +108,8 @@ const FeedItem = ({
                                 added ? 'added' : 'not-added'
                             }`}
                             onClick={() => {
-                                handleAddPaletteToFavorites(item.palette)
                                 handleAddPaletteState(item)
+                                handleAddPaletteToFavorites(item.palette)
                             }}
                         >
                             {added ? <RemoveFavorites /> : <AddFavorites />}
