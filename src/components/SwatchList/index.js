@@ -28,14 +28,6 @@ const SwatchList = React.memo(
         }, [favorites])
         /* eslint-enable */
 
-        let isFavorite
-
-        useEffect(() => {
-            return () => {
-                isFavorite(false)
-            }
-        }, [])
-
         return (
             <ul
                 className={`nostyle swatch-list ${
@@ -44,6 +36,7 @@ const SwatchList = React.memo(
             >
                 {colors &&
                     colors.map((color, index) => {
+                        let isFavorite
                         if (favoriteSwatches && favoriteSwatches.length) {
                             isFavorite = favoriteSwatches.some(
                                 el => el.hex === color.hex
@@ -62,7 +55,7 @@ const SwatchList = React.memo(
                                 handleFavorites={handleFavorites}
                                 removeFavorite={removeFavorite}
                                 // favorites={favorites}
-                                isFavorite={isFavorite ? true : false}
+                                isFavorite={isFavorite}
                             />
                         )
                     })}

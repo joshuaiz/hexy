@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import Tippy from '@tippy.js/react'
 // import { Tooltip } from 'react-tippy'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -11,15 +11,24 @@ import FeedItem from '../FeedItem'
 // import Swatch from '../../Swatch'
 // import FavoritesPDF from '../../Favorites/FavoritesPDF'
 
-const FeedList = ({
-    feed,
-    handleLike,
-    handleFavorites,
-    handleAddPaletteToFavorites,
-    removeFavorite,
-    swatchInfo
-}) => {
+const FeedList = React.memo(({ feed, handleLike, // favorites,
+    handleFavorites, handleAddPaletteToFavorites, removeFavorite, // setFavoriteSwatches,
+    favoriteSwatches, swatchInfo }) => {
     const { user } = useAuthState(firebase.auth())
+
+    // /* eslint-disable */
+    // useEffect(() => {
+    //     if (feed && feed.length && favorites && favorites.length) {
+    //         const favSwatches = []
+    //         const intersection = favorites.filter((element, index) => {
+    //             const found = feed.includes(element)
+    //             favSwatches.push(found)
+    //             return favSwatches
+    //         })
+    //         setFavoriteSwatches(intersection)
+    //     }
+    // }, [favorites])
+    // /* eslint-enable */
 
     return (
         <ul className={`nostyle feed-list ${swatchInfo ? 'no-info' : 'info'}`}>
@@ -31,6 +40,7 @@ const FeedList = ({
                         item={item}
                         handleLike={handleLike}
                         handleFavorites={handleFavorites}
+                        favoriteSwatches={favoriteSwatches}
                         handleAddPaletteToFavorites={
                             handleAddPaletteToFavorites
                         }
@@ -40,6 +50,6 @@ const FeedList = ({
             })}
         </ul>
     )
-}
+})
 
 export default FeedList

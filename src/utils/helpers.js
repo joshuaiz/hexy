@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import namedColors from 'color-name-list'
 import * as tinycolor from 'tinycolor2'
 import moment from 'moment'
+import Logo from '../components/Logo'
 
 /* eslint-disable */
 export function slugify(text) {
@@ -114,7 +115,10 @@ export const favoritesErrorContent = (user, currentUser, numFaves) => {
 
     return (
         <div className="error-message">
-            <h2>{randomPhrase}</h2>
+            <div className="error-header">
+                <Logo />
+                <h2>{randomPhrase}</h2>
+            </div>
             <h3>The maximum number of favorites is {numFaves}.</h3>
             {!user && (
                 <div>

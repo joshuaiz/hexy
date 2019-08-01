@@ -53,7 +53,7 @@ const Favorites = ({
     const [paletteLimitModal, togglePaletteLimitModal] = useModali()
     const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
 
-    const cachedFavorites = getLocalStorage('hexy_favorites')
+    // const cachedFavorites = getLocalStorage('hexy_favorites')
 
     const filter = new Filter()
 
@@ -254,10 +254,6 @@ const Favorites = ({
 
     // required by hoverIntent but we're not using it
     const onMouseOut = () => {}
-
-    // useEffect(() => {
-    //     getFavorites()
-    // }, [cachedFavorites])
 
     return (
         <Fragment>
@@ -497,7 +493,5 @@ const Favorites = ({
         </Fragment>
     )
 }
-
-// Favorites.whyDidYouRender = true
 
 export default Favorites

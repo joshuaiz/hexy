@@ -37,6 +37,10 @@ const SwatchActions = React.memo(
             }, 1000)
         }
 
+        const handleRemove = () => {
+            setActions(false)
+        }
+
         return (
             <div className={`swatch-actions`} onMouseLeave={leaveActions}>
                 <ul className="actions-list nostyle">
@@ -82,6 +86,7 @@ const SwatchActions = React.memo(
                                     className="remove-favorite"
                                     onClick={() => {
                                         removeFavorite(color)
+                                        handleRemove()
                                     }}
                                 >
                                     <TimesCircle />

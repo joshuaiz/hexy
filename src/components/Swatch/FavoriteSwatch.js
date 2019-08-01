@@ -49,6 +49,9 @@ const FavoriteSwatch = ({
         //         setActions(false)
         //     }, 5000)
         // }
+        // return () => {
+        //     clearTimeout(timeout)
+        // }
     })
 
     window.onbeforeunload = e => {
@@ -90,7 +93,6 @@ const FavoriteSwatch = ({
                                 className="actions-trigger"
                                 aria-haspopup="true"
                                 aria-expanded={`${actions ? 'true' : 'false'}`}
-                                // onMouseEnter={handleMouseEnter}
                             >
                                 <Ellipsis style={{ fill: readableColor }} />
                             </span>

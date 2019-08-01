@@ -51,10 +51,10 @@ import { createID, getUser } from './utils/user'
 import 'react-tippy/dist/tippy.css'
 import './App.scss'
 
-if (process.env.NODE_ENV !== 'production') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render')
-    whyDidYouRender(React)
-}
+// if (process.env.NODE_ENV !== 'production') {
+//     const whyDidYouRender = require('@welldone-software/why-did-you-render')
+//     whyDidYouRender(React)
+// }
 
 const App = React.memo(({ history, location, match }) => {
     const [colors, setColors] = useState()
@@ -232,62 +232,158 @@ const App = React.memo(({ history, location, match }) => {
 
     const handleAddPaletteToFavorites = useCallback(
         palette => {
-            let newFavorites
+            const localAddedPalettes = getLocalStorage('hexy_added_palettes')
+            const localFavorites = getLocalStorage('hexy_favorites')
+
+            let addedPalette = {
+                name: palette.name,
+                pid: palette.pid
+            }
+
+            let p = palette.palette
 
             if (!palette) {
                 return
             }
 
-            let newPalette = arrayDiffByKey('hex', palette, favorites)
-            let difference = arrayDiffByKey('hex', newPalette, favorites)
+            let newPalette = arrayDiffByKey('hex', p, favorites)
+            let intersection = p.filter(x => favorites.includes(x))
+            let difference = p.filter(x => !favorites.includes(x))
 
-            if (newPalette.length > 15 || favorites.length > 15) {
-                alert('The maximum number of favorites is 15.')
+            // check if color from palette already exists in favorites (returns boolean)
+            const exists = favorites.some(i => p.some(j => j.name === i.name))
+
+            // if a color exists, add rest of colors from palette to favorites
+            if (
+                (exists && !localAddedPalettes) ||
+                (exists && localAddedPalettes.length === 0)
+            ) {
+                let newFavorites = [...favorites, ...newPalette]
+                setFavorites(newFavorites)
+                setLocalStorage('hexy_favorites', newFavorites)
+                setLocalStorage('hexy_added_palettes', [{ ...addedPalette }])
                 return
             }
 
-            if (favorites.length) {
-                setFavorites(newPalette)
-                setLocalStorage('hexy_favorites', newPalette)
-            } else {
-                newFavorites = [...favorites, ...newPalette]
+            if (localAddedPalettes && localAddedPalettes.length) {
+                const found = localAddedPalettes.some(
+                    el => el.name === palette.name
+                )
+                if (!found) {
+                    const newPalettes = [
+                        ...localAddedPalettes,
+                        { ...addedPalette }
+                    ]
+
+                    let newFavorites = [...favorites, ...p]
+                    setFavorites(newFavorites)
+                    setLocalStorage('hexy_favorites', newFavorites)
+                    setLocalStorage('hexy_added_palettes', newPalettes)
+                } else if (exists) {
+                    let filteredPalettes = localAddedPalettes.filter(
+                        el => el.name !== palette.name
+                    )
+                    setFavorites(newPalette)
+                    setLocalStorage('hexy_favorites', newPalette)
+                    setLocalStorage('hexy_added_palettes', filteredPalettes)
+                } else {
+                    let filteredPalettes = localAddedPalettes.filter(
+                        el => el.name !== palette.name
+                    )
+                    let toRemove = [...intersection, ...difference]
+                    let newFavorites = favorites.filter(
+                        el => !toRemove.includes(el)
+                    )
+                    setFavorites(newFavorites)
+                    setLocalStorage('hexy_favorites', newFavorites)
+                    setLocalStorage('hexy_added_palettes', filteredPalettes)
+                }
+            } else if (!localAddedPalettes || localAddedPalettes.length === 0) {
+                let newFavorites = [...favorites, ...p]
                 setFavorites(newFavorites)
                 setLocalStorage('hexy_favorites', newFavorites)
+                setLocalStorage('hexy_added_palettes', [{ ...addedPalette }])
             }
         },
-        [favorites, user]
+        [favorites]
     )
 
     // const handleAddPaletteToFavorites = useCallback(
     //     palette => {
-    //         let newFavorites
+    //         const localAddedPalettes = getLocalStorage('hexy_added_palettes')
+    //         const localFavorites = getLocalStorage('hexy_favorites')
+
+    //         let addedPalette = {
+    //             name: palette.name,
+    //             pid: palette.pid
+    //         }
+
+    //         let p = palette.palette
 
     //         if (!palette) {
     //             return
     //         }
 
-    //         let newPalette = arrayDiffByKey('hex', palette, favorites)
-    //         // let difference = arrayDiffByKey('hex', newPalette, favorites)
+    //         let newPalette = arrayDiffByKey('hex', p, favorites)
+    //         let intersection = p.filter(x => favorites.includes(x))
+    //         let difference = p.filter(x => !favorites.includes(x))
 
-    //         if (newPalette.length > 15 || favorites.length > 15) {
-    //             alert('The maximum number of favorites is 15.')
-    //             return
-    //         }
+    //         // check if color from palette already exists in favorites (returns boolean)
+    //         const exists = favorites.some(i => p.some(j => j.name === i.name))
 
-    //         if (user && favorites.length < numFaves) {
-    //             newFavorites = [...favorites, ...newPalette]
-    //             setFavorites(newFavorites)
-    //             setLocalStorage('hexy_favorites', newFavorites)
-    //         } else if (!user && favorites.length && favorites.length < 6) {
-    //             setFavorites(newPalette)
-    //             setLocalStorage('hexy_favorites', newPalette)
+    //         // console.log('favorites', favorites)
+    //         // console.log('palette', p)
+    //         console.log('newPalette', newPalette)
+    //         console.log('intersection', intersection)
+    //         console.log('difference', difference)
+
+    //         console.log('exists', exists)
+
+    //         if (localAddedPalettes && localAddedPalettes.length) {
+    //             const found = localAddedPalettes.some(
+    //                 el => el.name === palette.name
+    //             )
+    //             if (!found) {
+    //                 const newPalettes = [
+    //                     ...localAddedPalettes,
+    //                     { ...addedPalette }
+    //                 ]
+
+    //                 let newFavorites = [...favorites, ...newPalette]
+    //                 setFavorites(newFavorites)
+    //                 setLocalStorage('hexy_favorites', newFavorites)
+    //                 setLocalStorage('hexy_added_palettes', newPalettes)
+    //             } else {
+    //                 let filteredPalettes = localAddedPalettes.filter(
+    //                     el => el.name !== palette.name
+    //                 )
+    //                 let toRemove = [...intersection, ...difference]
+    //                 let newFavorites = favorites.filter(
+    //                     el => !toRemove.includes(el)
+    //                 )
+    //                 setFavorites(newFavorites)
+    //                 setLocalStorage('hexy_favorites', newFavorites)
+    //                 setLocalStorage('hexy_added_palettes', filteredPalettes)
+    //             }
+    //         } else if (!localAddedPalettes || localAddedPalettes.length === 0) {
+    //             if (exists) {
+    //                 let newFavorites = [...favorites, ...newPalette]
+    //                 setFavorites(newFavorites)
+    //                 setLocalStorage('hexy_favorites', newFavorites)
+    //                 setLocalStorage('hexy_added_palettes', [
+    //                     { ...addedPalette }
+    //                 ])
+    //             } else {
+    //                 let newFavorites = [...favorites, ...p]
+    //                 setFavorites(newFavorites)
+    //                 setLocalStorage('hexy_favorites', newFavorites)
+    //                 setLocalStorage('hexy_added_palettes', [
+    //                     { ...addedPalette }
+    //                 ])
+    //             }
     //         }
-    //         // } else {
-    //         //     setFavorites(palette)
-    //         //     setLocalStorage('hexy_favorites', palette)
-    //         // }
     //     },
-    //     [favorites, user]
+    //     [favorites]
     // )
 
     const checkIfFavorite = color => {
@@ -338,6 +434,10 @@ const App = React.memo(({ history, location, match }) => {
     useEffect(() => {
         getFavorites()
     }, [])
+
+    // const memoizedFavorites = useCallback(() => {
+    //     getFavorites()
+    // }, [favorites])
 
     const handleSidebarToggle = () => {
         setTimeout(() => {
@@ -505,7 +605,7 @@ const App = React.memo(({ history, location, match }) => {
 
     return (
         <div className="App">
-            <Wrapper user={user} match={match}>
+            <Wrapper user={user}>
                 <Header
                     handleSearch={handleSearch}
                     handleSearchInput={handleSearchInput}
@@ -545,10 +645,12 @@ const App = React.memo(({ history, location, match }) => {
                                         handleAddPaletteToFavorites
                                     }
                                     removeFavorite={removeFavorite}
-                                    // setFavorites={setFavorites}
-                                    // // favorites={favorites}
+                                    favorites={favorites}
+                                    setFavorites={setFavorites}
                                     getFavorites={getFavorites}
                                     paletteExported={paletteExported}
+                                    favoriteSwatches={favoriteSwatches}
+                                    setFavoriteSwatches={setFavoriteSwatches}
                                 />
                             )}
                         />
@@ -564,7 +666,6 @@ const App = React.memo(({ history, location, match }) => {
                                     noMatch={noMatch}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
-                                    // getFavorites={getFavorites}
                                     favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
@@ -608,7 +709,7 @@ const App = React.memo(({ history, location, match }) => {
                                     // key={location.href}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
-                                    favorites={favorites}
+                                    // favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
                                     location={location}
@@ -623,7 +724,7 @@ const App = React.memo(({ history, location, match }) => {
                                 <Account
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
-                                    favorites={favorites}
+                                    // favorites={favorites}
                                     getFavorites={getFavorites}
                                     paletteWasSaved={paletteWasSaved}
                                     paletteExported={paletteExported}
