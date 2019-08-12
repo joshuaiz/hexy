@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, useContext } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import Toggle from 'react-toggle'
 import * as firebase from 'firebase/app'
@@ -6,22 +6,24 @@ import 'firebase/storage'
 import { db } from '../../config/firebaseconfig'
 import FeedList from './FeedList'
 import { getLocalStorage, setLocalStorage } from '../../utils/helpers'
+import { FavoritesContext } from '../../App'
 import './Feed.scss'
 
 const Feed = React.memo(
     ({
         handleFavorites,
         removeFavorite,
-        getFavorites,
-        favorites,
         handleAddPaletteToFavorites,
-        favoriteSwatches,
-        setFavoriteSwatches,
+        // favoriteSwatches,
+        // setFavoriteSwatches,
         paletteExported
     }) => {
         const [feed, setFeed] = useState([])
         const [paletteLiked, setPaletteLiked] = useState(false)
         const [swatchInfo, setSwatchInfo] = useState(true)
+        const favorites = useContext(FavoritesContext)
+
+        // console.log(favorites)
 
         useEffect(() => {
             // used to cancel async fetch on unmount
@@ -105,32 +107,18 @@ const Feed = React.memo(
         }
 
         /* eslint-disable */
-        useEffect(() => {
-            if (feed && feed.length && favorites && favorites.length) {
-                const favSwatches = []
-                const intersection = favorites.filter((element, index) => {
-                    const found = feed.includes(element)
-                    favSwatches.push(found)
-                    return favSwatches
-                })
-                setFavoriteSwatches(intersection)
-            }
-        }, [favorites, feed])
-        /* eslint-enable */
-
         // useEffect(() => {
-        //     getLocalStorage('hexy_added_palettes')
-        // })
-
-        // console.log('paletteLiked', paletteLiked)
-
-        // useEffect(() => {
-        //     if (cachedFavorites) {
-        //         setFavorites(cachedFavorites)
-        //     } else {
-        //         setFavorites([])
+        //     if (feed && feed.length && favorites && favorites.length) {
+        //         const favSwatches = []
+        //         const intersection = favorites.filter((element, index) => {
+        //             const found = feed.includes(element)
+        //             favSwatches.push(found)
+        //             return favSwatches
+        //         })
+        //         setFavoriteSwatches(intersection)
         //     }
-        // }, [cachedFavorites])
+        // }, [favorites, feed])
+        /* eslint-enable */
 
         return (
             <div className="feed">
@@ -153,12 +141,12 @@ const Feed = React.memo(
                     <FeedList
                         feed={feed}
                         handleLike={handleLike}
-                        favorites={favorites}
+                        // favorites={favorites}
                         handleFavorites={handleFavorites}
                         handleAddPaletteToFavorites={
                             handleAddPaletteToFavorites
                         }
-                        favoriteSwatches={favoriteSwatches}
+                        // favoriteSwatches={favoriteSwatches}
                         // setFavoriteSwatches={setFavoriteSwatches}
                         removeFavorite={removeFavorite}
                         swatchInfo={swatchInfo}

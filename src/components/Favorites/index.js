@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Droppable } from 'react-beautiful-dnd'
 import { db } from '../../config/firebaseconfig'
@@ -13,6 +13,7 @@ import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import Logo from '../Logo'
 import FavoriteActions from './FavoriteActions'
+import { FavoritesContext } from '../../App'
 import * as Filter from 'bad-words'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import {
@@ -26,7 +27,7 @@ import {
 import './Favorites.scss'
 
 const Favorites = ({
-    favorites,
+    // favorites,
     currentUser,
     removeFavorite,
     clearFavorites,
@@ -54,6 +55,8 @@ const Favorites = ({
     const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
 
     // const cachedFavorites = getLocalStorage('hexy_favorites')
+
+    const favorites = useContext(FavoritesContext)
 
     const filter = new Filter()
 
@@ -254,6 +257,10 @@ const Favorites = ({
 
     // required by hoverIntent but we're not using it
     const onMouseOut = () => {}
+
+    // useEffect(() => {
+    //     getFavorites()
+    // }, [favorites])
 
     return (
         <Fragment>

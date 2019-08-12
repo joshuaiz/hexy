@@ -41,17 +41,17 @@ const FavoriteSwatch = ({
 
     // actions menu can get stuck so let's hide it if so after mouse stopped
     useEffect(() => {
-        // let timeout
-        // document.onmousemove = function() {
-        //     // console.log('mouse stopped!')
-        //     clearTimeout(timeout)
-        //     timeout = setTimeout(() => {
-        //         setActions(false)
-        //     }, 5000)
-        // }
-        // return () => {
-        //     clearTimeout(timeout)
-        // }
+        let timeout
+        document.onmousemove = function() {
+            // console.log('mouse stopped!')
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                setActions(false)
+            }, 5000)
+        }
+        return () => {
+            clearTimeout(timeout)
+        }
     })
 
     window.onbeforeunload = e => {

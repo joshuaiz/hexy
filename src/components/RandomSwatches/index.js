@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
@@ -9,13 +9,14 @@ import Swatch from '../Swatch'
 const RandomSwatches = ({
     numRandoms,
     favorites,
+    getFavorites,
     handleFavorites,
-    removeFavorites,
-    favoriteSwatches,
-    setFavoriteSwatches
+    removeFavorite
 }) => {
     const [randoms, setRandoms] = useState([])
     const [rotate, setRotate] = useState(false)
+
+    console.log('RandomSwatches', favorites)
 
     const getRandoms = () => {
         const randoms = getRandomColors(numRandoms)
@@ -24,7 +25,7 @@ const RandomSwatches = ({
 
     useEffect(() => {
         getRandoms()
-        return undefined
+        // return undefined
     }, [])
 
     const handleReload = () => {
@@ -35,37 +36,9 @@ const RandomSwatches = ({
         }, 500)
     }
 
-    useCallback(() => {
-        if (randoms && randoms.length && favorites && favorites.length) {
-            const favSwatches = []
-            const intersection = favorites.filter((element, index) => {
-                const found = randoms.includes(element)
-                favSwatches.push(found)
-                return favSwatches
-            })
-            setFavoriteSwatches(intersection)
-        }
-    }, [randoms, favorites, setFavoriteSwatches])
-
-    const randomColors = randoms.map((color, index) => {
-        let isFavorite
-        if (favoriteSwatches && favoriteSwatches.length) {
-            isFavorite = favoriteSwatches.some(el => el.hex === color.hex)
-        } else if (favoriteSwatches.length === 0) {
-            isFavorite = false
-        }
-        return (
-            <Swatch
-                key={color.hex}
-                color={color}
-                index={index}
-                favorites={favorites}
-                handleFavorites={handleFavorites}
-                removeFavorites={removeFavorites}
-                isFavorite={isFavorite}
-            />
-        )
-    })
+    useEffect(() => {
+        getFavorites()
+    }, [favorites])
 
     return (
         <div className="random-swatches">
@@ -91,7 +64,27 @@ const RandomSwatches = ({
                 </div>
             </div>
 
-            <ul className="nostyle swatch-list">{randomColors}</ul>
+            <ul className="nostyle swatch-list">
+                {randoms.map((color, index) => {
+                    let isFavorite
+                    if (favorites && favorites.length) {
+                        isFavorite = favorites.some(el => el.hex === color.hex)
+                    } else if (favorites.length === 0) {
+                        isFavorite = false
+                    }
+                    return (
+                        <Swatch
+                            key={color.hex}
+                            color={color}
+                            index={index}
+                            favorites={favorites}
+                            handleFavorites={handleFavorites}
+                            removeFavorite={removeFavorite}
+                            isFavorite={isFavorite}
+                        />
+                    )
+                })}
+            </ul>
         </div>
     )
 }

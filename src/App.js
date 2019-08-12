@@ -56,6 +56,8 @@ import './App.scss'
 //     whyDidYouRender(React)
 // }
 
+export const FavoritesContext = React.createContext()
+
 const App = React.memo(({ history, location, match }) => {
     const [colors, setColors] = useState()
     const [sortBright, setSortBright] = useState(false)
@@ -78,13 +80,23 @@ const App = React.memo(({ history, location, match }) => {
 
     const [errorModal, toggleErrorModal] = useModali()
 
+    // it returns two components Provider and Consumer
+
     const numFaves = getNumberOfFavorites(currentUser && currentUser)
 
     // console.log(numFaves)
 
     // Get 1000 random colors to show on home page
     const getRandoms = event => {
+        const hexyAll = getSessionStorage('hexy_all')
+        // console.log(hexyAll)
+        if (hexyAll && !event) {
+            // console.log('getRandoms in hexyAll')
+            handleAllColors(hexyAll)
+            return
+        }
         if (event) {
+            sessionStorage.removeItem('hexy_all')
             event.preventDefault()
             const randoms = getRandomColors(1000)
             setColors(randoms)
@@ -92,6 +104,7 @@ const App = React.memo(({ history, location, match }) => {
             return
         }
         const cachedRandoms = getSessionStorage('hexy_randoms')
+
         if (!cachedRandoms) {
             const randoms = getRandomColors(1000)
             setColors(randoms)
@@ -101,18 +114,18 @@ const App = React.memo(({ history, location, match }) => {
         }
     }
 
-    const handleAllColors = () => {
+    const handleAllColors = length => {
         const allColors = getAllColors()
-        const size = 1001
+        const size = length || 1001
         const items = allColors.slice(0, size).map(item => {
             return item
         })
         setColors(items)
-        setSessionStorage('hexy_all', allColors)
+        setSessionStorage('hexy_all', items.length)
     }
 
     const loadMoreColors = start => {
-        console.log('loadMoreColors: start', start)
+        // console.log('loadMoreColors: start', start)
         const allColors = getAllColors()
         const size = 1001 + start
         const items = allColors.slice(start, size).map(item => {
@@ -125,6 +138,7 @@ const App = React.memo(({ history, location, match }) => {
         // console.log('loadMoreColors: newColors', newColors)
 
         setColors(newColors)
+        setSessionStorage('hexy_all', size)
     }
 
     // clear saved random colors on refresh
@@ -138,15 +152,18 @@ const App = React.memo(({ history, location, match }) => {
 
     // Sort colors by brightness
     const handleBright = useCallback(() => {
+        const hexyAll = getSessionStorage('hexy_all')
         if (!sortBright) {
             const brightColors = sortLightness(colors)
             setColors(brightColors)
         } else if (searchInput) {
             const cachedSearchColors = getSessionStorage('hexy_searchColors')
             setColors(cachedSearchColors)
-        } else if (!searchInput) {
+        } else if (!searchInput && !hexyAll) {
             const cachedRandoms = getSessionStorage('hexy_randoms')
             setColors(cachedRandoms)
+        } else if (!searchInput && hexyAll) {
+            handleAllColors(hexyAll)
         }
         setSortBright(!sortBright)
     }, [sortBright, colors, searchInput])
@@ -603,6 +620,9 @@ const App = React.memo(({ history, location, match }) => {
         }
     }, [user])
 
+    // console.log('favoriteSwatches', favoriteSwatches)
+    // console.log('favorites', favorites)
+
     return (
         <div className="App">
             <Wrapper user={user}>
@@ -624,36 +644,43 @@ const App = React.memo(({ history, location, match }) => {
                         <Route
                             exact
                             path="/"
-                            render={props => (
+                            render={() => (
                                 <Home
-                                    key={props.location.href}
+                                    // key={props.location.href}
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
+                                    getFavorites={getFavorites}
                                     favorites={favorites}
                                     favoriteSwatches={favoriteSwatches}
                                     setFavoriteSwatches={setFavoriteSwatches}
                                 />
                             )}
                         />
+
                         <Route
                             exact
                             path="/palettes"
                             render={() => (
-                                <Feed
-                                    handleFavorites={handleFavorites}
-                                    handleAddPaletteToFavorites={
-                                        handleAddPaletteToFavorites
-                                    }
-                                    removeFavorite={removeFavorite}
-                                    favorites={favorites}
-                                    setFavorites={setFavorites}
-                                    getFavorites={getFavorites}
-                                    paletteExported={paletteExported}
-                                    favoriteSwatches={favoriteSwatches}
-                                    setFavoriteSwatches={setFavoriteSwatches}
-                                />
+                                <FavoritesContext.Provider value={favorites}>
+                                    <Feed
+                                        handleFavorites={handleFavorites}
+                                        handleAddPaletteToFavorites={
+                                            handleAddPaletteToFavorites
+                                        }
+                                        removeFavorite={removeFavorite}
+                                        // favorites={favorites}
+                                        setFavorites={setFavorites}
+                                        getFavorites={getFavorites}
+                                        paletteExported={paletteExported}
+                                        // favoriteSwatches={favoriteSwatches}
+                                        // setFavoriteSwatches={
+                                        //     setFavoriteSwatches
+                                        // }
+                                    />
+                                </FavoritesContext.Provider>
                             )}
                         />
+
                         <Route
                             exact
                             path="/colors"
@@ -762,26 +789,28 @@ const App = React.memo(({ history, location, match }) => {
                             render={props => <CurrentUser {...props} />}
                         />
 
-                        <Route render={props => <NoMatch {...props} />} />
+                        <Route component={NoMatch} />
                     </Switch>
                     <DragDropContext
                         onDragStart={onDragStart}
                         onDragEnd={onDragEnd}
                     >
-                        <Favorites
-                            favorites={favorites}
-                            currentUser={currentUser}
-                            removeFavorite={removeFavorite}
-                            clearFavorites={clearFavorites}
-                            setFavorites={setFavorites}
-                            getFavorites={getFavorites}
-                            handleSidebarToggle={handleSidebarToggle}
-                            isSidebarVisible={isSidebarVisible}
-                            transition={transition}
-                            dragEnded={dragEnded}
-                            paletteHasBeenSaved={paletteHasBeenSaved}
-                            paletteWasExported={paletteWasExported}
-                        />
+                        <FavoritesContext.Provider value={favorites}>
+                            <Favorites
+                                favorites={favorites}
+                                currentUser={currentUser}
+                                removeFavorite={removeFavorite}
+                                clearFavorites={clearFavorites}
+                                setFavorites={setFavorites}
+                                getFavorites={getFavorites}
+                                handleSidebarToggle={handleSidebarToggle}
+                                isSidebarVisible={isSidebarVisible}
+                                transition={transition}
+                                dragEnded={dragEnded}
+                                paletteHasBeenSaved={paletteHasBeenSaved}
+                                paletteWasExported={paletteWasExported}
+                            />
+                        </FavoritesContext.Provider>
                     </DragDropContext>
                 </div>
                 <Footer currentUser={currentUser} />

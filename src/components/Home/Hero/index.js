@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 // import { useScroll } from '../../../hooks/useScroll'
 import TextLoop from 'react-text-loop'

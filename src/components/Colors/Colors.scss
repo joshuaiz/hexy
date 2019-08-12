@@ -2,21 +2,23 @@
     margin-bottom: 3em;
     .colors-header {
         .more-trigger {
-            width: 18px;
-            height: 18px;
-            color: #0088cc;
+            width: 12px;
+            height: 12px;
+            color: #fff;
             // margin-left: auto;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 12px;
+            margin: 0 5px 0 0;
+            position: relative;
+            top: 1px;
             svg {
-                width: 18px;
-                height: 18px;
-                position: relative;
-                top: 3px;
+                width: 12px;
+                height: 12px;
+                
             }
             &:hover,
             &:focus {
-                color: darken(#0088cc, 12%);
+                // color: darken(#0088cc, 12%);
             }
         }
         .rotate {
@@ -35,16 +37,64 @@
             }
         }
         .colors-header-text {
+            .colors-header-wrap {
+                display: flex;
+                align-items: center;
+                margin: 1em 0 12px;
+                p {
+                    margin: 0;
+                    min-width: 250px;
+                }
+                button {
+                    margin: 0 5px;
+                }
+                .all-colors {
+                    .palette-icon {
+                        width: 12px;
+                        height: 13px;
+                        margin-right: 4px;
+                        position: relative;
+                        top: 2px;
+                    }
+                }
+            }
+            .button {
+                margin: 0;
+                font-size: 13px;
+                padding: 4px 8px;
+                
+            }
             .search-results-text {
                 margin: 0;
             }
             .no-match {
                 margin: 1em 0;
             }
+            .load-more {
+                display: inline-block;
+                margin-left: 8px;
+                button {
+                    margin: 0;
+                    font-size: 13px;
+                    padding: 4px 8px;
+                }
+            }
+        }
+    }
+    .colors-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 1.5em 0 0;
+        .colors-links {
+            margin-left: 1em;
+        }
+        button {
+            margin: 0;
         }
     }
     .load-more {
-        margin: 1.5em 0;
+        // margin: 1.5em 0;
         text-align: right;
         button {
             margin-left: 1em;
@@ -52,7 +102,7 @@
     }
     .scroll-to-top {
         text-align: right;
-        margin: 1em 0 0;
+        // margin: 1em 0 0;
     }
     .swatch-list {
         .swatch {
@@ -80,10 +130,13 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-between;
-                li {
-                    margin-bottom: 10px;
-                    width: 180px;
+                .swatch {
+                    margin-bottom: 12px;
+                    width: 185px;
                     position: relative;
+                    .actions-wrap {
+                        height: initial;
+                    }
                 }
             }
         }
@@ -93,8 +146,17 @@
 
 
 
-// @media only screen and (max-width: 899px) {
-//     .content .colors .swatch-list li {
-//         max-width: 50%;
-//     }
-// }
+@media only screen and (min-width: 1600px) {
+    .colors-page {
+        .content {
+            .colors.all-colors {
+                .swatch-list {
+                    .swatch {
+                        // margin-bottom: 10px;
+                        width: 198px;
+                    }
+                }
+            }
+        }
+    }
+}

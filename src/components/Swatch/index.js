@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import HoverIntent from 'react-hoverintent'
 import SwatchActions from './SwatchActions'
@@ -54,9 +54,10 @@ const Swatch = ({
                 setActions(false)
             }, 4000)
         }
-        // return () => {
-        //     setActions(false)
-        // }
+        return () => {
+            clearTimeout(timeout)
+            // setActions(false)
+        }
     })
 
     return (

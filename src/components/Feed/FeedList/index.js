@@ -11,45 +11,56 @@ import FeedItem from '../FeedItem'
 // import Swatch from '../../Swatch'
 // import FavoritesPDF from '../../Favorites/FavoritesPDF'
 
-const FeedList = React.memo(({ feed, handleLike, // favorites,
-    handleFavorites, handleAddPaletteToFavorites, removeFavorite, // setFavoriteSwatches,
-    favoriteSwatches, swatchInfo }) => {
-    const { user } = useAuthState(firebase.auth())
+const FeedList = React.memo(
+    ({
+        feed,
+        handleLike,
+        handleFavorites,
+        handleAddPaletteToFavorites,
+        removeFavorite,
+        swatchInfo
+    }) => {
+        const { user } = useAuthState(firebase.auth())
 
-    // /* eslint-disable */
-    // useEffect(() => {
-    //     if (feed && feed.length && favorites && favorites.length) {
-    //         const favSwatches = []
-    //         const intersection = favorites.filter((element, index) => {
-    //             const found = feed.includes(element)
-    //             favSwatches.push(found)
-    //             return favSwatches
-    //         })
-    //         setFavoriteSwatches(intersection)
-    //     }
-    // }, [favorites])
-    // /* eslint-enable */
+        // /* eslint-disable */
+        // useEffect(() => {
+        //     if (feed && feed.length && favorites && favorites.length) {
+        //         const favSwatches = []
+        //         const intersection = favorites.filter((element, index) => {
+        //             const found = feed.includes(element)
+        //             favSwatches.push(found)
+        //             return favSwatches
+        //         })
+        //         setFavoriteSwatches(intersection)
+        //     }
+        // }, [favorites])
+        // /* eslint-enable */
 
-    return (
-        <ul className={`nostyle feed-list ${swatchInfo ? 'no-info' : 'info'}`}>
-            {feed.map((item, index) => {
-                // console.log('FeedList', item.name, item.likes)
-                return (
-                    <FeedItem
-                        key={item.date}
-                        item={item}
-                        handleLike={handleLike}
-                        handleFavorites={handleFavorites}
-                        favoriteSwatches={favoriteSwatches}
-                        handleAddPaletteToFavorites={
-                            handleAddPaletteToFavorites
-                        }
-                        removeFavorite={removeFavorite}
-                    />
-                )
-            })}
-        </ul>
-    )
-})
+        return (
+            <ul
+                className={`nostyle feed-list ${
+                    swatchInfo ? 'no-info' : 'info'
+                }`}
+            >
+                {feed.map((item, index) => {
+                    // console.log('FeedList', item.name, item.likes)
+                    return (
+                        <FeedItem
+                            key={item.date}
+                            item={item}
+                            handleLike={handleLike}
+                            handleFavorites={handleFavorites}
+                            // favorites={favorites}
+                            handleAddPaletteToFavorites={
+                                handleAddPaletteToFavorites
+                            }
+                            removeFavorite={removeFavorite}
+                        />
+                    )
+                })}
+            </ul>
+        )
+    }
+)
 
 export default FeedList

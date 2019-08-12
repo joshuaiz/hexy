@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Tippy from '@tippy.js/react'
 import { Tooltip } from 'react-tippy'
 import { ReactComponent as Heart } from '../../../images/heart.svg'
@@ -7,6 +7,7 @@ import { ReactComponent as AddFavorites } from '../../../images/add_favorites.sv
 import { ReactComponent as RemoveFavorites } from '../../../images/remove_favorites.svg'
 import Swatch from '../../Swatch'
 import FavoritesPDF from '../../Favorites/FavoritesPDF'
+import { FavoritesContext } from '../../../App'
 import { setLocalStorage, getLocalStorage } from '../../../utils/helpers'
 
 const FeedItem = React.memo(
@@ -15,13 +16,15 @@ const FeedItem = React.memo(
         handleAddPaletteToFavorites,
         handleLike,
         handleFavorites,
-        removeFavorite,
-        favoriteSwatches
+        removeFavorite
+        // favoriteSwatches
     }) => {
         const [added, setAdded] = useState(false)
 
         const localAddedPalettes = getLocalStorage('hexy_added_palettes')
         const localFavorites = getLocalStorage('hexy_favorites')
+
+        const favorites = useContext(FavoritesContext)
 
         const handleAddPaletteState = item => {
             let favLength = localFavorites && localFavorites.length + 5
@@ -150,14 +153,21 @@ const FeedItem = React.memo(
                 <ul className="nostyle feed-palette">
                     {item.palette.map((color, index) => {
                         let isFavorite
-                        if (favoriteSwatches && favoriteSwatches.length) {
-                            isFavorite = favoriteSwatches.some(
+                        // if (favoriteSwatches && favoriteSwatches.length) {
+                        //     isFavorite = favoriteSwatches.some(
+                        //         el => el.hex === color.hex
+                        //     )
+                        // } else if (
+                        //     !favoriteSwatches ||
+                        //     favoriteSwatches.length === 0
+                        // ) {
+                        //     isFavorite = false
+                        // }
+                        if (favorites && favorites.length) {
+                            isFavorite = favorites.some(
                                 el => el.hex === color.hex
                             )
-                        } else if (
-                            !favoriteSwatches ||
-                            favoriteSwatches.length === 0
-                        ) {
+                        } else if (!favorites || favorites.length === 0) {
                             isFavorite = false
                         }
                         return (

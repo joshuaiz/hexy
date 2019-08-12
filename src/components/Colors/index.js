@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { ReactComponent as Sync } from '../../images/sync.svg'
+import { ReactComponent as Palette } from '../../images/palette.svg'
 import SwatchList from '../SwatchList'
-import { getNumberOfNamedColors } from '../../utils/helpers'
+import { getNumberOfNamedColors, getSessionStorage } from '../../utils/helpers'
 import './Colors.scss'
 
 const Colors = React.memo(
@@ -35,10 +36,14 @@ const Colors = React.memo(
         const [pro, setPro] = useState(false)
         const { user } = useAuthState(firebase.auth())
 
+        const hexyAll = getSessionStorage('hexy_all')
+        const numColors = getNumberOfNamedColors()
+
         const handleReload = event => {
             getRandoms(event)
             setRotate(true)
             setSortBright(!sortBright)
+            sessionStorage.removeItem('hexy_all')
             const timeout = setTimeout(() => {
                 setRotate(false)
             }, 500)
@@ -97,34 +102,52 @@ const Colors = React.memo(
                 <div className="colors-header">
                     <div className="colors-header-text">
                         {!searchSubmitted ? (
-                            <p>
-                                Showing{' '}
-                                {colors && colors.length === 1000
-                                    ? '1000 random'
-                                    : colors && colors.length}{' '}
-                                colors.{' '}
-                                <span
-                                    className={`more-trigger ${
+                            <div className="colors-header-wrap">
+                                <p>
+                                    Showing{' '}
+                                    {colors && colors.length === 1000
+                                        ? '1000 random'
+                                        : colors &&
+                                          colors.length +
+                                              ' out of ' +
+                                              numColors}{' '}
+                                    colors.{' '}
+                                </p>
+                                <button
+                                    className={`button ${
                                         rotate ? 'rotate' : ''
                                     }`}
+                                    disabled={rotate ? true : false}
                                     onClick={handleReload}
                                 >
-                                    <Sync />
-                                </span>{' '}
-                                Reload for a new set.{' '}
-                                {currentUser && pro && (
-                                    <span
-                                        className="all-colors like-link"
+                                    <Sync className="more-trigger" />
+                                    Load a new random set
+                                </button>{' '}
+                                {!hexyAll && currentUser && pro && (
+                                    <button
+                                        className="all-colors button"
                                         onClick={() => {
                                             handleAllColors()
                                             handleLoading()
                                         }}
                                     >
-                                        See all {getNumberOfNamedColors()}{' '}
-                                        colors (really slow).
-                                    </span>
+                                        <Palette />
+                                        Load all {numColors} colors (slow)
+                                    </button>
                                 )}
-                            </p>
+                                {hexyAll && currentUser && pro && (
+                                    <div className="load-more">
+                                        <button
+                                            className="button"
+                                            onClick={() =>
+                                                loadMoreColors(colors.length)
+                                            }
+                                        >
+                                            Load More Colors
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         ) : searchSubmitted ? (
                             <p className="search-results-text">
                                 Search results for{' '}
@@ -176,18 +199,20 @@ const Colors = React.memo(
                         </h3>
                     </div>
                 )}
-                {colors && colors.length > 1000 && (
-                    <div className="load-more">
-                        <button
-                            className="button"
-                            onClick={() => loadMoreColors(colors.length)}
-                        >
-                            Load More Colors
-                        </button>
 
+                {colors && colors.length > 1000 && (
+                    <div className="colors-actions">
                         <div className="colors-links">
                             <button className="button" onClick={handleReload}>
                                 Reload 1000 random colors
+                            </button>
+                        </div>
+                        <div className="load-more">
+                            <button
+                                className="button"
+                                onClick={() => loadMoreColors(colors.length)}
+                            >
+                                Load More Colors
                             </button>
                         </div>
                     </div>
