@@ -14,7 +14,7 @@ import Home from './components/Home'
 import Colors from './components/Colors'
 import Favorites from './components/Favorites'
 import Color from './components/Color'
-import CurrentUser from './components/CurrentUser'
+// import CurrentUser from './components/CurrentUser'
 import Account from './components/Account'
 import ResetPassword from './components/Account/ResetPassword'
 import Header from './components/Header'
@@ -780,11 +780,11 @@ const App = React.memo(({ history, location, match }) => {
                         <Route exact path="/faq" component={FAQ} />
                         <Route exact path="/terms" component={Terms} />
                         <Route exact path="/contact" component={Contact} />
-                        <Route
+                        {/*<Route
                             exact
                             path="/user"
                             render={props => <CurrentUser {...props} />}
-                        />
+                        />*/}
 
                         <Route component={NoMatch} />
                     </Switch>
