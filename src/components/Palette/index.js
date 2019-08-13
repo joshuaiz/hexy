@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import Tippy from '@tippy.js/react'
 import { Tooltip } from 'react-tippy'
 import { db } from '../../config/firebaseconfig'
@@ -143,10 +143,11 @@ const Palette = React.memo(
 
         useEffect(() => {
             getFavorites()
-        }, [favorites])
+        }, [favorites, getFavorites])
 
         return (
             <div className="palette-page">
+                <Link to="/account">&larr; Back to Account Page</Link>
                 <h1>
                     Hexy Palette:{' '}
                     <span className="palette-name">

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getRandomColors } from '../../utils/helpers'
-import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as Sync } from '../../images/sync.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import Swatch from '../Swatch'
@@ -15,8 +14,6 @@ const RandomSwatches = ({
 }) => {
     const [randoms, setRandoms] = useState([])
     const [rotate, setRotate] = useState(false)
-
-    console.log('RandomSwatches', favorites)
 
     const getRandoms = () => {
         const randoms = getRandomColors(numRandoms)
@@ -38,7 +35,7 @@ const RandomSwatches = ({
 
     useEffect(() => {
         getFavorites()
-    }, [favorites])
+    }, [favorites, getFavorites])
 
     return (
         <div className="random-swatches">

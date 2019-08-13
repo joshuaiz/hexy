@@ -1,9 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import * as firebase from 'firebase/app'
-import 'firebase/storage'
-import 'firebase/auth'
 import { ReactComponent as Sync } from '../../images/sync.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
 import SwatchList from '../SwatchList'
@@ -18,10 +14,8 @@ const Colors = React.memo(
         noMatch,
         handleFavorites,
         removeFavorite,
-        // getFavorites,
+        getFavorites,
         favorites,
-        favoriteSwatches,
-        setFavoriteSwatches,
         handleBright,
         sortBright,
         setSortBright,
@@ -34,7 +28,6 @@ const Colors = React.memo(
         const [rotate, setRotate] = useState(false)
         const [isLoading, setIsLoading] = useState(false)
         const [pro, setPro] = useState(false)
-        const { user } = useAuthState(firebase.auth())
 
         const hexyAll = getSessionStorage('hexy_all')
         const numColors = getNumberOfNamedColors()
@@ -42,7 +35,7 @@ const Colors = React.memo(
         const handleReload = event => {
             getRandoms(event)
             setRotate(true)
-            setSortBright(!sortBright)
+            setSortBright(false)
             sessionStorage.removeItem('hexy_all')
             const timeout = setTimeout(() => {
                 setRotate(false)
@@ -85,9 +78,9 @@ const Colors = React.memo(
             })
         }
 
-        // useEffect(() => {
-        //     getFavorites()
-        // }, [favorites])
+        useEffect(() => {
+            getFavorites()
+        }, [favorites, getFavorites])
 
         // console.log('Colors', colors && colors.length)
 
@@ -186,8 +179,6 @@ const Colors = React.memo(
                         handleFavorites={handleFavorites}
                         removeFavorite={removeFavorite}
                         favorites={favorites}
-                        favoriteSwatches={favoriteSwatches}
-                        setFavoriteSwatches={setFavoriteSwatches}
                         searchSubmitted={searchSubmitted}
                         sortBright={sortBright}
                     />

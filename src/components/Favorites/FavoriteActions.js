@@ -15,8 +15,6 @@ const FavoriteActions = React.memo(
         paletteName,
         paletteWasExported,
         setPaletteNameError,
-        // isBright,
-        // handleBright,
         savePalette,
         paletteHasBeenSaved,
         paletteSaved,

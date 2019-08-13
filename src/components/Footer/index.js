@@ -4,8 +4,6 @@ import SiteID from '../SiteID'
 import './Footer.scss'
 
 const Footer = ({ currentUser }) => {
-    // console.log('Current User from Footer', currentUser)
-
     const year = new Date().getFullYear()
 
     return (

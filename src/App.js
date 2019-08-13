@@ -661,23 +661,21 @@ const App = React.memo(({ history, location, match }) => {
                             exact
                             path="/palettes"
                             render={() => (
-                                <FavoritesContext.Provider value={favorites}>
-                                    <Feed
-                                        handleFavorites={handleFavorites}
-                                        handleAddPaletteToFavorites={
-                                            handleAddPaletteToFavorites
-                                        }
-                                        removeFavorite={removeFavorite}
-                                        // favorites={favorites}
-                                        setFavorites={setFavorites}
-                                        getFavorites={getFavorites}
-                                        paletteExported={paletteExported}
-                                        // favoriteSwatches={favoriteSwatches}
-                                        // setFavoriteSwatches={
-                                        //     setFavoriteSwatches
-                                        // }
-                                    />
-                                </FavoritesContext.Provider>
+                                <Feed
+                                    handleFavorites={handleFavorites}
+                                    handleAddPaletteToFavorites={
+                                        handleAddPaletteToFavorites
+                                    }
+                                    removeFavorite={removeFavorite}
+                                    // favorites={favorites}
+                                    // setFavorites={setFavorites}
+                                    // getFavorites={getFavorites}
+                                    paletteExported={paletteExported}
+                                    // favoriteSwatches={favoriteSwatches}
+                                    // setFavoriteSwatches={
+                                    //     setFavoriteSwatches
+                                    // }
+                                />
                             )}
                         />
 
@@ -694,8 +692,7 @@ const App = React.memo(({ history, location, match }) => {
                                     handleFavorites={handleFavorites}
                                     removeFavorite={removeFavorite}
                                     favorites={favorites}
-                                    favoriteSwatches={favoriteSwatches}
-                                    setFavoriteSwatches={setFavoriteSwatches}
+                                    getFavorites={getFavorites}
                                     handleBright={handleBright}
                                     sortBright={sortBright}
                                     setSortBright={setSortBright}

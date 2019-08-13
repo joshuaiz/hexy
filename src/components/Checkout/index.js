@@ -1,18 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { StripeProvider, Elements, stripe } from 'react-stripe-elements'
-import axios from 'axios'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import * as firebase from 'firebase/app'
-import 'firebase/storage'
-import 'firebase/auth'
 import { db } from '../../config/firebaseconfig'
 import { humanize, setLocalStorage } from '../../utils/helpers'
 import CardForm from './CardForm'
 import './Checkout.scss'
 
 const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
-    const { user } = useAuthState(firebase.auth())
     const [status, setStatus] = useState('default')
     const [couponInput, setCouponInput] = useState('')
     const [currentCoupon, setCurrentCoupon] = useState()
@@ -22,8 +16,6 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
-
-    // console.log('Checkout', cart)
 
     const handleClearCart = () => {
         setCart()
@@ -42,12 +34,6 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
     } else {
         desc = null
     }
-
-    // console.log('status', status)
-
-    // if (status === 'complete') {
-    //     return <div className="CheckoutForm-complete">Payment successful!</div>
-    // }
 
     const handleCouponInput = event => {
         setCouponInput(event.target.value)
@@ -93,7 +79,7 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
 
     useEffect(() => {
         handleDiscount()
-    }, [currentCoupon])
+    }, [currentCoupon, handleDiscount])
 
     return (
         <StripeProvider apiKey="pk_test_Q8j9ieOEWFZAnuSox9yqNyrG">

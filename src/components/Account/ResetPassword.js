@@ -1,10 +1,7 @@
 import React, { useState, Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
-import 'firebase/storage'
-import 'firebase/auth'
 import { isEmail } from '../../utils/helpers'
 import './ResetPassword.scss'
 

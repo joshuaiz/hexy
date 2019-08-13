@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import ScrollAnimation from 'react-animate-on-scroll'
 import ScrollableAnchor from 'react-scrollable-anchor'
@@ -29,7 +29,7 @@ const Home = ({
     getFavorites
 }) => {
     const [random, setRandom] = useState()
-    const { scrollX, scrollY, scrollDirection } = useScroll()
+    const { scrollY, scrollDirection } = useScroll()
     const [scrolledTo, setScrolledTo] = useState({
         scroll1: false,
         scroll2: false,
@@ -87,7 +87,7 @@ const Home = ({
                 })
             }
         }
-    }, [useScroll, scrollY, scrollDirection])
+    }, [scrollY, scrollDirection])
 
     // console.log(scrollY, scrolledTo, scrollDirection)
 

@@ -1,6 +1,6 @@
 .account-page {
     .content {
-        transition: all .6s ease;
+        transition: all 0.6s ease;
     }
     .content.sidebar {
         .page-account {
@@ -8,9 +8,7 @@
             min-height: 800px;
         }
         .user-palettes {
-            
             .palettes-list {
-                
             }
         }
     }
@@ -29,7 +27,6 @@
             max-width: 600px;
             margin: 2em auto;
             .login-tabs {
-                
             }
         }
         .user-info {
@@ -62,10 +59,8 @@
                         }
                     }
                     li.current {
-                        
                         // font-weight: 600;
-                        
-                        
+
                         span {
                             color: #111;
                             padding-bottom: 2px;
@@ -92,8 +87,6 @@
                         border-radius: 150px;
                     }
                 }
-                
-                
             }
             .profile-updated {
                 p {
@@ -115,7 +108,10 @@
                     margin: 0;
                 }
             }
-            .account-email, .start-date, .account-level, .account-expiration {
+            .account-email,
+            .start-date,
+            .account-level,
+            .account-expiration {
                 font-size: 14px;
             }
 
@@ -144,7 +140,8 @@
                     display: inline-block;
                     padding-bottom: 4px;
                     cursor: pointer;
-                    &:hover, &:focus {
+                    &:hover,
+                    &:focus {
                         padding-bottom: 2px;
                         border-bottom: 2px solid #0088cc;
                         color: #555;
@@ -168,14 +165,17 @@
                         font-size: 32px;
                         color: #bbb;
                         cursor: pointer;
-                        &:hover, &:focus {
+                        &:hover,
+                        &:focus {
                             color: #999;
                         }
                     }
                     form {
                         position: relative;
                     }
-                    form, input, label {
+                    form,
+                    input,
+                    label {
                         width: 99%;
                     }
                     label {
@@ -210,14 +210,12 @@
                         margin-left: auto;
                     }
                 }
-                
             }
             .logout-button {
                 margin: 0 0 0 auto;
                 align-self: start;
             }
         }
-            
     }
     .user-palettes {
         padding: 1.5em;
@@ -252,12 +250,12 @@
             // justify-content: space-between;
             // align-items: flex-start;
             // flex-wrap: wrap;
-           
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(305px, 1fr) );
-            grid-template-rows: auto; 
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(305px, 1fr));
+            grid-template-rows: auto;
             grid-column-gap: 10px;
-            grid-row-gap: 10px; 
+            grid-row-gap: 10px;
             justify-items: center;
             .palette-wrap {
                 padding: 5px 10px 10px;
@@ -283,19 +281,32 @@
                     .actions-trigger {
                         position: absolute;
                         // top: 5px;
-                        right: 5px;
+                        right: 0;
+                        top: -1px;
                         z-index: 98;
                         cursor: pointer;
                         transition: all 0.3s ease-in-out;
                         // opacity: 0;
                         &:hover {
-
                         }
                         svg {
                             width: 21px;
+                            padding: 0px 4px;
+                            border-radius: 16px;
                             path {
                                 fill: #777;
                             }
+                            &:hover {
+                                path {
+                                    fill: #222;
+                                }
+                            }
+                            // &:hover {
+                            //     background: #aaa;
+                            //     path {
+                            //         fill: #dedede;
+                            //     }
+                            // }
                         }
                     }
                     .actions-wrap {
@@ -307,7 +318,8 @@
                     }
                     .palette-actions {
                         opacity: 0.96;
-                        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+                        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+                            0 10px 10px rgba(0, 0, 0, 0.22);
                         z-index: 9999;
                         transition: all 0.3s ease-in-out;
                         position: absolute;
@@ -323,7 +335,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        
+
                         .actions-list {
                             width: 90%;
                             display: flex;
@@ -331,10 +343,12 @@
                             justify-content: center;
                             position: relative;
                             justify-content: space-between;
-                            padding: 10px 18px;
+                            padding: 10px;
                             top: 3px;
-                            li, span {
-                                &:focus, &:active {
+                            li,
+                            span {
+                                &:focus,
+                                &:active {
                                     outline: none;
                                     outline: 0;
                                 }
@@ -344,7 +358,8 @@
                         svg {
                             cursor: pointer;
 
-                            &:focus, &:active {
+                            &:focus,
+                            &:active {
                                 outline: none;
                                 outline: 0;
                             }
@@ -356,7 +371,7 @@
                                 width: 18px;
                                 height: 18px;
                                 font-size: 24px;
-                                fill:  #f35336;
+                                fill: #f35336;
                                 cursor: pointer;
                                 opacity: 0.7;
                                 circle {
@@ -366,9 +381,9 @@
                                 &:hover {
                                     circle {
                                         fill: #f35336;
-
                                     }
-                                    path, polygon {
+                                    path,
+                                    polygon {
                                         fill: #fff;
                                     }
                                 }
@@ -394,9 +409,9 @@
                         }
                         &:hover {
                             svg {
-                               circle {
+                                circle {
                                     fill: #777;
-                               } 
+                                }
                             }
                         }
                     }
@@ -417,9 +432,9 @@
                         }
                         &:hover {
                             svg {
-                               path {
+                                path {
                                     fill: #777;
-                               } 
+                                }
                             }
                         }
                     }
@@ -434,13 +449,13 @@
                                 fill: #fff;
                             }
                         }
-                       
+
                         &:hover {
                             cursor: pointer;
                             svg {
-                               circle {
+                                circle {
                                     fill: #777;
-                               } 
+                                }
                             }
                         }
                         .export-css.disabled {
@@ -456,52 +471,52 @@
                             &:hover {
                                 // cursor: not-allowed;
                                 svg {
-                                   circle {
+                                    circle {
                                         fill: #ccc;
-                                   } 
+                                    }
                                 }
                             }
                         }
                     }
-                    .palette-pdf, .favorites-pdf {
+                    .palette-pdf,
+                    .favorites-pdf {
                         margin-left: auto;
-                        margin-right: 5px; 
+                        margin-right: 5px;
                         width: 21px;
-                        
-                            cursor: pointer;
+
+                        cursor: pointer;
+                        svg {
+                            width: 21px;
+                            height: auto;
+                            path {
+                                fill: #aaa;
+                            }
+                        }
+                        .linkish {
+                            display: none;
+                        }
+                        &:hover {
                             svg {
-                                width: 21px;
-                                height: auto;
                                 path {
-                                    fill: #aaa;
+                                    fill: #777;
                                 }
                             }
-                            .linkish {
-                                display: none;
-                            }
-                            &:hover {
-                                svg {
-                                   path {
-                                        fill: #777;
-                                   } 
-                                }
-                            }
-                        
+                        }
                     }
                 }
                 .palette-actions:after {
-                        top: 100%;
-                        left: 92%;
-                        border: solid transparent;
-                        content: " ";
-                        height: 0;
-                        width: 0;
-                        position: absolute;
-                        pointer-events: none;
-                        border-color: rgba(239, 239, 239, 0);
-                        border-top-color: #efefef;
-                        border-width: 8px;
-                        margin-left: -8px;
+                    top: 100%;
+                    left: 92%;
+                    border: solid transparent;
+                    content: ' ';
+                    height: 0;
+                    width: 0;
+                    position: absolute;
+                    pointer-events: none;
+                    border-color: rgba(239, 239, 239, 0);
+                    border-top-color: #efefef;
+                    border-width: 8px;
+                    margin-left: -8px;
                 }
                 .user-palette {
                     display: flex;
@@ -521,7 +536,8 @@
                             padding: 2px;
                             width: 50px;
                             height: 50px;
-                            .add-favorite, .remove-favorite {
+                            .add-favorite,
+                            .remove-favorite {
                                 top: 3px;
                                 right: 3px;
                                 font-size: 12px;
@@ -538,7 +554,7 @@
                             top: -10px;
                             left: 0;
                             right: 0;
-                            margin: auto
+                            margin: auto;
                         }
                         .swatch-actions {
                             width: 100px;
@@ -571,7 +587,8 @@
                         padding: 2px;
                         width: 50px;
                         height: 50px;
-                        .add-favorite, .remove-favorite {
+                        .add-favorite,
+                        .remove-favorite {
                             top: 3px;
                             right: 3px;
                             font-size: 12px;
@@ -586,7 +603,7 @@
                     }
                 }
             }
-            
+
             .palette-utilities {
                 .delete-palette {
                     margin: 5px 0 0;
@@ -602,7 +619,7 @@
                             width: 18px;
                             height: 18px;
                             width: 24px;
-                            fill:  #f35336;
+                            fill: #f35336;
                             cursor: pointer;
                             opacity: 0.7;
                             circle {
@@ -610,7 +627,8 @@
                                 color: #f35336;
                             }
                         }
-                        &:hover, &:focus {
+                        &:hover,
+                        &:focus {
                             svg {
                                 opacity: 1;
                             }
@@ -622,7 +640,6 @@
                     }
                 }
             }
-            
         }
         .no-info {
             .swatch-content {
@@ -635,7 +652,7 @@
 .tippy-popper {
     .tippy-tooltip {
         .tippy-content {
-            font-size: 12px; 
+            font-size: 12px;
         }
     }
 }
@@ -683,7 +700,9 @@
                 width: 100%;
                 .user-content-wrap {
                     flex-wrap: wrap;
-                    .user-avatar, .user-meta, .user-actions {
+                    .user-avatar,
+                    .user-meta,
+                    .user-actions {
                         margin-bottom: 2.2em;
                     }
                     .user-meta {

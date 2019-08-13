@@ -16,8 +16,6 @@ const PaletteActions = ({
     sharePalette,
     exportCode,
     deletePalette
-    // actions,
-    // setActions
 }) => {
     const [actions, setActions] = useState()
     const node = useRef()
@@ -87,6 +85,30 @@ const PaletteActions = ({
                 >
                     <div className="actions-wrap">
                         <ul className="actions-list nostyle">
+                            <li>
+                                <div className="delete-palette">
+                                    <Tippy
+                                        // options
+                                        content="Delete palette"
+                                        placement="top"
+                                        trigger="mouseenter"
+                                        arrow={true}
+                                    >
+                                        <span
+                                            className="palette-delete"
+                                            onClick={() =>
+                                                deletePalette(palette.name)
+                                            }
+                                        >
+                                            <TimesCircle
+                                                style={{
+                                                    color: '#f35336'
+                                                }}
+                                            />
+                                        </span>
+                                    </Tippy>
+                                </div>
+                            </li>
                             <li>
                                 <div className="share-link">
                                     <Tippy
@@ -175,30 +197,6 @@ const PaletteActions = ({
                                             }
                                         >
                                             <Code />
-                                        </span>
-                                    </Tippy>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="delete-palette">
-                                    <Tippy
-                                        // options
-                                        content="Delete palette"
-                                        placement="top"
-                                        trigger="mouseenter"
-                                        arrow={true}
-                                    >
-                                        <span
-                                            className="palette-delete"
-                                            onClick={() =>
-                                                deletePalette(palette.name)
-                                            }
-                                        >
-                                            <TimesCircle
-                                                style={{
-                                                    color: '#f35336'
-                                                }}
-                                            />
                                         </span>
                                     </Tippy>
                                 </div>

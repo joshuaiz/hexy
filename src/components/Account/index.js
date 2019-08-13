@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
@@ -8,6 +8,7 @@ import 'firebase/auth'
 import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
+import { FavoritesContext } from '../../App'
 import { login, logout } from '../../utils/user'
 import Login from '../Login'
 import UserMeta from './UserMeta'
@@ -21,7 +22,7 @@ const Account = React.memo(
         history,
         handleFavorites,
         removeFavorite,
-        favorites,
+        // favorites,
         getFavorites,
         paletteWasSaved,
         paletteExported,
@@ -54,16 +55,10 @@ const Account = React.memo(
 
         const [loginModal, toggleLoginModal] = useModali()
 
+        const favorites = useContext(FavoritesContext)
+
         const inputEl = useRef(null)
         const form = useRef(null)
-
-        // let viewInfo, changeAvatar, updateProfile
-
-        // useEffect(() => {
-        //     toggleLoginModal(null)
-        // }, [])
-
-        // console.log(loginModal)
 
         useEffect(() => {
             // used to cancel async fetch on unmount
@@ -137,11 +132,9 @@ const Account = React.memo(
         }
 
         const handleUploadSuccess = filename => {
-            //   this.setState({ avatar: filename, progress: 100, isUploading: false });
             setAvatar(filename)
             setProgress(100)
             setIsUploading(false)
-            // handleSubmit(inputEl)
             firebase
                 .storage()
                 .ref('avatars')
@@ -210,7 +203,6 @@ const Account = React.memo(
 
         const handleUpdate = event => {
             event.preventDefault()
-            // toggleLoginModal(false)
             const { username, email, password } = event.target.elements
 
             console.log(email.value, password.value, username.value)
@@ -274,8 +266,6 @@ const Account = React.memo(
             }
         }
 
-        // console.log('Update Error', updateError && updateError.message)
-
         useEffect(() => {
             if (profileUpdated) {
                 // console.log(profileUpdated)
@@ -312,18 +302,11 @@ const Account = React.memo(
                 })
         }
 
-        // console.log('updateError', updateError)
-
-        // useEffect(() => {
-        //     console.log('updateError', updateError)
-        // }, [updateError, setUpdateError])
-
         useEffect(() => {
             getFavorites()
-        }, [favorites])
+        }, [favorites, getFavorites])
 
         if (initialising) {
-            // toggleLoginModal(false)
             return (
                 <div className="page-account">
                     <p>Loading...</p>
@@ -584,7 +567,7 @@ const Account = React.memo(
                             currentUser={currentUser}
                             handleFavorites={handleFavorites}
                             removeFavorite={removeFavorite}
-                            favorites={favorites}
+                            // favorites={favorites}
                             deletePalette={deletePalette}
                             paletteExported={paletteExported}
                             setPaletteExported={setPaletteExported}

@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
-// import { useScroll } from '../../../hooks/useScroll'
 import TextLoop from 'react-text-loop'
 import colorsImg from '../../../images/hexy_colors.png'
 import './Hero.scss'
 
 const Hero = () => {
     const [isLooping, setIsLooping] = useState()
-    // const { scrollX, scrollY, scrollDirection } = useScroll()
-    // const [skew, setSkew] = useState()
 
     useEffect(() => {
         const seen = sessionStorage.getItem('animation_viewed')
@@ -24,24 +21,6 @@ const Hero = () => {
             clearTimeout(timeout)
         }
     }, [isLooping])
-
-    // useEffect(() => {
-    //     if (scrollY < 300) {
-    //         setSkew(0)
-    //     }
-    //     if (scrollDirection === 'up') {
-    //         setSkew(scrollY / -300)
-    //         console.log(skew)
-    //     }
-    //     if (scrollDirection === 'down') {
-    //         setSkew(scrollY / 300)
-    //         console.log(skew)
-    //     }
-    // }, [scrollY, scrollDirection])
-
-    // const skewStyle = {
-    //     transform: `skew(${skew}deg`
-    // }
 
     return (
         <div className="hero">

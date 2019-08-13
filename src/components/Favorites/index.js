@@ -448,55 +448,59 @@ const Favorites = ({
                     </div>
                 </div>
             </div>
-            <Modali.Modal
-                {...paletteLimitModal}
-                animated={true}
-                centered={true}
-            >
-                <div className="error-message">
-                    <div className="error-header">
-                        <Logo />
-                        <h3>Palette limit reached.</h3>
+            {togglePaletteLimitModal && (
+                <Modali.Modal
+                    {...paletteLimitModal}
+                    animated={true}
+                    centered={true}
+                >
+                    <div className="error-message">
+                        <div className="error-header">
+                            <Logo />
+                            <h3>Palette limit reached.</h3>
+                        </div>
+                        <p>
+                            You may only save 5 palettes with a Standard
+                            account. Upgrade to <Link to="/pro">Hexy Pro</Link>{' '}
+                            to save more palettes.
+                        </p>
+                        <button className="button">
+                            <Link to="/pro">Go Pro</Link>
+                        </button>
                     </div>
-                    <p>
-                        You may only save 5 palettes with a Standard account.
-                        Upgrade to <Link to="/pro">Hexy Pro</Link> to save more
-                        palettes.
-                    </p>
-                    <button className="button">
-                        <Link to="/pro">Go Pro</Link>
-                    </button>
-                </div>
-            </Modali.Modal>
-            <Modali.Modal
-                {...upgradeAccountModal}
-                animated={true}
-                centered={true}
-            >
-                <div className="error-message">
-                    <div className="error-header">
-                        <Logo />
-                        <h3>Please upgrade your account.</h3>
-                    </div>
-                    <p>
-                        Exporting to SCSS code is available to Hexy Pro
-                        Unlimited and Hexy Pro Lifetime accounts.{' '}
-                        <Link
-                            to="/pro"
+                </Modali.Modal>
+            )}
+            {toggleUpgradeAccountModal && (
+                <Modali.Modal
+                    {...upgradeAccountModal}
+                    animated={true}
+                    centered={true}
+                >
+                    <div className="error-message">
+                        <div className="error-header">
+                            <Logo />
+                            <h3>Please upgrade your account.</h3>
+                        </div>
+                        <p>
+                            Exporting to SCSS code is available to Hexy Pro
+                            Unlimited and Hexy Pro Lifetime accounts.{' '}
+                            <Link
+                                to="/pro"
+                                onClick={() => toggleUpgradeAccountModal(false)}
+                            >
+                                Upgrade now
+                            </Link>{' '}
+                            to export SCSS.
+                        </p>
+                        <button
+                            className="button"
                             onClick={() => toggleUpgradeAccountModal(false)}
                         >
-                            Upgrade now
-                        </Link>{' '}
-                        to export SCSS.
-                    </p>
-                    <button
-                        className="button"
-                        onClick={() => toggleUpgradeAccountModal(false)}
-                    >
-                        <Link to="/pro">Upgrade</Link>
-                    </button>
-                </div>
-            </Modali.Modal>
+                            <Link to="/pro">Upgrade</Link>
+                        </button>
+                    </div>
+                </Modali.Modal>
+            )}
         </Fragment>
     )
 }

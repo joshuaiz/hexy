@@ -1,25 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
-import Tippy from '@tippy.js/react'
-import { Tooltip } from 'react-tippy'
 import Swatch from '../Swatch'
 import PaletteActions from '../PaletteActions'
-import FavoritesPDF from '../Favorites/FavoritesPDF'
 import Modali, { useModali } from 'modali'
 import * as emailjs from 'emailjs-com'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
-import * as firebase from 'firebase/app'
-import 'firebase/storage'
-import 'firebase/auth'
 import saveAs from 'file-saver'
 import moment from 'moment'
 import { slugify } from '../../utils/helpers'
-import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
-import { ReactComponent as Share } from '../../images/share.svg'
-import { ReactComponent as Code } from '../../images/code.svg'
-import { ReactComponent as Links } from '../../images/link.svg'
-import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import Logo from '../Logo'
 
 const UserPalettes = ({
@@ -28,13 +16,10 @@ const UserPalettes = ({
     currentUser,
     handleFavorites,
     removeFavorite,
-    favorites,
     deletePalette,
     paletteExported,
     setPaletteExported
 }) => {
-    // const { user } = useAuthState(firebase.auth())
-
     const [existing, setExisting] = useState(true)
     const [paletteModal, togglePaletteModal] = useModali()
     const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
@@ -74,7 +59,7 @@ const UserPalettes = ({
                 console.log('Error getting documents', err)
             })
 
-        // return query
+        return query
     }
 
     const share = (palettes, palette, paletteName) => {
@@ -145,9 +130,12 @@ const UserPalettes = ({
 
     const handleLinkClick = () => {
         togglePaletteModal(false)
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             history.push('/palettes')
         }, 1000)
+        return () => {
+            clearTimeout(timeout)
+        }
     }
 
     useEffect(() => {
@@ -205,6 +193,16 @@ const UserPalettes = ({
 
     // console.log(actions)
 
+    // hopefully disables modal flash on unmount
+    useEffect(() => {
+        const toggleFalse = () => {
+            togglePaletteLinkModal(false)
+            togglePaletteModal(false)
+            toggleUpgradeAccountModal(false)
+        }
+        return () => toggleFalse()
+    }, [])
+
     return (
         <div
             className={`nostyle palettes-list ${
@@ -237,8 +235,6 @@ const UserPalettes = ({
                                         sharePalette={sharePalette}
                                         exportCode={exportCode}
                                         deletePalette={deletePalette}
-                                        // setActions={setActions}
-                                        // actions={actions}
                                     />
                                 </div>
 
@@ -256,8 +252,6 @@ const UserPalettes = ({
                                                     handleFavorites
                                                 }
                                                 removeFavorite={removeFavorite}
-                                                favorites={favorites}
-                                                // isFavorite={isFavorite ? true : false}
                                             />
                                         )
                                     })}
@@ -285,46 +279,54 @@ const UserPalettes = ({
                     </div>
                 </Modali.Modal>
             )}
-            <Modali.Modal
-                {...upgradeAccountModal}
-                animated={true}
-                centered={true}
-            >
-                <div className="error-message">
-                    <div className="error-header">
-                        <Logo />
-                        <h3>Please upgrade your account.</h3>
+            {toggleUpgradeAccountModal && (
+                <Modali.Modal
+                    {...upgradeAccountModal}
+                    animated={true}
+                    centered={true}
+                >
+                    <div className="error-message">
+                        <div className="error-header">
+                            <Logo />
+                            <h3>Please upgrade your account.</h3>
+                        </div>
+                        <p>
+                            Exporting to SCSS code is available to Hexy Pro
+                            Unlimited and Hexy Pro Lifetime accounts.
+                            <Link to="/pro">Upgrade now</Link> to export SCSS.
+                        </p>
+                        <button className="button">
+                            <Link to="/pro">Upgrade</Link>
+                        </button>
                     </div>
-                    <p>
-                        Exporting to SCSS code is available to Hexy Pro
-                        Unlimited and Hexy Pro Lifetime accounts.
-                        <Link to="/pro">Upgrade now</Link> to export SCSS.
-                    </p>
-                    <button className="button">
-                        <Link to="/pro">Upgrade</Link>
-                    </button>
-                </div>
-            </Modali.Modal>
-            <Modali.Modal {...paletteLinkModal} animated={true} centered={true}>
-                <div className="error-message">
-                    <div className="error-header">
-                        <Logo />
-                        <h3>Your shareable palette link.</h3>
+                </Modali.Modal>
+            )}
+            {togglePaletteLinkModal && (
+                <Modali.Modal
+                    {...paletteLinkModal}
+                    animated={true}
+                    centered={true}
+                >
+                    <div className="error-message">
+                        <div className="error-header">
+                            <Logo />
+                            <h3>Your shareable palette link.</h3>
+                        </div>
+                        <p>Anyone with this link can view your palette:</p>
+                        <p>
+                            <Link
+                                to={{
+                                    pathname: paletteLink,
+                                    palette: sharedPalette,
+                                    userId: currentUser && currentUser.uid
+                                }}
+                            >
+                                {`${window.location.origin.toString()}${paletteLink}`}
+                            </Link>
+                        </p>
                     </div>
-                    <p>Anyone with this link can view your palette:</p>
-                    <p>
-                        <Link
-                            to={{
-                                pathname: paletteLink,
-                                palette: sharedPalette,
-                                userId: currentUser && currentUser.uid
-                            }}
-                        >
-                            {`${window.location.origin.toString()}${paletteLink}`}
-                        </Link>
-                    </p>
-                </div>
-            </Modali.Modal>
+                </Modali.Modal>
+            )}
         </div>
     )
 }

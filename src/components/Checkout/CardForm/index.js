@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import { CardElement, injectStripe } from 'react-stripe-elements'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../../config/firebaseconfig'
@@ -17,16 +17,14 @@ const CardForm = ({
     currentUser
 }) => {
     const { user } = useAuthState(firebase.auth())
-    let total = parseInt(cart.price) * 100
+    const [cardError, setCardError] = useState('')
 
-    // console.log(cart)
+    let total = parseInt(cart.price) * 100
 
     const submit = async e => {
         e.preventDefault()
 
         setStatus('submitting')
-
-        // console.log('in submit')
 
         let response
 
@@ -57,6 +55,7 @@ const CardForm = ({
             }
         } catch (err) {
             console.log('response', response)
+            setCardError(response)
             setStatus('error')
         }
     }
@@ -92,7 +91,8 @@ const CardForm = ({
                         <p>
                             Even though your total is $0.00, please enter your
                             card details to complete the transaction securely
-                            via Stripe. Your card will not be charged.
+                            via Stripe. Your card will <strong>not</strong> be
+                            charged.
                         </p>
                     )}
                     <form className="checkout-form" onSubmit={submit}>
@@ -109,7 +109,8 @@ const CardForm = ({
                             </button>
                             {status === 'error' && (
                                 <div className="CheckoutForm-error">
-                                    Something went wrong.
+                                    <p>Something went wrong.</p>
+                                    <p>{cardError}</p>
                                 </div>
                             )}
                         </div>
