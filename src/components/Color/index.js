@@ -6,7 +6,9 @@ import namedColors from 'color-name-list'
 import Swatch from '../Swatch'
 import SwatchList from '../SwatchList'
 import ColorSpaces from '../ColorSpaces'
+import ScrollToTop from '../ScrollToTop';
 import './Color.scss'
+
 
 const Color = React.memo(function Color({
     match,
@@ -140,6 +142,7 @@ const Color = React.memo(function Color({
                 currentColor ? currentColor.hex : 'detail'
             }`}
         >
+            <ScrollToTop />
             <div className="color-main">
                 <div className="color-id">
                     <h2>
