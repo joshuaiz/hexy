@@ -1,6 +1,7 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_LIVE_KEY) // add your secret key here
+// const stripe = require('stripe')(process.env.STRIPE_SECRET_LIVE_KEY) // add your secret key here
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST_KEY) // add your secret key here
-// const stripe = require('stripe')('sk_test_J64K8W5GbdDHGXaYuq9MT7Xy')
+const stripe = require('stripe')('sk_test_J64K8W5GbdDHGXaYuq9MT7Xy')
+// const stripe = require('stripe')('sk_live_O1GQyXSmLMiX024467XGiR4h')
 
 
 

@@ -110,7 +110,6 @@ const CardForm = ({
                             {status === 'error' && (
                                 <div className="CheckoutForm-error">
                                     <p>Something went wrong.</p>
-                                    <p>{cardError}</p>
                                 </div>
                             )}
                         </div>
