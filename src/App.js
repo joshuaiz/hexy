@@ -272,15 +272,10 @@ const App = React.memo(({ history, location, match }) => {
             const exists = favorites.some(i => p.some(j => j.name === i.name))
 
             // console.log('handleAddPaletteToFavorites', exists)
-
             // console.log('handleAddPaletteToFavorites: favorites', favorites)
-
             // console.log('handleAddPaletteToFavorites: newPalette', newPalette)
-
             // console.log('handleAddPaletteToFavorites: difference', difference)
-
             // console.log('handleAddPaletteToFavorites: division', division)
-
             // console.log('handleAddPaletteToFavorites: intersection', intersection)
 
             // if a color exists, add rest of colors from palette to favorites
