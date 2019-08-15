@@ -266,21 +266,35 @@ const App = React.memo(({ history, location, match }) => {
             let newPalette = arrayDiffByKey('hex', p, favorites)
             let intersection = p.filter(x => favorites.includes(x))
             let difference = p.filter(x => !favorites.includes(x))
+            let division = p.filter(x => !newPalette.includes(x))
 
             // check if color from palette already exists in favorites (returns boolean)
             const exists = favorites.some(i => p.some(j => j.name === i.name))
+
+            // console.log('handleAddPaletteToFavorites', exists)
+
+            // console.log('handleAddPaletteToFavorites: favorites', favorites)
+
+            // console.log('handleAddPaletteToFavorites: newPalette', newPalette)
+
+            // console.log('handleAddPaletteToFavorites: difference', difference)
+
+            // console.log('handleAddPaletteToFavorites: division', division)
+
+            // console.log('handleAddPaletteToFavorites: intersection', intersection)
 
             // if a color exists, add rest of colors from palette to favorites
             if (
                 (exists && !localAddedPalettes) ||
                 (exists && localAddedPalettes.length === 0)
             ) {
-                let newFavorites = [...favorites, ...newPalette]
+                console.log('exists, no local')
+                let newFavorites = [...newPalette, ...division]
                 setFavorites(newFavorites)
                 setLocalStorage('hexy_favorites', newFavorites)
                 setLocalStorage('hexy_added_palettes', [{ ...addedPalette }])
                 return
-            }
+            } 
 
             if (localAddedPalettes && localAddedPalettes.length) {
                 const found = localAddedPalettes.some(
@@ -291,7 +305,7 @@ const App = React.memo(({ history, location, match }) => {
                         ...localAddedPalettes,
                         { ...addedPalette }
                     ]
-
+                    // console.log('!found')
                     let newFavorites = [...favorites, ...p]
                     setFavorites(newFavorites)
                     setLocalStorage('hexy_favorites', newFavorites)
@@ -300,8 +314,15 @@ const App = React.memo(({ history, location, match }) => {
                     let filteredPalettes = localAddedPalettes.filter(
                         el => el.name !== palette.name
                     )
-                    setFavorites(newPalette)
-                    setLocalStorage('hexy_favorites', newPalette)
+                    // console.log('exists')
+                    let toRemove = [...division]
+                    // console.log('exists toRemove', toRemove)
+                    let newFavorites = favorites.filter(
+                        el => !toRemove.includes(el)
+                    )
+                    // let newFavorites = [...newPalette]
+                    setFavorites(newFavorites)
+                    setLocalStorage('hexy_favorites', newFavorites)
                     setLocalStorage('hexy_added_palettes', filteredPalettes)
                 } else {
                     let filteredPalettes = localAddedPalettes.filter(
@@ -311,11 +332,13 @@ const App = React.memo(({ history, location, match }) => {
                     let newFavorites = favorites.filter(
                         el => !toRemove.includes(el)
                     )
+                    // console.log('else')
                     setFavorites(newFavorites)
                     setLocalStorage('hexy_favorites', newFavorites)
                     setLocalStorage('hexy_added_palettes', filteredPalettes)
                 }
             } else if (!localAddedPalettes || localAddedPalettes.length === 0) {
+                // console.log('nothing')
                 let newFavorites = [...favorites, ...p]
                 setFavorites(newFavorites)
                 setLocalStorage('hexy_favorites', newFavorites)

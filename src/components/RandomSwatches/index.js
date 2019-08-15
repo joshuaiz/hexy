@@ -33,6 +33,7 @@ const RandomSwatches = ({
         }, 500)
     }
 
+    // don't think I need this
     // useEffect(() => {
     //     getFavorites()
     // }, [favorites, getFavorites])
