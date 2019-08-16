@@ -43,5 +43,8 @@ Hexy relies heavily on the following libraries/tools:
 
 Thanks to all involved in the above projects — Hexy would not exist without you!
 
+## Contributing
+Bug reports and pull requests welcome. Please visit the [issues](https://github.com/joshuaiz/hexy2/issues) page to see if your issue isn't already listed.
+
 ## ✨ Thank you
 Thanks to all the beta testers and supporters. We ❤️ you.
