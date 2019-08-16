@@ -47,14 +47,22 @@ const Swatch = ({
     // actions menu can get stuck so let's hide it if so after mouse stopped
     useEffect(() => {
         let timeout
-        document.onmousemove = function() {
-            // console.log('mouse stopped!')
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                setActions(false)
-            }, 4000)
+        let didCancel = false
+        if (!didCancel) {
+            document.onmousemove = function() {
+                // console.log('mouse stopped!')
+                clearTimeout(timeout)
+                timeout = setTimeout(() => {
+                    setActions(false)
+                }, 4000)
+            }
         }
+        // return () => {
+        //     clearTimeout(timeout)
+        //     // setActions(false)
+        // }
         return () => {
+            didCancel = true
             clearTimeout(timeout)
             // setActions(false)
         }

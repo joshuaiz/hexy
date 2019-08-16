@@ -1,68 +1,47 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# What is Hexy? 🌈 ✨
 
-## Available Scripts
+### Hexy is a fantastic compendium of all named hex colors. 
 
-In the project directory, you can run:
+At last count, there are [18,000+ unique colors](https://github.com/meodai/color-names) in this list for you to browse, search, filter, and use in your web or app projects.
 
-### `npm start`
+![](http://studio.bio/images/hexy.jpg)
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Hexy v1.0 has been rewritten from the ground up with an emphasis on performance and features to find colors for your next web, app, or design project.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+With the color-names list, Hexy gives you a more manageable subset of all hex colors for you to browse, add favorites, export to PDF or SCSS, find similar colors, see shades/tints, color harmonies, examine color properties, and much more.
 
-### `npm test`
+And what's great is that on **hexy** you can interact with *any* color whether it's named or not: add to favorites, see color properties, etc.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Using Hexy
+The best way to get the most out of Hexy is to use the search/filter tool. If you're looking for a nice shade of green, by all means type in "green" — you will get a lot of greens to choose from.
 
-### `npm run build`
+Yet, not all greens will have 'green' in the name so you can also get creative and search for things like "willow" or "tree" or "forest" or "wasabi".
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+You can also try descriptors like "vivid" or "muted" and adjectives like "vintage" or "tropical".
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+The hope is that you discover new colors *while* you are searching and these will inspire you to create something beautiful. That's really the whole point.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Why Hexy?
+There are tons of color reference sites out there but many of them don't provide a great user experience, have limited colors, or are flat out ugly.
 
-### `npm run eject`
+Colors are sexy, hence the name 'hexy'. I wanted to create Hexy to be fun, easy to use and somewhere you'll be coming back to again and again to get inspiration and find cool colors quickly and easily.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+More importantly, I've been wanting a color browsing site with a massive amount of colors for a while and since there wasn't one out there I liked, I decided to build it myself. For what it's worth, I've already used my local version to find colors for web projects and I hope that others will find it useful as well.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Hexy Pro
+While Hexy is free to use with a Standard account, Hexy Pro accounts offer more ways to save and share favorites colors. With a Pro account you can save up to 15 favorites at a time and save unlimited palettes to your profile. Hexy Pro account holders can save private palettes, export favorites to SCSS, get a private share link for palettes and much more. See the full list of features on the [/pro](https://hexy.io/pro) page.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Under the hood
+Hexy relies heavily on the following libraries/tools:
+    
+- [color-names](https://github.com/meodai/color-names): our defining massive library of named hex colors. Updated very frequently.
+- [tinycolor](https://github.com/bgrins/TinyColor): very small and fast color manipulation tools
+- [color-convert](https://github.com/Qix-/color-convert): very cool extra color manipulation functions
+- [nearest-color](https://github.com/dtao/nearest-color): finds the nearest color from a predefined array
+- [aybabtu](https://github.com/SeanCannon/aybabtu): for some edge case color conversions
+- [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd): drag and drop for React
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Thanks to all involved in the above projects — Hexy would not exist without you!
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## ✨ Thank you
+Thanks to all the beta testers and supporters. We ❤️ you.

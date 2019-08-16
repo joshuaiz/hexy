@@ -4,6 +4,7 @@ import { StripeProvider, Elements, stripe } from 'react-stripe-elements'
 import { db } from '../../config/firebaseconfig'
 import { humanize, setLocalStorage } from '../../utils/helpers'
 import CardForm from './CardForm'
+import ScrollToTop from '../ScrollToTop'
 import './Checkout.scss'
 
 const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
@@ -62,24 +63,25 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
             })
     }
 
-    const handleDiscount = () => {
-        if (currentCoupon) {
-            let discountValue = parseFloat(currentCoupon.value) / 100.0
-            let discount = cart.price * discountValue
-            let newPrice = cart.price - discount
-            setUpdatedPrice(newPrice.toFixed(2))
-            setCouponInput('')
-            const newCart = { ...cart, total: newPrice.toFixed(2) }
-            setCart(newCart)
-            setLocalStorage('hexy_cart', newCart)
-        } else {
-            console.log('no coupon')
-        }
-    }
+    
 
     useEffect(() => {
+        const handleDiscount = () => {
+            if (currentCoupon) {
+                let discountValue = parseFloat(currentCoupon.value) / 100.0
+                let discount = cart.price * discountValue
+                let newPrice = cart.price - discount
+                setUpdatedPrice(newPrice.toFixed(2))
+                setCouponInput('')
+                const newCart = { ...cart, total: newPrice.toFixed(2) }
+                setCart(newCart)
+                setLocalStorage('hexy_cart', newCart)
+            } else {
+                console.log('no coupon')
+            }
+        }
         handleDiscount()
-    }, [currentCoupon, handleDiscount])
+    }, [currentCoupon, cart, setCart])
 
     return (
         <StripeProvider apiKey="pk_test_Q8j9ieOEWFZAnuSox9yqNyrG">
@@ -202,6 +204,7 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                     </Fragment>
                 ) : (
                     <div className="cart-empty">
+                        <ScrollToTop />
                         {status !== 'complete' ? (
                             <div>
                                 <h3>Your cart is empty.</h3>
@@ -217,6 +220,7 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                 )}
                 {status === 'complete' ? (
                     <div className="CheckoutForm-complete">
+                     <ScrollToTop />
                         <h3>Payment successful. Thank you!</h3>
                         <p>
                             Go to your <Link to="/account">Account page</Link>{' '}

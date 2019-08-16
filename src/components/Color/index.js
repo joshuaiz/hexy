@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import * as tinycolor from 'tinycolor2'
 import { getTintsShades, inverseColor } from '../../utils/helpers'
 import namedColors from 'color-name-list'
+import domtoimage from 'dom-to-image';
 import Swatch from '../Swatch'
 import SwatchList from '../SwatchList'
 import ColorSpaces from '../ColorSpaces'
@@ -136,6 +137,27 @@ const Color = React.memo(function Color({
 
     // console.log(spins)
 
+    // useEffect(() => {
+
+    //     // // domtoimg test
+    //     // // var stageContainer = document.getElementById('stage-container');
+    //     // // domtoimage.toPng(stageContainer)
+    //     // // .then(function (dataUrl) {
+    //     // //     fs.writeFileSync('./tmp/pngs/img'+padded+'.png', dataUrl);
+    //     // // })
+    //     // // .catch(function (error) {
+    //     // //     console.error('oops, something went wrong!', error);
+    //     // // });
+    //     //     domtoimage.toJpeg(document.getElementById('color-jpg'), { quality: 0.95 })
+    //     //     .then(function (dataUrl) {
+    //     //         var link = document.createElement('a');
+    //     //         link.download = `${urlHex}.jpg`;
+    //     //         link.href = dataUrl;
+    //     //         link.click();
+    //     //     });
+        
+    // }, [urlHex])
+
     return (
         <div
             className={`color-page color-${
@@ -144,6 +166,31 @@ const Color = React.memo(function Color({
         >
             <ScrollToTop />
             <div className="color-main">
+                <div id="color-jpg" className="color-jpg">
+                    <div className="main-swatch">
+                        {currentColor ? (
+                            <Swatch
+                                color={currentColor}
+                                handleFavorites={handleFavorites}
+                                removeFavorite={removeFavorite}
+                                isFavorite={found}
+                            />
+                        ) : (
+                            location.color && <Swatch color={location.color} />
+                        )}
+                    </div>
+                    <div className="color-id">
+                        <h2>
+                            <span className="color-hex">
+                                {currentColor && currentColor.hex}
+                            </span>{' '}
+                            <br />
+                            <span className="color-name">
+                                {currentColor && currentColor.name}
+                            </span>
+                        </h2>
+                    </div>
+                </div>
                 <div className="color-id">
                     <h2>
                         <span className="color-hex">

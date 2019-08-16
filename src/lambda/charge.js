@@ -1,7 +1,6 @@
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_LIVE_KEY) // add your secret key here
 // const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST_KEY) // add your secret key here
 const stripe = require('stripe')('sk_test_J64K8W5GbdDHGXaYuq9MT7Xy')
-// const stripe = require('stripe')('sk_live_O1GQyXSmLMiX024467XGiR4h')
 
 
 
@@ -11,11 +10,11 @@ exports.handler = (event, context, callback) => {
         return callback(null, { statusCode: 405, body: 'Method Not Allowed' })
     }
 
-    // console.log('called')
+    console.log('called')
 
     const data = JSON.parse(event.body)
 
-    // console.log('charge.js', data)
+    console.log('charge.js', data)
 
     const accountType = data.desc.toUpperCase()
 
@@ -51,6 +50,7 @@ exports.handler = (event, context, callback) => {
             })
             .catch(err => {
                 console.log('reached error in charge.js')
+                console.log(err.message)
                 return callback(null, {
                     statusCode: 400,
                     body: JSON.stringify({

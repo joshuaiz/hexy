@@ -19,6 +19,31 @@
         flex-wrap: wrap;
         padding-bottom: 1em;
         border-bottom: 1px solid #ccc;
+        .color-jpg {
+            padding: 1.5em;
+            background-color: #fff;
+            // visibility: hidden;
+            position: absolute;
+            left: -99999px;
+            z-index: -2;
+            display: none;
+            li {
+                list-style: none;
+                .swatch-color {
+                    width: 1200px;
+                    height: 520px;
+                    .swatch-content {
+                        display: none;
+                    }
+                }
+            }
+            .color-id {
+                h2 {
+                    font-size: 4.5rem;
+                    color: #000;
+                }
+            }
+        }
         .color-id {
             width: 100%;
             h2 {
