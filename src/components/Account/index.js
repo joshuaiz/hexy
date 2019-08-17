@@ -72,7 +72,7 @@ const Account = React.memo(
                     .get()
                     .then(function(doc) {
                         if (doc.exists) {
-                            console.log('Document data:', doc.data())
+                            // console.log('Document data:', doc.data())
 
                             setCurrentUser(doc.data())
                         }

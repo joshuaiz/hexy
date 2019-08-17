@@ -649,6 +649,19 @@ const App = React.memo(({ history, location, match }) => {
         }
     }, [user])
 
+    useEffect(() => {
+        let didCancel = false
+        const toggleFalse = () => {
+            toggleErrorModal(false)
+        }
+        if (didCancel) {
+            toggleFalse()
+        }
+        return () => {
+            didCancel = true
+        }
+    }, [])
+
     // console.log('favoriteSwatches', favoriteSwatches)
     // console.log('favorites', favorites)
 
