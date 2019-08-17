@@ -12,6 +12,10 @@ With the color-names list, Hexy gives you a more manageable subset of all hex co
 
 And what's great is that on **hexy** you can interact with *any* color whether it's named or not: add to favorites, see color properties, etc.
 
+Hover over any color **swatch** to get a flyout actions menu where you can save any color as a favorite, copy the hex code or see a color detail page.
+
+**Favorites** are your current favorite colors which you can save or export as a **palette**. The Favorites sidebar has its own flyout actions menu for exporting and saving while palettes have additional actions for exporting and sharing.
+
 ## Using Hexy
 The best way to get the most out of Hexy is to use the search/filter tool. If you're looking for a nice shade of green, by all means type in "green" — you will get a lot of greens to choose from.
 
