@@ -262,6 +262,21 @@ const Favorites = ({
     //     getFavorites()
     // }, [favorites])
 
+    useEffect(() => {
+        let didCancel = true
+        const toggleFalse = () => {
+            togglePaletteLinkModal(false)
+            togglePaletteModal(false)
+            toggleUpgradeAccountModal(false)
+        }
+        if (!didCancel) {
+            toggleFalse()
+        }
+        return () => {
+            didCancel = false
+        }
+    }, [])
+
     return (
         <Fragment>
             <div
