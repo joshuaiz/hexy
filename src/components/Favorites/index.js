@@ -251,7 +251,7 @@ const Favorites = ({
     useEffect(() => {
         let didCancel = true
         const toggleFalse = () => {
-            togglePaletteLinkModal(false)
+            togglePaletteLimitModal(false)
             toggleUpgradeAccountModal(false)
         }
         if (!didCancel) {
