@@ -2,13 +2,13 @@
 
 ### Hexy is a fantastic compendium of all named hex colors. 
 
-At last count, there are [18,000+ unique colors](https://github.com/meodai/color-names) in this list for you to browse, search, filter, and use in your web or app projects.
+At last count, there are [18,000+ named hex colors](https://github.com/meodai/color-names) in this list for you to browse, search, filter, and then export for use in your web or app projects.
 
 ![](http://studio.bio/images/hexy.jpg)
 
 Hexy v1.0 has been rewritten from the ground up with an emphasis on performance and features to find colors for your next web, app, or design project.
 
-With the color-names list, Hexy gives you a more manageable subset of all hex colors for you to browse, add favorites, export to PDF or SCSS, find similar colors, see shades/tints, color harmonies, examine color properties, and much more.
+With the color-names list, Hexy gives you a more manageable subset of all hex colors for you to search, browse, add favorites, export to PDF or SCSS, find similar colors, see shades/tints, color harmonies, examine color properties, and much more. Finding great colors for your project has never been this easy or fun.
 
 And what's great is that on **hexy** you can interact with *any* color whether it's named or not: add to favorites, see color properties, etc.
 
