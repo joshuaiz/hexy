@@ -63,11 +63,16 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
             })
     }
 
-    
-
     useEffect(() => {
         const handleDiscount = () => {
-            if (currentCoupon) {
+            if (currentCoupon && currentCoupon.used === true) {
+                setCouponError('Sorry, that coupon is no longer valid.')
+                return
+            } else if (
+                currentCoupon &&
+                currentCoupon.used !== true &&
+                cart.length
+            ) {
                 let discountValue = parseFloat(currentCoupon.value) / 100.0
                 let discount = cart.price * discountValue
                 let newPrice = cart.price - discount
@@ -76,6 +81,11 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                 const newCart = { ...cart, total: newPrice.toFixed(2) }
                 setCart(newCart)
                 setLocalStorage('hexy_cart', newCart)
+
+                let couponRef = db.collection('coupons').doc(currentCoupon.code)
+
+                // Set the coupon to used
+                let updateCoupon = couponRef.update({ used: true })
             } else {
                 console.log('no coupon')
             }
@@ -139,12 +149,14 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                                                 </button>
                                             </div>
                                             <div className="coupon-feedback">
-                                                {currentCoupon && (
-                                                    <span className="success">
-                                                        Your coupon has been
-                                                        applied!
-                                                    </span>
-                                                )}
+                                                {currentCoupon &&
+                                                    currentCoupon.used !==
+                                                        true && (
+                                                        <span className="success">
+                                                            Your coupon has been
+                                                            applied!
+                                                        </span>
+                                                    )}
                                                 {couponError && (
                                                     <span className="error">
                                                         {couponError}
@@ -220,7 +232,7 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                 )}
                 {status === 'complete' ? (
                     <div className="CheckoutForm-complete">
-                     <ScrollToTop />
+                        <ScrollToTop />
                         <h3>Payment successful. Thank you!</h3>
                         <p>
                             Go to your <Link to="/account">Account page</Link>{' '}

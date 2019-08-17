@@ -111,26 +111,29 @@ const FavoriteActions = React.memo(
                             </div>
                         </li>
                     )}
-                    <li>
-                        <div className="export-code">
-                            <span
-                                className={`export-css icon-wrap ${
-                                    accountLevel && accountLevel === 'high'
-                                        ? 'enabled'
-                                        : 'disabled'
-                                }`}
-                                onClick={exportCode}
-                            >
-                                <Code />
-                            </span>
-                            <span
-                                onClick={exportCode}
-                                className="export-text linkish"
-                            >
-                                Export SCSS Code
-                            </span>
-                        </div>
-                    </li>
+                    {user && (
+                        <li>
+                            <div className="export-code">
+                                <span
+                                    className={`export-css icon-wrap ${
+                                        accountLevel && accountLevel === 'high'
+                                            ? 'enabled'
+                                            : 'disabled'
+                                    }`}
+                                    onClick={exportCode}
+                                >
+                                    <Code />
+                                </span>
+                                <span
+                                    onClick={exportCode}
+                                    className="export-text linkish"
+                                >
+                                    Export SCSS Code
+                                </span>
+                            </div>
+                        </li>
+                    )}
+
                     <li className="clear-favorites-action">
                         <div className="clear-fav">
                             <span
