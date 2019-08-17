@@ -240,6 +240,17 @@ const Favorites = ({
         toggleUpgradeAccountModal(false)
     }
 
+    // useEffect(() => {
+    //     let timeout
+    //     document.onmousemove = function() {
+    //         // console.log('mouse stopped!')
+    //         clearTimeout(timeout)
+    //         timeout = setTimeout(() => {
+    //             setActions(false)
+    //         }, 5000)
+    //     }
+    // })
+
     const onMouseOver = () => {
         setActions(true)
     }
@@ -250,20 +261,6 @@ const Favorites = ({
     // useEffect(() => {
     //     getFavorites()
     // }, [favorites])
-
-    useEffect(() => {
-        let didCancel = true
-        const toggleFalse = () => {
-            togglePaletteLinkModal(false)
-            toggleUpgradeAccountModal(false)
-        }
-        if (!didCancel) {
-            toggleFalse()
-        }
-        return () => {
-            didCancel = false
-        }
-    }, [])
 
     return (
         <Fragment>
