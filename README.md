@@ -50,5 +50,8 @@ Thanks to all involved in the above projects — Hexy would not exist without yo
 ## Contributing
 Bug reports and pull requests welcome. Please visit the [issues](https://github.com/joshuaiz/hexy2/issues) page to see if your issue isn't already listed.
 
+## Supporting Hexy
+If you find Hexy useful, get a Hexy Pro account. Or click the Sponsor button above to support Hexy with a donation.
+
 ## ✨ Thank you
 Thanks to all the beta testers and supporters. We ❤️ you.
