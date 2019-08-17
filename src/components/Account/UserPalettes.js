@@ -21,12 +21,12 @@ const UserPalettes = ({
     setPaletteExported
 }) => {
     const [existing, setExisting] = useState(true)
-    const [paletteModal, togglePaletteModal] = useModali()
-    const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
+    const [paletteModal, togglePaletteModal] = useModali(false)
+    const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali(false)
     const [accountLevel, setAccountLevel] = useState()
     const [paletteLink, setPaletteLink] = useState('')
     const [sharedPalette, setSharedPalette] = useState()
-    const [paletteLinkModal, togglePaletteLinkModal] = useModali()
+    const [paletteLinkModal, togglePaletteLinkModal] = useModali(false)
 
     const smallAccounts = ['standard', 'pro']
 
@@ -86,7 +86,7 @@ const UserPalettes = ({
     }
 
     const sendPaletteEmail = (paletteName, date) => {
-        console.log('in sendPaletteEmail')
+        // console.log('in sendPaletteEmail')
         let template_params = {
             reply_to: 'reply_to_value',
             from_name: 'Hexy Palettes',
@@ -194,13 +194,28 @@ const UserPalettes = ({
     // console.log(actions)
 
     // hopefully disables modal flash on unmount
+    // useEffect(() => {
+    //     const toggleFalse = () => {
+    //         togglePaletteLinkModal(false)
+    //         togglePaletteModal(false)
+    //         toggleUpgradeAccountModal(false)
+    //     }
+    //     return () => toggleFalse()
+    // }, [])
+
     useEffect(() => {
+        let didCancel = true
         const toggleFalse = () => {
             togglePaletteLinkModal(false)
             togglePaletteModal(false)
             toggleUpgradeAccountModal(false)
         }
-        return () => toggleFalse()
+        if (!didCancel) {
+            toggleFalse()
+        }
+        return () => {
+            didCancel = false
+        }
     }, [])
 
     return (

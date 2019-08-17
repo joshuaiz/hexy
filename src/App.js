@@ -263,6 +263,12 @@ const App = React.memo(({ history, location, match }) => {
                 return
             }
 
+            // console.log('favorites.length', favorites.length)
+            // console.log('p.length', p.length)
+            // console.log('localFavorites.length', localFavorites && localFavorites.length)
+
+            
+
             let newPalette = arrayDiffByKey('hex', p, favorites)
             let intersection = p.filter(x => favorites.includes(x))
             let difference = p.filter(x => !favorites.includes(x))
@@ -277,6 +283,11 @@ const App = React.memo(({ history, location, match }) => {
             // console.log('handleAddPaletteToFavorites: difference', difference)
             // console.log('handleAddPaletteToFavorites: division', division)
             // console.log('handleAddPaletteToFavorites: intersection', intersection)
+
+            if (favorites.length > 15 || newPalette && newPalette.length > 15 ) {
+                alert('The maximum number of Favorites is 15.')
+                return
+            }
 
             // if a color exists, add rest of colors from palette to favorites
             if (
