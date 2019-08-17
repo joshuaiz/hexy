@@ -163,20 +163,6 @@ const Favorites = ({
         }
     }
 
-    // const savePaletteToFeed = (date, paletteName, favorites) => {
-    //     let palettes = db.collection('palettes')
-    //     palettes
-    //         // .doc(`palette/${id}`)
-    //         .add({
-    //             date: date,
-    //             name: paletteName,
-    //             palette: favorites
-    //         })
-    //         .catch(err => {
-    //             console.log('Error saving palette', err)
-    //         })
-    // }
-
     const handlePaletteName = event => {
         setPaletteName(event.target.value)
     }
@@ -266,7 +252,6 @@ const Favorites = ({
         let didCancel = true
         const toggleFalse = () => {
             togglePaletteLinkModal(false)
-            togglePaletteModal(false)
             toggleUpgradeAccountModal(false)
         }
         if (!didCancel) {
