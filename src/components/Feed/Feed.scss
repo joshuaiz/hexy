@@ -139,6 +139,11 @@
                             }
                         }
                     }
+                    .palette-likes, .likes, .liked {
+                        &:focus {
+                            outline: none;
+                        }
+                    }
                     .palette-likes {
                         // padding: 3px 0;
                         text-align: right;

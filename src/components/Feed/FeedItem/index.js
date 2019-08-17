@@ -145,7 +145,7 @@ const FeedItem = React.memo(
                         </Tippy>
 
                         <span className="likes-count">
-                            {item.likes && item.likes}
+                            {item.likes && item.likes === -1 ? item.likes === 0 : item.likes}
                         </span>
                     </div>
                 </div>
