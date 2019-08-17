@@ -240,17 +240,6 @@ const Favorites = ({
         toggleUpgradeAccountModal(false)
     }
 
-    // useEffect(() => {
-    //     let timeout
-    //     document.onmousemove = function() {
-    //         // console.log('mouse stopped!')
-    //         clearTimeout(timeout)
-    //         timeout = setTimeout(() => {
-    //             setActions(false)
-    //         }, 5000)
-    //     }
-    // })
-
     const onMouseOver = () => {
         setActions(true)
     }
