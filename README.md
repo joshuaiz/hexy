@@ -6,7 +6,7 @@ At last count, there are [18,000+ named hex colors](https://github.com/meodai/co
 
 ![](http://studio.bio/images/hexy.jpg)
 
-Hexy v1.0 has been rewritten from the ground up with an emphasis on performance and features to find colors for your next web, app, or design project.
+Hexy v1.0 has been rewritten from the ground up with an emphasis on performance and helpful features to quickly find and share cool colors.
 
 With the color-names list, Hexy gives you a more manageable subset of all hex colors for you to search, browse, add favorites, export to PDF or SCSS, find similar colors, see shades/tints, color harmonies, examine color properties, and much more. Finding great colors for your project has never been this easy or fun.
 
