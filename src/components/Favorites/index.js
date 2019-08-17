@@ -448,7 +448,7 @@ const Favorites = ({
                     </div>
                 </div>
             </div>
-            {togglePaletteLimitModal && (
+            {currentUser && togglePaletteLimitModal && (
                 <Modali.Modal
                     {...paletteLimitModal}
                     animated={true}
@@ -470,7 +470,7 @@ const Favorites = ({
                     </div>
                 </Modali.Modal>
             )}
-            {toggleUpgradeAccountModal && (
+            {currentUser && toggleUpgradeAccountModal && (
                 <Modali.Modal
                     {...upgradeAccountModal}
                     animated={true}
