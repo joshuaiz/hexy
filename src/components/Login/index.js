@@ -9,13 +9,18 @@ import { setLocalStorage } from '../../utils/helpers'
 import { login, signup } from '../../utils/user'
 // import Modal from '../Modal'
 import Modali, { useModali } from 'modali'
+import ScrollToTop from '../ScrollToTop'
 
-const Login = ({ setProfileUpdated, history }) => {
+const Login = ({ setProfileUpdated, history, location }) => {
     const { user } = useAuthState(firebase.auth())
-    const [tab1Active, setTab1Active] = useState(true)
+    const [tab1Active, setTab1Active] = useState(
+        location.search === '?action=signup' ? false : true
+    )
     const [error, setError] = useState()
     const [modalContent, setModalContent] = useState()
     const [loginErrorModal, toggleLoginErrorModal] = useModali()
+
+    // console.log('Login location', location.search)
 
     const handleLogin = async event => {
         event.preventDefault()
@@ -66,27 +71,9 @@ const Login = ({ setProfileUpdated, history }) => {
             })
     }
 
-    const forgotPassword = () => {}
-
-    // const updatePassword = () => {
-    //     // var auth = firebase.auth();
-    //     thisUser = firebase.auth().currentUser;
-    //     let emailAddress;
-
-    //     if (thisUser != null) {
-    //     thisUser.providerData.forEach(function (profile) {
-    //       emailAddress = profile.email
-    //     });
-
-    //     thisUser.sendPasswordResetEmail(emailAddress).then(function() {
-    //       console.log('Email sent!')
-    //     }).catch(function(error) {
-    //       console.log('something went wrong - email not sent')
-    //     });
-    // }
-
     return (
         <div className="login-tabs">
+            <ScrollToTop />
             {!user && (
                 <div className="tabs">
                     <div className="tab-triggers">

@@ -13,6 +13,9 @@ const CardForm = ({
     stripe,
     status,
     setStatus,
+    currentCoupon,
+    setCurrentCoupon,
+    couponError,
     setProfileUpdated,
     currentUser
 }) => {
@@ -20,6 +23,36 @@ const CardForm = ({
     const [cardError, setCardError] = useState('')
 
     let total = parseInt(cart.price) * 100
+
+    // console.log(cart)
+
+    const submitFree = e => {
+        e.preventDefault()
+
+        if (cart.total === 0.0 || cart.total === '0.00') {
+            if (cart.accountType.length && cart.accountType !== 'standard') {
+                // console.log('submitFree accountType')
+                updateAccount()
+                setStatus('completeFree')
+                setCart()
+                localStorage.removeItem('hexy_cart')
+                if (currentCoupon && !couponError) {
+                    let couponRef = db
+                        .collection('coupons')
+                        .doc(currentCoupon.code)
+
+                    // Set the coupon to used
+                    let updateCoupon = couponRef.update({ used: true })
+                    setCurrentCoupon(null)
+                }
+            } else {
+                setStatus('error')
+                console.log('Account could not be created.')
+            }
+        } else {
+            console.log('something went wrong')
+        }
+    }
 
     const submit = async e => {
         e.preventDefault()
@@ -50,6 +83,15 @@ const CardForm = ({
                 setStatus('complete')
                 setCart()
                 localStorage.removeItem('hexy_cart')
+                if (currentCoupon && !couponError) {
+                    let couponRef = db
+                        .collection('coupons')
+                        .doc(currentCoupon.code)
+
+                    // Set the coupon to used
+                    let updateCoupon = couponRef.update({ used: true })
+                    setCurrentCoupon(null)
+                }
             } else {
                 throw new Error('Network response was not ok.')
             }
@@ -88,34 +130,52 @@ const CardForm = ({
                 </Fragment>
             ) : (
                 <div className="checkout-form-wrap">
-                    {cart && cart.total === '0.00' && (
-                        <p>
-                            Even though your total is $0.00, please enter your
-                            card details to complete the transaction securely
-                            via Stripe. Your card will <strong>not</strong> be
-                            charged.
-                        </p>
-                    )}
-                    <form className="checkout-form" onSubmit={submit}>
-                        <div className="checkout-form-inner">
-                            <CardElement />
-                            <button
-                                className="CheckoutForm-button button"
-                                type="submit"
-                                disabled={status === 'submitting'}
-                            >
-                                {status === 'submitting'
-                                    ? 'Submitting'
-                                    : 'Submit Order'}
-                            </button>
-                            {status === 'error' && (
-                                <div className="CheckoutForm-error">
-                                    <p>Something went wrong.</p>
+                    {cart && cart.total === '0.00' ? (
+                        <form
+                            className="checkout-form checkout-form-free"
+                            onSubmit={submitFree}
+                        >
+                            <div className="checkout-form-inner">
+                                <button
+                                    className="CheckoutForm-button button"
+                                    type="submit"
+                                    disabled={status === 'submitting'}
+                                >
+                                    {status === 'submitting'
+                                        ? 'Submitting'
+                                        : 'Submit Order'}
+                                </button>
+                                {status === 'error' && (
+                                    <div className="CheckoutForm-error">
+                                        <p>Something went wrong.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </form>
+                    ) : (
+                        <Fragment>
+                            <form className="checkout-form" onSubmit={submit}>
+                                <div className="checkout-form-inner">
+                                    <CardElement />
+                                    <button
+                                        className="CheckoutForm-button button"
+                                        type="submit"
+                                        disabled={status === 'submitting'}
+                                    >
+                                        {status === 'submitting'
+                                            ? 'Submitting'
+                                            : 'Submit Order'}
+                                    </button>
+                                    {status === 'error' && (
+                                        <div className="CheckoutForm-error">
+                                            <p>Something went wrong.</p>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                    </form>
-                    <StripeBadge />
+                            </form>
+                            <StripeBadge />
+                        </Fragment>
+                    )}
                 </div>
             )}
         </div>

@@ -20,6 +20,7 @@ const Account = React.memo(
     ({
         onSubmit,
         history,
+        location,
         handleFavorites,
         removeFavorite,
         // favorites,
@@ -580,7 +581,11 @@ const Account = React.memo(
         return (
             <div className="page-account">
                 <div className="not-logged-in">
-                    <h2>Please Log In or Sign Up</h2>
+                    <h2>
+                        {location.search === '?action=signup'
+                            ? 'Get a free Hexy Account'
+                            : 'Please Log In or Sign Up'}
+                    </h2>
                     <Login setProfileUpdated={setProfileUpdated} />
                 </div>
             </div>

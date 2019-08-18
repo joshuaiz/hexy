@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modali, { useModali } from 'modali'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
@@ -49,6 +49,17 @@ const PriceTable = ({ cart, addToCart, history }) => {
         }, 1000)
     }
 
+    const handleSignUp = () => {
+        return (
+            <Redirect
+                to={{
+                    pathname: '/account',
+                    tab1Active: false
+                }}
+            />
+        )
+    }
+
     window.onbeforeunload = () => {
         toggleModal(false)
     }
@@ -78,12 +89,26 @@ const PriceTable = ({ cart, addToCart, history }) => {
 
                     <div className="signup">
                         <button
-                            className="button"
+                            className={`button ${
+                                currentUser &&
+                                currentUser.accountType === 'standard'
+                                    ? `disabled`
+                                    : null
+                            }`}
+                            disabled={
+                                currentUser &&
+                                currentUser.accountType === 'standard'
+                                    ? true
+                                    : null
+                            }
                             onClick={() => {
-                                addToCart('standard', 0)
+                                history.push('/account?action=signup')
                             }}
                         >
-                            Sign Up
+                            {currentUser &&
+                            currentUser.accountType === 'standard'
+                                ? 'Current Account'
+                                : `Sign Up`}
                         </button>
                     </div>
                 </li>

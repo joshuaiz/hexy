@@ -65,14 +65,13 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
 
     useEffect(() => {
         const handleDiscount = () => {
-            if (currentCoupon && currentCoupon.used === true) {
+            // console.log(currentCoupon)
+            if (currentCoupon && currentCoupon.used) {
+                // console.log('currentCoupon.used')
                 setCouponError('Sorry, that coupon is no longer valid.')
                 return
-            } else if (
-                currentCoupon &&
-                currentCoupon.used !== true &&
-                cart.length
-            ) {
+            } else if (currentCoupon && !currentCoupon.used) {
+                // console.log('coupon valid')
                 let discountValue = parseFloat(currentCoupon.value) / 100.0
                 let discount = cart.price * discountValue
                 let newPrice = cart.price - discount
@@ -81,20 +80,15 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                 const newCart = { ...cart, total: newPrice.toFixed(2) }
                 setCart(newCart)
                 setLocalStorage('hexy_cart', newCart)
-
-                let couponRef = db.collection('coupons').doc(currentCoupon.code)
-
-                // Set the coupon to used
-                let updateCoupon = couponRef.update({ used: true })
             } else {
                 console.log('no coupon')
             }
         }
         handleDiscount()
-    }, [currentCoupon, cart, setCart])
+    }, [currentCoupon])
 
     return (
-        <StripeProvider apiKey="pk_live_APSxZb65ACUVVRw9aDA8e2nP">
+        <StripeProvider apiKey="pk_test_Q8j9ieOEWFZAnuSox9yqNyrG">
             <div className="checkout">
                 <h1>Checkout</h1>
 
@@ -211,6 +205,9 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                                 setStatus={setStatus}
                                 setProfileUpdated={setProfileUpdated}
                                 currentUser={currentUser}
+                                currentCoupon={currentCoupon}
+                                setCurrentCoupon={setCurrentCoupon}
+                                couponError={couponError}
                             />
                         </Elements>
                     </Fragment>
@@ -226,7 +223,13 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                                 </p>
                             </div>
                         ) : (
-                            <h3>Purchase complete.</h3>
+                            <h3>
+                                {status === 'complete'
+                                    ? 'Purchase complete.'
+                                    : status === 'completeFree'
+                                    ? 'Upgrade complete.'
+                                    : null}
+                            </h3>
                         )}
                     </div>
                 )}
@@ -234,6 +237,19 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
                     <div className="CheckoutForm-complete">
                         <ScrollToTop />
                         <h3>Payment successful. Thank you!</h3>
+                        <p>
+                            Go to your <Link to="/account">Account page</Link>{' '}
+                            or <Link to="/colors">find more colors</Link>.
+                        </p>
+                    </div>
+                ) : null}
+                {status === 'completeFree' ? (
+                    <div className="CheckoutForm-complete">
+                        <ScrollToTop />
+                        <h3>
+                            Sweeetness! Your account has been upgraded. Thank
+                            you!
+                        </h3>
                         <p>
                             Go to your <Link to="/account">Account page</Link>{' '}
                             or <Link to="/colors">find more colors</Link>.
