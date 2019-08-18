@@ -94,7 +94,7 @@ const Checkout = ({ cart, setCart, setProfileUpdated, currentUser }) => {
     }, [currentCoupon, cart, setCart])
 
     return (
-        <StripeProvider apiKey="pk_test_Q8j9ieOEWFZAnuSox9yqNyrG">
+        <StripeProvider apiKey="pk_live_APSxZb65ACUVVRw9aDA8e2nP">
             <div className="checkout">
                 <h1>Checkout</h1>
 
