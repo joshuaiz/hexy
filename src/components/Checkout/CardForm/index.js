@@ -55,6 +55,7 @@ const CardForm = ({
             }
         } catch (err) {
             console.log('response', response)
+            console.log('error', err)
             setCardError(response)
             setStatus('error')
         }
