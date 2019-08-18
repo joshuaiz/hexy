@@ -294,7 +294,7 @@ const UserPalettes = ({
                     </div>
                 </Modali.Modal>
             )}
-            {toggleUpgradeAccountModal && (
+            {toggleUpgradeAccountModal ? (
                 <Modali.Modal
                     {...upgradeAccountModal}
                     animated={true}
@@ -315,8 +315,8 @@ const UserPalettes = ({
                         </button>
                     </div>
                 </Modali.Modal>
-            )}
-            {currentUser && togglePaletteLinkModal && (
+            ) : null}
+            {currentUser && togglePaletteLinkModal ? (
                 <Modali.Modal
                     {...paletteLinkModal}
                     animated={true}
@@ -341,7 +341,7 @@ const UserPalettes = ({
                         </p>
                     </div>
                 </Modali.Modal>
-            )}
+            ) : null}
         </div>
     )
 }

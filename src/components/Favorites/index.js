@@ -448,7 +448,7 @@ const Favorites = ({
                     </div>
                 </div>
             </div>
-            {currentUser && togglePaletteLimitModal && (
+            {currentUser && togglePaletteLimitModal ? (
                 <Modali.Modal
                     {...paletteLimitModal}
                     animated={true}
@@ -469,8 +469,8 @@ const Favorites = ({
                         </button>
                     </div>
                 </Modali.Modal>
-            )}
-            {currentUser && toggleUpgradeAccountModal && (
+            ) : null}
+            {currentUser && toggleUpgradeAccountModal ? (
                 <Modali.Modal
                     {...upgradeAccountModal}
                     animated={true}
@@ -500,7 +500,7 @@ const Favorites = ({
                         </button>
                     </div>
                 </Modali.Modal>
-            )}
+            ) : null}
         </Fragment>
     )
 }
