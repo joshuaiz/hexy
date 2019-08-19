@@ -201,22 +201,22 @@ const UserPalettes = ({
     //         toggleUpgradeAccountModal(false)
     //     }
     //     return () => toggleFalse()
-    // }, [])
+    // })
 
-    useEffect(() => {
-        let didCancel = true
-        const toggleFalse = () => {
-            togglePaletteLinkModal(false)
-            togglePaletteModal(false)
-            toggleUpgradeAccountModal(false)
-        }
-        if (!didCancel) {
-            toggleFalse()
-        }
-        return () => {
-            didCancel = false
-        }
-    }, [])
+    // useEffect(() => {
+    //     let didCancel = true
+    //     const toggleFalse = () => {
+    //         togglePaletteLinkModal(false)
+    //         togglePaletteModal(false)
+    //         toggleUpgradeAccountModal(false)
+    //     }
+    //     if (!didCancel) {
+    //         toggleFalse()
+    //     }
+    //     return () => {
+    //         didCancel = false
+    //     }
+    // }, [])
 
     return (
         <div
@@ -294,7 +294,7 @@ const UserPalettes = ({
                     </div>
                 </Modali.Modal>
             )}
-            {toggleUpgradeAccountModal ? (
+            {toggleUpgradeAccountModal && (
                 <Modali.Modal
                     {...upgradeAccountModal}
                     animated={true}
@@ -315,7 +315,7 @@ const UserPalettes = ({
                         </button>
                     </div>
                 </Modali.Modal>
-            ) : null}
+            )}
             {currentUser && togglePaletteLinkModal ? (
                 <Modali.Modal
                     {...paletteLinkModal}

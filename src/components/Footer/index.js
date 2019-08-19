@@ -113,7 +113,8 @@ const Footer = ({ currentUser }) => {
                             studio.bio Creative LLC
                         </a>
                         . All rights reserved.{' '}
-                        <Link to="/terms">Terms of Use</Link>
+                        <Link to="/terms">Terms of Use</Link>&nbsp;|&nbsp;
+                        <Link to="/privacy-policy">Privacy Policy</Link>
                     </p>
                 </div>
             </div>

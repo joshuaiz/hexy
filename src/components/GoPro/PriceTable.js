@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Modali, { useModali } from 'modali'
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
@@ -47,17 +47,6 @@ const PriceTable = ({ cart, addToCart, history }) => {
         setTimeout(() => {
             history.push('/checkout')
         }, 1000)
-    }
-
-    const handleSignUp = () => {
-        return (
-            <Redirect
-                to={{
-                    pathname: '/account',
-                    tab1Active: false
-                }}
-            />
-        )
     }
 
     window.onbeforeunload = () => {
@@ -280,15 +269,17 @@ const PriceTable = ({ cart, addToCart, history }) => {
                     </div>
                 </li>
             </ul>
-            <Modali.Modal {...modal} animated={true} centered={true}>
-                <div className="price-modal">
-                    <h3>Hexy {accountType} was added to your cart!</h3>
-                    <p>A wonderful world of color awaits...</p>
-                    <button className="button" onClick={handleClick}>
-                        Go to Checkout &rarr;
-                    </button>
-                </div>
-            </Modali.Modal>
+            {toggleModal && (
+                <Modali.Modal {...modal} animated={true} centered={true}>
+                    <div className="price-modal">
+                        <h3>Hexy {accountType} was added to your cart!</h3>
+                        <p>A wonderful world of color awaits...</p>
+                        <button className="button" onClick={handleClick}>
+                            Go to Checkout &rarr;
+                        </button>
+                    </div>
+                </Modali.Modal>
+            )}
         </div>
     )
 }

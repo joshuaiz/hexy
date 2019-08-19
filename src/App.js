@@ -25,6 +25,7 @@ import Checkout from './components/Checkout'
 import Palette from './components/Palette'
 import FAQ from './components/FAQ'
 import Terms from './components/Terms'
+import Privacy from './components/Privacy'
 import Contact from './components/Contact'
 import NoMatch from './components/NoMatch'
 // import {
@@ -267,8 +268,6 @@ const App = React.memo(({ history, location, match }) => {
             // console.log('p.length', p.length)
             // console.log('localFavorites.length', localFavorites && localFavorites.length)
 
-            
-
             let newPalette = arrayDiffByKey('hex', p, favorites)
             let intersection = p.filter(x => favorites.includes(x))
             let difference = p.filter(x => !favorites.includes(x))
@@ -284,7 +283,10 @@ const App = React.memo(({ history, location, match }) => {
             // console.log('handleAddPaletteToFavorites: division', division)
             // console.log('handleAddPaletteToFavorites: intersection', intersection)
 
-            if (favorites.length > 15 || newPalette && newPalette.length > 15 ) {
+            if (
+                favorites.length > 15 ||
+                (newPalette && newPalette.length > 15)
+            ) {
                 alert('The maximum number of Favorites is 15.')
                 return
             }
@@ -300,7 +302,7 @@ const App = React.memo(({ history, location, match }) => {
                 setLocalStorage('hexy_favorites', newFavorites)
                 setLocalStorage('hexy_added_palettes', [{ ...addedPalette }])
                 return
-            } 
+            }
 
             if (localAddedPalettes && localAddedPalettes.length) {
                 const found = localAddedPalettes.some(
@@ -821,6 +823,12 @@ const App = React.memo(({ history, location, match }) => {
                         />
                         <Route exact path="/faq" component={FAQ} />
                         <Route exact path="/terms" component={Terms} />
+                        <Route
+                            exact
+                            path="/privacy-policy"
+                            component={Privacy}
+                        />
+                        <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/contact" component={Contact} />
                         {/*<Route
                             exact

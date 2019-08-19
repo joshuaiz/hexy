@@ -1,0 +1,14 @@
+.privacy-page, .privacy-policy-page {
+    .privacy-policy {
+        padding: 2.2em;
+        max-width: 800px;
+        margin: 0 auto;
+        ol {
+            padding-left: 18px;
+        }
+    }
+    .favorites, .sidebar-toggle {
+        display: none;
+    }
+}
+

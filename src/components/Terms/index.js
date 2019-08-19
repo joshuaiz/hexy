@@ -1,10 +1,12 @@
 import React from 'react'
 import { withRouter, Link } from 'react-router-dom'
+import ScrollToTop from '../ScrollToTop'
 import './Terms.scss'
 
 const Terms = () => {
     return (
         <div className="terms">
+            <ScrollToTop />
             <h1>Hexy Terms of Use</h1>
 
             <p>
@@ -203,8 +205,8 @@ const Terms = () => {
                         permanently and immediately.{' '}
                         <strong>
                             Please make sure you have exported all of your
-                            private palettes before cancelling — you will not be
-                            able to retrieve these later.
+                            private palettes before cancelling — you will not
+                            be able to retrieve these later.
                         </strong>
                     </p>
                 </li>
