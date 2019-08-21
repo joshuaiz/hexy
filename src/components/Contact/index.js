@@ -53,7 +53,6 @@ const Contact = () => {
                                 <textarea name="message" />
                             </label>
                         </div>
-
                         <button className="button" type="submit">
                             Send
                         </button>
