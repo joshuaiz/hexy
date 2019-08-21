@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef, useContext, Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
@@ -53,6 +53,7 @@ const Account = React.memo(
         const [usernameError, setUsernameError] = useState()
         const [authSuccess, setAuthSuccess] = useState()
         const [updating, setUpdating] = useState()
+        const [emailSent, setEmailSent] = useState(false)
 
         const [loginModal, toggleLoginModal] = useModali()
 
@@ -64,7 +65,7 @@ const Account = React.memo(
         let emailVerified
 
         if (user != null) {
-          emailVerified = user.emailVerified;
+            emailVerified = user.emailVerified
         }
 
         // console.log(user && emailVerified)
@@ -94,8 +95,6 @@ const Account = React.memo(
                 didCancel = true
             }
         }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
-
-        
 
         const handleActions = action => {
             console.log('handleActions', action)
@@ -314,15 +313,22 @@ const Account = React.memo(
         }
 
         const verifyEmail = () => {
-            var thisUser = firebase.auth().currentUser;
+            var thisUser = firebase.auth().currentUser
 
-            thisUser.sendEmailVerification().then(function() {
-              // Email sent.
-              console.log('Verification email sent')
-            }).catch(function(error) {
-              // An error happened.
-              console.log('Could not send verification email')
-            });
+            thisUser
+                .sendEmailVerification()
+                .then(function() {
+                    // Email sent.
+                    console.log('Verification email sent')
+                    setEmailSent(true)
+                    setTimeout(() => {
+                        setEmailSent(false)
+                    }, 5000)
+                })
+                .catch(function(error) {
+                    // An error happened.
+                    console.log('Could not send verification email')
+                })
         }
 
         useEffect(() => {
@@ -348,7 +354,11 @@ const Account = React.memo(
                             </strong>
                             !
                         </h2>
-
+                        {!emailVerified && (
+                            <h3>
+                                Please verify your email to continue using Hexy.
+                            </h3>
+                        )}
                         {currentUser ? (
                             <div className="user-content-wrap">
                                 <div className="user-avatar">
@@ -367,60 +377,75 @@ const Account = React.memo(
                                     <ul className="nostyle user-action-list">
                                         {user && !emailVerified && (
                                             <li className="verify-email">
-                                                <span
-                                                    onClick={verifyEmail}
-                                                >
+                                                <span onClick={verifyEmail}>
                                                     Verify Email
                                                 </span>
+                                                {emailSent && (
+                                                    <p>
+                                                        Verification email sent.
+                                                        Please check your inbox
+                                                        and click the link to
+                                                        verify your email.
+                                                    </p>
+                                                )}
                                             </li>
                                         )}
-                                        <li
-                                            className={`${
-                                                active.viewInfo ? 'current' : ''
-                                            }`}
-                                        >
-                                            <span
-                                                onClick={() =>
-                                                    handleActions('viewInfo')
-                                                }
-                                            >
-                                                View account info
-                                            </span>
-                                        </li>
-                                        <li
-                                            className={`${
-                                                active.changeAvatar
-                                                    ? 'current'
-                                                    : ''
-                                            }`}
-                                        >
-                                            <span
-                                                onClick={() =>
-                                                    handleActions(
-                                                        'changeAvatar'
-                                                    )
-                                                }
-                                            >
-                                                Change avatar
-                                            </span>
-                                        </li>
-                                        <li
-                                            className={`${
-                                                active.updateProfile
-                                                    ? 'current'
-                                                    : ''
-                                            }`}
-                                        >
-                                            <span
-                                                onClick={() =>
-                                                    handleActions(
-                                                        'updateProfile'
-                                                    )
-                                                }
-                                            >
-                                                Update profile
-                                            </span>
-                                        </li>
+                                        {emailVerified && (
+                                            <Fragment>
+                                                <li
+                                                    className={`${
+                                                        active.viewInfo
+                                                            ? 'current'
+                                                            : ''
+                                                    }`}
+                                                >
+                                                    <span
+                                                        onClick={() =>
+                                                            handleActions(
+                                                                'viewInfo'
+                                                            )
+                                                        }
+                                                    >
+                                                        View account info
+                                                    </span>
+                                                </li>
+                                                <li
+                                                    className={`${
+                                                        active.changeAvatar
+                                                            ? 'current'
+                                                            : ''
+                                                    }`}
+                                                >
+                                                    <span
+                                                        onClick={() =>
+                                                            handleActions(
+                                                                'changeAvatar'
+                                                            )
+                                                        }
+                                                    >
+                                                        Change avatar
+                                                    </span>
+                                                </li>
+                                                <li
+                                                    className={`${
+                                                        active.updateProfile
+                                                            ? 'current'
+                                                            : ''
+                                                    }`}
+                                                >
+                                                    <span
+                                                        onClick={() =>
+                                                            handleActions(
+                                                                'updateProfile'
+                                                            )
+                                                        }
+                                                    >
+                                                        Update profile
+                                                    </span>
+                                                </li>
+                                            </Fragment>
+                                        )}
+
                                         <li>
                                             <span onClick={handleLogout}>
                                                 Log Out
@@ -556,54 +581,63 @@ const Account = React.memo(
                     </div>
 
                     <div className="user-palettes">
-                        <div className="user-palettes-header">
-                            {currentUser &&
-                            currentUser.palettes &&
-                            currentUser.palettes.length > 0 ? (
-                                <h3>
-                                    Saved Palettes (
-                                    {currentUser.palettes.length})
-                                </h3>
-                            ) : (
-                                <p>
-                                    You don't have any saved palettes. Use the{' '}
-                                    <strong>Save Palette</strong> feature in the
-                                    Favorites sidebar to save your current
-                                    palette or{' '}
-                                    <Link to="/colors">
-                                        find more colors &rarr;
-                                    </Link>
-                                </p>
-                            )}
-                            {currentUser &&
-                                currentUser.palettes &&
-                                currentUser.palettes.length > 0 && (
-                                    <div className="feed-toggle">
-                                        <label>
-                                            <Toggle
-                                                defaultChecked={!swatchInfo}
-                                                icons={false}
-                                                onChange={handleToggle}
-                                            />
-                                            <span>
-                                                {swatchInfo ? 'Show' : 'Hide'}{' '}
-                                                swatch info
-                                            </span>
-                                        </label>
-                                    </div>
-                                )}
-                        </div>
+                        {user && emailVerified && (
+                            <Fragment>
+                                <div className="user-palettes-header">
+                                    {currentUser &&
+                                    currentUser.palettes &&
+                                    currentUser.palettes.length > 0 ? (
+                                        <h3>
+                                            Saved Palettes (
+                                            {currentUser.palettes.length})
+                                        </h3>
+                                    ) : (
+                                        <p>
+                                            You don't have any saved palettes.
+                                            Use the{' '}
+                                            <strong>Save Palette</strong>{' '}
+                                            feature in the Favorites sidebar to
+                                            save your current palette or{' '}
+                                            <Link to="/colors">
+                                                find more colors &rarr;
+                                            </Link>
+                                        </p>
+                                    )}
+                                    {currentUser &&
+                                        currentUser.palettes &&
+                                        currentUser.palettes.length > 0 && (
+                                            <div className="feed-toggle">
+                                                <label>
+                                                    <Toggle
+                                                        defaultChecked={
+                                                            !swatchInfo
+                                                        }
+                                                        icons={false}
+                                                        onChange={handleToggle}
+                                                    />
+                                                    <span>
+                                                        {swatchInfo
+                                                            ? 'Show'
+                                                            : 'Hide'}{' '}
+                                                        swatch info
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        )}
+                                </div>
 
-                        <UserPalettes
-                            swatchInfo={swatchInfo}
-                            currentUser={currentUser}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            // favorites={favorites}
-                            deletePalette={deletePalette}
-                            paletteExported={paletteExported}
-                            setPaletteExported={setPaletteExported}
-                        />
+                                <UserPalettes
+                                    swatchInfo={swatchInfo}
+                                    currentUser={currentUser}
+                                    handleFavorites={handleFavorites}
+                                    removeFavorite={removeFavorite}
+                                    // favorites={favorites}
+                                    deletePalette={deletePalette}
+                                    paletteExported={paletteExported}
+                                    setPaletteExported={setPaletteExported}
+                                />
+                            </Fragment>
+                        )}
                     </div>
                 </div>
             )
