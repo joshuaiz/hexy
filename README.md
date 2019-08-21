@@ -1,5 +1,7 @@
 # What is Hexy? 🌈 ✨
 
+### https://hexy.io
+
 ### Hexy is a fantastic compendium of all named hex colors. 
 
 At last count, there are [18,000+ named hex colors](https://github.com/meodai/color-names) in this list for you to browse, search, filter, and then export for use in your web or app projects.
