@@ -22,7 +22,7 @@ const Footer = ({ currentUser }) => {
                         <ul className="nostyle social-links">
                             <li>
                                 <a
-                                    href="https://github.com/joshuaiz/hexy"
+                                    href="https://github.com/joshuaiz/hexy2"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
