@@ -58,6 +58,14 @@
                             }
                         }
                     }
+                    .verify-email {
+                        span {
+                            padding: 3px 8px;
+                            border-radius: 4px;
+                            background:green;
+                            color: #fff;
+                        }
+                    }
                     li.current {
                         // font-weight: 600;
 

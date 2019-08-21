@@ -317,7 +317,7 @@ const Home = ({
                     // setFavoriteSwatches={setFavoriteSwatches}
                 />
             </div>
-            <Testimonials />
+            {/*<Testimonials />*/}
         </div>
     )
 }

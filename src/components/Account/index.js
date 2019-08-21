@@ -61,6 +61,14 @@ const Account = React.memo(
         const inputEl = useRef(null)
         const form = useRef(null)
 
+        let emailVerified
+
+        if (user != null) {
+          emailVerified = user.emailVerified;
+        }
+
+        // console.log(user && emailVerified)
+
         useEffect(() => {
             // used to cancel async fetch on unmount
             // see here: https://github.com/facebook/react/issues/14326
@@ -86,6 +94,8 @@ const Account = React.memo(
                 didCancel = true
             }
         }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
+
+        
 
         const handleActions = action => {
             console.log('handleActions', action)
@@ -303,6 +313,18 @@ const Account = React.memo(
                 })
         }
 
+        const verifyEmail = () => {
+            var thisUser = firebase.auth().currentUser;
+
+            thisUser.sendEmailVerification().then(function() {
+              // Email sent.
+              console.log('Verification email sent')
+            }).catch(function(error) {
+              // An error happened.
+              console.log('Could not send verification email')
+            });
+        }
+
         useEffect(() => {
             getFavorites()
         }, [favorites, getFavorites])
@@ -343,6 +365,15 @@ const Account = React.memo(
                                 </div>
                                 <div className="user-actions">
                                     <ul className="nostyle user-action-list">
+                                        {user && !emailVerified && (
+                                            <li className="verify-email">
+                                                <span
+                                                    onClick={verifyEmail}
+                                                >
+                                                    Verify Email
+                                                </span>
+                                            </li>
+                                        )}
                                         <li
                                             className={`${
                                                 active.viewInfo ? 'current' : ''

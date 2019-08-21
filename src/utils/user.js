@@ -49,6 +49,15 @@ export async function signup({
             password
         )
         await user.updateProfile({ displayName, photoURL, email })
+        
+        await user.sendEmailVerification().then(function() {
+          // Email sent.
+          console.log('Verification email sent.')
+        }).catch(function(error) {
+          // An error happened.
+          console.log('Verification email could not be sent.')
+        });
+        
         await db.doc(`users/${user.uid}`).set({
             displayName: displayName,
             uid: user.uid,

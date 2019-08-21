@@ -24,6 +24,7 @@ import GoPro from './components/GoPro'
 import Checkout from './components/Checkout'
 import Palette from './components/Palette'
 import FAQ from './components/FAQ'
+import AccountHandler from './components/AccountHandler'
 import Terms from './components/Terms'
 import Privacy from './components/Privacy'
 import Contact from './components/Contact'
@@ -802,6 +803,7 @@ const App = React.memo(({ history, location, match }) => {
                                 />
                             )}
                         />
+                        <Route path="/account-handler" component={AccountHandler} />
                         <Route
                             path="/palette/:palette"
                             render={() => (

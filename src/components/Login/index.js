@@ -70,6 +70,7 @@ const Login = ({ setProfileUpdated, history, location }) => {
                 toggleLoginErrorModal(true)
             })
     }
+    
 
     return (
         <div className="login-tabs">

@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
+import ScrollToTop from '../ScrollToTop'
 import { isEmail } from '../../utils/helpers'
 import './ResetPassword.scss'
 
@@ -57,6 +58,7 @@ const ResetPassword = ({ history }) => {
 
     return (
         <div className="reset-password">
+            <ScrollToTop />
             <div className="reset-password-inner">
                 <h1 className="page-title">Reset Password</h1>
                 {!emailSent && (
