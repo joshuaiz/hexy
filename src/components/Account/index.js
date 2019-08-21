@@ -355,9 +355,19 @@ const Account = React.memo(
                             !
                         </h2>
                         {!emailVerified && (
-                            <h3>
-                                Please verify your email to continue using Hexy.
-                            </h3>
+                            <div className="unverified">
+                                <h3>
+                                    Please verify your email to continue using
+                                    Hexy.
+                                </h3>
+                                <p>
+                                    If you didn't receive a verification email,
+                                    click the 'Verify Email' button below to
+                                    send a new one. Click the verfication link
+                                    in the email to fully activate your Hexy
+                                    account.
+                                </p>
+                            </div>
                         )}
                         {currentUser ? (
                             <div className="user-content-wrap">
