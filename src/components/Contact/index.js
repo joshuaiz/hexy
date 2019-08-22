@@ -13,7 +13,7 @@ const Contact = () => {
                     love to hear from you.
                 </h3>
                 <div className="form-inner">
-                    <form name="contact" method="POST" data-netlify="true">
+                    <form name="contact">
                         <div className="form-field">
                             <label>
                                 <span className="input-label">Your Name:</span>{' '}

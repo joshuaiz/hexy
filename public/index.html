@@ -45,6 +45,42 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+        
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="First Last"
+                />
+            
+        
+
+        
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="you@youremail.com"
+                />
+            
+       
+
+        
+                <input
+                    type="text"
+                    name="subject"
+                    placeholder="Message Subject"
+                />
+            
+        
+
+        
+                <textarea name="message" />
+          
+        <input className="button" type="submit">
+            Send
+        </input>
+    </form>
+
     <form name="email" netlify netlify-honeypot="bot-field" hidden>
         <input type="email" name="email" />
     </form>
