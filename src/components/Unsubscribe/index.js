@@ -25,6 +25,7 @@ const Unsubscribe = () => {
                     name="unsubscribe"
                     id="unsubscribe"
                     onSubmit={handleSubmit}
+                    method="post"
                 >
                     <input name="email" value={email} />
                     <input type="hidden" name="form-name" value="unsubscribe" />

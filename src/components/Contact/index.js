@@ -13,7 +13,7 @@ const Contact = () => {
                     love to hear from you.
                 </h3>
                 <div className="form-inner">
-                    <form name="contact">
+                    <form name="contact" method="post">
                         <input type="hidden" name="form-name" value="contact" />
                         <div className="form-field">
                             <label>
