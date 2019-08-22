@@ -8,7 +8,14 @@ var mailgun = require('mailgun.js')({
 
 // Our cloud function
 exports.handler = (event, context, callback) => {
+    // Only allow POST
+    if (event.httpMethod !== 'POST') {
+        return callback(null, { statusCode: 405, body: 'Method Not Allowed' })
+    }
+
     const message = JSON.parse(event.body)
+
+    console.log('welcome', message)
 
     const data = {
         from: 'Hexy Notifications <notifications@hexy.io>',
@@ -24,5 +31,6 @@ exports.handler = (event, context, callback) => {
 
     mailgun.messages().send(data, (error, body) => {
         console.log(body)
+        console.log(error)
     })
 }

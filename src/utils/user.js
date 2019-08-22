@@ -71,6 +71,7 @@ export async function signup({
         })
 
         let response = await fetch('/.netlify/functions/welcome', {
+            method: 'POST',
             body: JSON.stringify({
                 email: email,
                 displayName: displayName,
