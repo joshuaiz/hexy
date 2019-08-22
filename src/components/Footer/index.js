@@ -78,7 +78,12 @@ const Footer = ({ currentUser }) => {
                     </div>
                     <div className="email-capture">
                         <h3>Get cool Hexy color news in your inbox.</h3>
-                        <form name="email" method="post">
+                        <form name="email">
+                            <input
+                                type="hidden"
+                                name="form-name"
+                                value="email"
+                            />
                             <input
                                 type="hidden"
                                 name="form-name"

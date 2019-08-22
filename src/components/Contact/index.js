@@ -14,6 +14,7 @@ const Contact = () => {
                 </h3>
                 <div className="form-inner">
                     <form name="contact">
+                        <input type="hidden" name="form-name" value="contact" />
                         <div className="form-field">
                             <label>
                                 <span className="input-label">Your Name:</span>{' '}
@@ -53,9 +54,9 @@ const Contact = () => {
                                 <textarea name="message" />
                             </label>
                         </div>
-                        <button className="button" type="submit">
+                        <input className="button" type="submit">
                             Send
-                        </button>
+                        </input>
                     </form>
                 </div>
             </div>

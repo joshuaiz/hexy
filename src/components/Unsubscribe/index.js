@@ -27,6 +27,7 @@ const Unsubscribe = () => {
                     onSubmit={handleSubmit}
                 >
                     <input name="email" value={email} />
+                    <input type="hidden" name="form-name" value="unsubscribe" />
                     <input
                         className="button"
                         type="submit"
