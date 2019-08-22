@@ -470,7 +470,7 @@ const Favorites = ({
                     </div>
                 </Modali.Modal>
             ) : null}
-            {currentUser && toggleUpgradeAccountModal ? (
+            {currentUser && toggleUpgradeAccountModal === true ? (
                 <Modali.Modal
                     {...upgradeAccountModal}
                     animated={true}

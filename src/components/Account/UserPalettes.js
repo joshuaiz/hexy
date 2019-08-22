@@ -294,7 +294,7 @@ const UserPalettes = ({
                     </div>
                 </Modali.Modal>
             )}
-            {toggleUpgradeAccountModal && (
+            {toggleUpgradeAccountModal === true && (
                 <Modali.Modal
                     {...upgradeAccountModal}
                     animated={true}
