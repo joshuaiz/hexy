@@ -45,7 +45,7 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden action="/contact/success">
         
                 <input
                     type="text"
@@ -75,10 +75,11 @@
 
         
                 <textarea name="message"></textarea>
+                <div data-netlify-recaptcha="true" ></div>
           
     </form>
 
-    <form name="email" netlify netlify-honeypot="bot-field" hidden>
+    <form name="email" netlify netlify-honeypot="bot-field" hidden action="/">
         <input type="email" name="email" />
     </form>
 

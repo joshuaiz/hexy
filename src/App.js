@@ -28,6 +28,7 @@ import AccountHandler from './components/AccountHandler'
 import Terms from './components/Terms'
 import Privacy from './components/Privacy'
 import Contact from './components/Contact'
+import Success from './components/Contact/Success'
 import Unsubscribe from './components/Unsubscribe'
 import NoMatch from './components/NoMatch'
 // import {
@@ -836,6 +837,11 @@ const App = React.memo(({ history, location, match }) => {
                         />
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/contact" component={Contact} />
+                        <Route
+                            exact
+                            path="/contact/success"
+                            component={Success}
+                        />
                         <Route path="/unsubscribe" component={Unsubscribe} />
                         {/*<Route
                             exact
