@@ -49,15 +49,18 @@ export async function signup({
             password
         )
         await user.updateProfile({ displayName, photoURL, email })
-        
-        await user.sendEmailVerification().then(function() {
-          // Email sent.
-          console.log('Verification email sent.')
-        }).catch(function(error) {
-          // An error happened.
-          console.log('Verification email could not be sent.')
-        });
-        
+
+        await user
+            .sendEmailVerification()
+            .then(function() {
+                // Email sent.
+                console.log('Verification email sent.')
+            })
+            .catch(function(error) {
+                // An error happened.
+                console.log('Verification email could not be sent.')
+            })
+
         await db.doc(`users/${user.uid}`).set({
             displayName: displayName,
             uid: user.uid,
@@ -66,6 +69,20 @@ export async function signup({
             startDate: startDate,
             accountType: 'standard'
         })
+
+        let response = await fetch('/.netlify/functions/welcome', {
+            body: JSON.stringify({
+                email: email,
+                displayName: displayName,
+                accountType: 'standard'
+            })
+        })
+
+        if (response.ok) {
+            console.log('Welcome email sent')
+        } else {
+            console.log('Welcome email could not be sent.')
+        }
     } catch (error) {
         console.log(error)
         throw error
