@@ -21,6 +21,7 @@
     "jspdf": "^1.5.3",
     "lambda": "^0.10.3",
     "mailgun-js": "^0.22.0",
+    "mailgun.js": "^2.0.1",
     "modali": "^1.2.0",
     "moment": "^2.24.0",
     "nearest-color": "^0.4.4",
