@@ -1,46 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { getParameterByName } from '../../utils/helpers'
 import './Unsubscribe.scss'
 
 const Unsubscribe = () => {
     const [submitted, setSubmitted] = useState(false)
     const email = getParameterByName('email')
-    const form = document.getElementById('unsubscribe')
 
-    const submitForm = () => {
-        form.submit()
+    const handleSubmit = e => {
+        e.preventDefault()
+        setSubmitted(true)
     }
-
-    useEffect(() => {
-        if (email.length) {
-            submitForm()
-            setSubmitted(true)
-        }
-        return () => {
-            setSubmitted(false)
-        }
-    }, [email])
 
     return (
         <div className="unsubscribe">
-            <h1>Unsubscribe</h1>
-            <form name="unsubscribe">
-                <input
-                    type="hidden"
-                    name="email"
-                    id="unsubscribe"
-                    value={email}
-                />
-            </form>
+            <h1>Unsubscribe from Hexy emails</h1>
+
             {submitted ? (
                 <div className="unsubscibe-success">
-                    <h3>You're unsubscribed.</h3>
+                    <h3>{email} has been unsubscribed.</h3>
                     <p>It's ok, we still love you.</p>
                 </div>
             ) : (
-                <div className="unsubscibe-progress">
-                    <h3>Unsubscribing...</h3>
-                </div>
+                <form
+                    name="unsubscribe"
+                    id="unsubscribe"
+                    onSubmit={handleSubmit}
+                >
+                    <input type="hidden" name="email" value={email} />
+                    <input
+                        className="button"
+                        type="submit"
+                        value="Unsubscribe Me"
+                    />
+                </form>
             )}
         </div>
     )
