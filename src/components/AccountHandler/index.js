@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import * as firebase from 'firebase/app'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import ScrollToTop from '../ScrollToTop'
+import { getParameterByName } from '../../utils/helpers'
 import './AccountHandler.scss'
 
 const AccountHandler = ({ location, history }) => {
@@ -316,12 +317,3 @@ const AccountHandler = ({ location, history }) => {
 }
 
 export default withRouter(AccountHandler)
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
-    var regexS = '[\\?&]' + name + '=([^&#]*)'
-    var regex = new RegExp(regexS)
-    var results = regex.exec(window.location.href)
-    if (results == null) return ''
-    else return decodeURIComponent(results[1].replace(/\+/g, ' '))
-}

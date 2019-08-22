@@ -28,6 +28,7 @@ import AccountHandler from './components/AccountHandler'
 import Terms from './components/Terms'
 import Privacy from './components/Privacy'
 import Contact from './components/Contact'
+import Unsubscribe from './components/Unsubscribe'
 import NoMatch from './components/NoMatch'
 // import {
 //     FavoritesContext,
@@ -803,7 +804,10 @@ const App = React.memo(({ history, location, match }) => {
                                 />
                             )}
                         />
-                        <Route path="/account-handler" component={AccountHandler} />
+                        <Route
+                            path="/account-handler"
+                            component={AccountHandler}
+                        />
                         <Route
                             path="/palette/:palette"
                             render={() => (
@@ -832,6 +836,7 @@ const App = React.memo(({ history, location, match }) => {
                         />
                         <Route exact path="/privacy" component={Privacy} />
                         <Route exact path="/contact" component={Contact} />
+                        <Route path="/unsubscribe" component={Unsubscribe} />
                         {/*<Route
                             exact
                             path="/user"
