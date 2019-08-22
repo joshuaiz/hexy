@@ -54,9 +54,11 @@ const Contact = () => {
                                 <textarea name="message" />
                             </label>
                         </div>
-                        <input className="button" type="submit">
-                            Send
-                        </input>
+                        <input
+                            className="button"
+                            type="submit"
+                            value="Submit"
+                        />
                     </form>
                 </div>
             </div>
