@@ -7,7 +7,7 @@ const Unsubscribe = () => {
     const [emailAddress, setEmailAddress] = useState('')
     const email = getParameterByName('email')
 
-    console.log('unsubscribe', email)
+    // console.log('unsubscribe', email)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -15,7 +15,7 @@ const Unsubscribe = () => {
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encode({ 'form-name': 'unsubscribe', ...emailAddress })
+            body: encode({ 'form-name': 'unsubscribe', emailAddress })
         })
             .then(setSubmitted(true))
             .catch(error => alert(error))
