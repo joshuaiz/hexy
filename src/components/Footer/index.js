@@ -84,11 +84,6 @@ const Footer = ({ currentUser }) => {
                                 name="form-name"
                                 value="email"
                             />
-                            <input
-                                type="hidden"
-                                name="form-name"
-                                value="email"
-                            />
 
                             <label htmlFor="email">Email</label>
                             <input

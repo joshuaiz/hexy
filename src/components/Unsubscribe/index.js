@@ -6,6 +6,8 @@ const Unsubscribe = () => {
     const [submitted, setSubmitted] = useState(false)
     const email = getParameterByName('email')
 
+    console.log('unsubscribe', email)
+
     const handleSubmit = e => {
         e.preventDefault()
         setSubmitted(true)
@@ -27,8 +29,13 @@ const Unsubscribe = () => {
                     onSubmit={handleSubmit}
                     method="post"
                 >
-                    <input name="email" value={email} />
                     <input type="hidden" name="form-name" value="unsubscribe" />
+                    <input
+                        className="email-input"
+                        name="email"
+                        value={email}
+                        onChange={e => e.target.value}
+                    />
                     <input
                         className="button"
                         type="submit"
