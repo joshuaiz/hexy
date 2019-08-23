@@ -39,6 +39,7 @@ const Unsubscribe = () => {
                     />
                     <input
                         className="button"
+                        name="submit"
                         type="submit"
                         value="Unsubscribe Me"
                     />
