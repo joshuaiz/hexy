@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { getParameterByName } from '../../utils/helpers'
 import './Unsubscribe.scss'
 
 const Unsubscribe = () => {
     const [submitted, setSubmitted] = useState(false)
+    const [emailAddress, setEmailAddress] = useState('')
     const email = getParameterByName('email')
 
     console.log('unsubscribe', email)
@@ -31,6 +32,10 @@ const Unsubscribe = () => {
             .join('&')
     }
 
+    useEffect(() => {
+        setEmailAddress(email)
+    }, [email])
+
     return (
         <div className="unsubscribe">
             <h1>Unsubscribe from Hexy emails</h1>
@@ -52,7 +57,8 @@ const Unsubscribe = () => {
                         className="email-input"
                         type="email"
                         name="email"
-                        value={email}
+                        value={emailAddress}
+                        // defaultValue={emailAddress}
                         onChange={e => e.target.value}
                     />
                     <button className="button" type="submit">
