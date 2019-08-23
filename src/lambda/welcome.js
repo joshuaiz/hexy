@@ -1,7 +1,5 @@
 // Connect to our Mailgun API wrapper and instantiate it
-// var API_KEY = 'YOUR_API_KEY';
-// var DOMAIN = 'YOUR_DOMAIN_NAME';
-var mailgun = require('mailgun.js')({
+var mailgun = require('mailgun-js')({
     apiKey: process.env.MAILGUN_API_KEY,
     domain: process.env.MAILGUN_DOMAIN
 })
@@ -15,7 +13,13 @@ exports.handler = (event, context, callback) => {
 
     const message = JSON.parse(event.body)
 
-    console.log('welcome', message)
+    let emailData = {
+        email: message.email,
+        displayName: message.displayName
+    }
+
+    let vars = {}
+    vars[emailData.email] = emailData
 
     const data = {
         from: 'Hexy Notifications <notifications@hexy.io>',
@@ -23,10 +27,10 @@ exports.handler = (event, context, callback) => {
         replyTo: 'no-reply@hexy.io',
         subject: 'Welcome to Hexy!',
         template: 'hexy_welcome',
-        'h:X-Mailgun-Variables': {
-            email: `"${message.email}"`,
-            displayName: `"${message.displayName}"`
-        }
+        'o:tag': ['welcome'],
+        'recipient-variables': vars,
+        'v:email': '%recipient.displayName%',
+        'v:displayName': '%recipient.email%'
     }
 
     mailgun.messages().send(data, (error, body) => {

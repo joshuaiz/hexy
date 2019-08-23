@@ -74,8 +74,7 @@ export async function signup({
             method: 'POST',
             body: JSON.stringify({
                 email: email,
-                displayName: displayName,
-                accountType: 'standard'
+                displayName: displayName
             })
         })
 
