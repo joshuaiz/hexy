@@ -37,12 +37,9 @@ const Unsubscribe = () => {
                         value={email}
                         onChange={e => e.target.value}
                     />
-                    <input
-                        className="button"
-                        name="submit"
-                        type="submit"
-                        value="Unsubscribe Me"
-                    />
+                    <button className="button" type="submit">
+                        Unsubscribe Me
+                    </button>
                 </form>
             )}
         </div>
