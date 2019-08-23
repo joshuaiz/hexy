@@ -32,6 +32,7 @@ const Unsubscribe = () => {
                     <input type="hidden" name="form-name" value="unsubscribe" />
                     <input
                         className="email-input"
+                        type="email"
                         name="email"
                         value={email}
                         onChange={e => e.target.value}
