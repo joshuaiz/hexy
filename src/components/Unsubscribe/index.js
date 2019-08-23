@@ -15,7 +15,7 @@ const Unsubscribe = () => {
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encode({ 'form-name': 'unsubscribe', ...submitted })
+            body: encode({ 'form-name': 'unsubscribe', ...emailAddress })
         })
             .then(setSubmitted(true))
             .catch(error => alert(error))
@@ -57,7 +57,7 @@ const Unsubscribe = () => {
                         className="email-input"
                         type="email"
                         name="email"
-                        value={emailAddress}
+                        value={emailAddress && emailAddress}
                         // defaultValue={emailAddress}
                         onChange={e => e.target.value}
                     />
