@@ -14,7 +14,7 @@ const Unsubscribe = () => {
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encode({ 'form-name': 'contact', ...submitted })
+            body: encode({ 'form-name': 'unsubscribe', ...submitted })
         })
             .then(setSubmitted(true))
             .catch(error => alert(error))
