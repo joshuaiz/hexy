@@ -10,7 +10,25 @@ const Unsubscribe = () => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        setSubmitted(true)
+
+        fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encode({ 'form-name': 'contact', ...submitted })
+        })
+            .then(setSubmitted(true))
+            .catch(error => alert(error))
+    }
+
+    const encode = data => {
+        return Object.keys(data)
+            .map(
+                key =>
+                    encodeURIComponent(key) +
+                    '=' +
+                    encodeURIComponent(data[key])
+            )
+            .join('&')
     }
 
     return (
