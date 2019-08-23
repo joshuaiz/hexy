@@ -5,7 +5,7 @@ import './Unsubscribe.scss'
 const Unsubscribe = () => {
     const [submitted, setSubmitted] = useState(false)
     const [emailAddress, setEmailAddress] = useState('')
-    const email = getParameterByName('email')
+    const emailParam = getParameterByName('email')
 
     // console.log('unsubscribe', email)
 
@@ -15,13 +15,14 @@ const Unsubscribe = () => {
         fetch('/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: encode({ 'form-name': 'unsubscribe', emailAddress })
+            body: encode({ 'form-name': 'unsubscribe', email: emailAddress })
         })
             .then(setSubmitted(true))
             .catch(error => alert(error))
     }
 
     const encode = data => {
+        console.log(data)
         return Object.keys(data)
             .map(
                 key =>
@@ -33,8 +34,8 @@ const Unsubscribe = () => {
     }
 
     useEffect(() => {
-        setEmailAddress(email)
-    }, [email])
+        setEmailAddress(emailParam)
+    }, [emailParam])
 
     return (
         <div className="unsubscribe">
@@ -42,7 +43,7 @@ const Unsubscribe = () => {
 
             {submitted ? (
                 <div className="unsubscibe-success">
-                    <h3>{email} has been unsubscribed.</h3>
+                    <h3>{emailParam} has been unsubscribed.</h3>
                     <p>It's ok, we still love you.</p>
                 </div>
             ) : (
@@ -57,7 +58,7 @@ const Unsubscribe = () => {
                         className="email-input"
                         type="email"
                         name="email"
-                        value={emailAddress && emailAddress}
+                        value={emailAddress ? emailAddress : emailParam}
                         // defaultValue={emailAddress}
                         onChange={e => e.target.value}
                     />
