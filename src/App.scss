@@ -279,6 +279,12 @@ a, .like-link {
     }
     a {
         color: #fff !important;
+        text-decoration: none !important;
+        border-bottom: 0;
+        &:hover, &:focus {
+            text-decoration: none !important;
+            border-bottom: 0;
+        }
     }
 }
 

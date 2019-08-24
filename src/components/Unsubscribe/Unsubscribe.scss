@@ -14,7 +14,11 @@
             border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
             h1{
+                margin: 0 0 8px;
+            }
+            > p {
                 margin-top: 0;
+                font-size: 14px;
             }
             .email-input {
                 padding: 4px;
@@ -24,6 +28,28 @@
                 font-size: 16px;
                 background: #f1f1f1;
                 border: 1px solid #dedede;
+            }
+            .unsubscribe-success {
+                h3 {
+                    position: relative;
+                    padding: 10px 8px;
+                    background: #f2f2f2;
+                    span {
+                        font-weight: 400;
+                    }
+                    svg {
+                        position: absolute;
+                        right: 8px;
+                        top: 10px;
+                        width: 24px;
+                        path {
+                            fill: green;
+                        }
+                    }
+                }
+                p {
+
+                }
             }
         }
     }

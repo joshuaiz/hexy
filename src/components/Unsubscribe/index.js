@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { ReactComponent as CheckCircle } from '../../images/check_circle.svg'
 import { getParameterByName } from '../../utils/helpers'
 import './Unsubscribe.scss'
 
@@ -40,10 +41,16 @@ const Unsubscribe = () => {
     return (
         <div className="unsubscribe">
             <h1>Unsubscribe from Hexy emails</h1>
-
+            <p>
+                We still may send you emails for important notices or lost
+                passwords.
+            </p>
             {submitted ? (
-                <div className="unsubscibe-success">
-                    <h3>{emailParam} has been unsubscribed.</h3>
+                <div className="unsubscribe-success">
+                    <h3>
+                        <span>{emailParam}</span> has been unsubscribed.
+                        <CheckCircle />
+                    </h3>
                     <p>It's ok, we still love you.</p>
                 </div>
             ) : (

@@ -81,12 +81,15 @@ const App = React.memo(({ history, location, match }) => {
     const [cart, setCart] = useState()
     const [currentUser, setCurrentUser] = useState()
     const [favoritesError, setFavoritesError] = useState(false)
+    const [favErrorContent, setFavErrorContent] = useState()
 
     const [errorModal, toggleErrorModal] = useModali()
 
     // it returns two components Provider and Consumer
 
     const numFaves = getNumberOfFavorites(currentUser && currentUser)
+
+    // console.log('App', favoritesError)
 
     // console.log(numFaves)
 
@@ -148,6 +151,10 @@ const App = React.memo(({ history, location, match }) => {
     // clear saved random colors on refresh
     window.onbeforeunload = e => {
         sessionStorage.removeItem('hexy_randoms')
+    }
+
+    window.onbeforeunload = e => {
+        toggleErrorModal(false)
     }
 
     useEffect(() => {
@@ -654,18 +661,39 @@ const App = React.memo(({ history, location, match }) => {
         }
     }, [user])
 
+    // useEffect(() => {
+    //     let didCancel = false
+    //     const toggleFalse = () => {
+    //         toggleErrorModal(false)
+    //     }
+    //     if (didCancel) {
+    //         toggleFalse()
+    //     }
+    //     return () => {
+    //         didCancel = true
+    //     }
+    // }, [])
+
     useEffect(() => {
-        let didCancel = false
-        const toggleFalse = () => {
-            toggleErrorModal(false)
-        }
-        if (didCancel) {
-            toggleFalse()
+        let errorContent
+        let timeout
+        if (favoritesError) {
+            errorContent = favoritesErrorContent(
+                user,
+                currentUser,
+                numFaves,
+                toggleErrorModal
+            )
+            setFavErrorContent(errorContent)
+            timeout = setTimeout(() => {
+                setFavoritesError(false)
+            }, 4000)
         }
         return () => {
-            didCancel = true
+            clearTimeout(timeout)
+            setFavoritesError(false)
         }
-    }, [])
+    }, [favoritesError, currentUser, user, numFaves, toggleErrorModal])
 
     // console.log('favoriteSwatches', favoriteSwatches)
     // console.log('favorites', favorites)
@@ -875,9 +903,9 @@ const App = React.memo(({ history, location, match }) => {
                 </div>
                 <Footer currentUser={currentUser} />
             </Wrapper>
-            {favoritesError && (
+            {toggleErrorModal && (
                 <Modali.Modal {...errorModal} animated={true} centered={true}>
-                    {favoritesErrorContent(user, currentUser, numFaves)}
+                    {favErrorContent}
                 </Modali.Modal>
             )}
         </div>

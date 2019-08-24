@@ -113,7 +113,12 @@ export const getNumberOfFavorites = currentUser => {
     return numFaves
 }
 
-export const favoritesErrorContent = (user, currentUser, numFaves) => {
+export const favoritesErrorContent = (
+    user,
+    currentUser,
+    numFaves,
+    toggleErrorModal
+) => {
     const phrases = [
         'Whoa there...slow your roll.',
         'Hey...mucho take it easy.',
@@ -121,6 +126,8 @@ export const favoritesErrorContent = (user, currentUser, numFaves) => {
     ]
 
     const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)]
+
+    console.log('favoritesErrorContent called')
 
     return (
         <div className="error-message">
@@ -140,7 +147,10 @@ export const favoritesErrorContent = (user, currentUser, numFaves) => {
                         Plus a lot of really cool other features like private
                         palettes, export to SCSS and more.
                     </p>
-                    <button className="button">
+                    <button
+                        className="button"
+                        onClick={() => toggleErrorModal(false)}
+                    >
                         <Link to="/pro">Go Pro</Link>
                     </button>
                 </div>
@@ -152,15 +162,21 @@ export const favoritesErrorContent = (user, currentUser, numFaves) => {
                         to 15 favorites plus a lot of really cool other features
                         like private palettes, export to SCSS and more.
                     </p>
-                    <button className="button">
+                    <button
+                        className="button"
+                        onClick={() => toggleErrorModal(false)}
+                    >
                         <Link to="/pro">Go Pro</Link>
                     </button>
                 </div>
             )}
             {user && currentUser && currentUser.accountType === 'pro' && (
                 <p>
-                    Upgrade your <Link to="/pro">Hexy Pro</Link> account to save
-                    up to 15 favorites.
+                    Upgrade your{' '}
+                    <Link to="/pro" onClick={() => toggleErrorModal(false)}>
+                        Hexy Pro
+                    </Link>{' '}
+                    account to save up to 15 favorites.
                 </p>
             )}
         </div>
