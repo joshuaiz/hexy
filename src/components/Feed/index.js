@@ -6,6 +6,7 @@ import { db } from '../../config/firebaseconfig'
 import FeedList from './FeedList'
 import { getLocalStorage, setLocalStorage } from '../../utils/helpers'
 import './Feed.scss'
+import ScrollToTop from '../ScrollToTop'
 
 const Feed = React.memo(
     ({
@@ -101,6 +102,7 @@ const Feed = React.memo(
 
         return (
             <div className="feed">
+                <ScrollToTop />
                 <div className="feed-header">
                     <h2>Latest Palettes</h2>
                     <div className="feed-toggle">

@@ -6,22 +6,11 @@ import { ReactComponent as Sync } from '../../images/sync.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import Swatch from '../Swatch'
 
-const RandomSwatches = ({
-    numRandoms
-    // favorites,
-    // getFavorites,
-    // handleFavorites,
-    // removeFavorite
-}) => {
+const RandomSwatches = ({ numRandoms }) => {
     const [randoms, setRandoms] = useState([])
     const [rotate, setRotate] = useState(false)
 
-    const {
-        favorites,
-        getFavorites,
-        handleFavorites,
-        removeFavorite
-    } = useContext(FavoritesContext)
+    const { favorites } = useContext(FavoritesContext)
 
     const getRandoms = () => {
         const randoms = getRandomColors(numRandoms)
@@ -83,9 +72,6 @@ const RandomSwatches = ({
                             key={color.hex}
                             color={color}
                             index={index}
-                            favorites={favorites}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
                             isFavorite={isFavorite}
                         />
                     )

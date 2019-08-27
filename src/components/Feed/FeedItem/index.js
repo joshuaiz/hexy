@@ -2,29 +2,22 @@ import React, { useState, useEffect, useContext } from 'react'
 import Tippy from '@tippy.js/react'
 import { Tooltip } from 'react-tippy'
 import { ReactComponent as Heart } from '../../../images/heart.svg'
-import { ReactComponent as PlusCircle } from '../../../images/plus_circle.svg'
 import { ReactComponent as AddFavorites } from '../../../images/add_favorites.svg'
 import { ReactComponent as RemoveFavorites } from '../../../images/remove_favorites.svg'
 import Swatch from '../../Swatch'
 import FavoritesPDF from '../../Favorites/FavoritesPDF'
 import { FavoritesContext } from '../../FavoritesContext'
-import { setLocalStorage, getLocalStorage } from '../../../utils/helpers'
+import { getLocalStorage } from '../../../utils/helpers'
 
-const FeedItem = React.memo(({ item, handleLike }) => { // handleAddPaletteToFavorites,
-    // handleFavorites,
-    // removeFavorite
-    // favoriteSwatches
+const FeedItem = React.memo(({ item, handleLike }) => {
     const [added, setAdded] = useState(false)
 
     const localAddedPalettes = getLocalStorage('hexy_added_palettes')
     const localFavorites = getLocalStorage('hexy_favorites')
 
-    const {
-        favorites,
-        handleAddPaletteToFavorites,
-        handleFavorites,
-        removeFavorite
-    } = useContext(FavoritesContext)
+    const { favorites, handleAddPaletteToFavorites } = useContext(
+        FavoritesContext
+    )
 
     const handleAddPaletteState = item => {
         let favLength = localFavorites && localFavorites.length + 5

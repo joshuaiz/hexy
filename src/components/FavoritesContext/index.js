@@ -14,7 +14,6 @@ const FavoritesContext = React.createContext()
 
 const FavoritesContextWrapper = ({ currentUser, ...props }) => {
     const [favorites, setFavorites] = useState([])
-    const [favoriteSwatches, setFavoriteSwatches] = useState([])
     const [favoritesError, setFavoritesError] = useState(false)
     const [favErrorContent, setFavErrorContent] = useState()
     const [errorModal, toggleErrorModal] = useModali()
@@ -82,7 +81,6 @@ const FavoritesContextWrapper = ({ currentUser, ...props }) => {
             )
             if (!filteredFavorites.length) {
                 clearFavorites()
-                setFavoriteSwatches([])
             } else {
                 setFavorites(filteredFavorites)
                 setLocalStorage('hexy_favorites', filteredFavorites)
@@ -93,7 +91,6 @@ const FavoritesContextWrapper = ({ currentUser, ...props }) => {
 
     const clearFavorites = () => {
         setFavorites([])
-        setFavoriteSwatches([])
         localStorage.removeItem('hexy_favorites')
         localStorage.removeItem('hexy_added_palettes')
     }

@@ -126,8 +126,15 @@ const Colors = React.memo(
         useEffect(() => {
             if (searchSubmitted) {
                 setColors(searchColors)
+                setSortBright(false)
             }
         }, [searchColors, searchSubmitted])
+
+        useEffect(() => {
+            if (noMatch && !searchSubmitted) {
+                getRandoms()
+            }
+        }, [noMatch, searchSubmitted])
 
         useEffect(() => {
             if (colors && colors.length > 1000) {

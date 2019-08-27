@@ -113,9 +113,9 @@ const App = React.memo(({ history, location, match }) => {
                 history.push('/colors')
             } else {
                 // setSortBright(false)
+                setSearchColors(null)
                 setSearchSubmitted(false)
                 setNoMatch(true)
-                // getRandoms()
                 history.push('/colors')
             }
         },
@@ -263,43 +263,6 @@ const App = React.memo(({ history, location, match }) => {
             didCancel = true
         }
     }, [user])
-
-    // useEffect(() => {
-    //     let didCancel = false
-    //     const toggleFalse = () => {
-    //         toggleErrorModal(false)
-    //     }
-    //     if (didCancel) {
-    //         toggleFalse()
-    //     }
-    //     return () => {
-    //         didCancel = true
-    //     }
-    // }, [])
-
-    // useEffect(() => {
-    //     let errorContent
-    //     let timeout
-    //     if (favoritesError) {
-    //         errorContent = favoritesErrorContent(
-    //             user,
-    //             currentUser,
-    //             numFaves,
-    //             toggleErrorModal
-    //         )
-    //         setFavErrorContent(errorContent)
-    //         timeout = setTimeout(() => {
-    //             setFavoritesError(false)
-    //         }, 4000)
-    //     }
-    //     return () => {
-    //         clearTimeout(timeout)
-    //         setFavoritesError(false)
-    //     }
-    // }, [favoritesError, currentUser, user, numFaves, toggleErrorModal])
-
-    // console.log('favoriteSwatches', favoriteSwatches)
-    // console.log('favorites', favorites)
 
     return (
         <div className="App">

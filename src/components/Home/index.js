@@ -307,15 +307,7 @@ const Home = ({
 
                     <div className="go-pro-bg-2" />
                 </div>
-                <RandomSwatches
-                    numRandoms={8}
-                    favorites={favorites}
-                    getFavorites={getFavorites}
-                    handleFavorites={handleFavorites}
-                    removeFavorite={removeFavorite}
-                    // favoriteSwatches={favoriteSwatches}
-                    // setFavoriteSwatches={setFavoriteSwatches}
-                />
+                <RandomSwatches numRandoms={8} />
             </div>
             {/*<Testimonials />*/}
         </div>
