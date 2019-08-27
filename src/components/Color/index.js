@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 import * as tinycolor from 'tinycolor2'
 import { getTintsShades, inverseColor } from '../../utils/helpers'
 import namedColors from 'color-name-list'
-import domtoimage from 'dom-to-image';
+import domtoimage from 'dom-to-image'
 import Swatch from '../Swatch'
+import { FavoritesContext } from '../FavoritesContext'
 import SwatchList from '../SwatchList'
 import ColorSpaces from '../ColorSpaces'
-import ScrollToTop from '../ScrollToTop';
+import ScrollToTop from '../ScrollToTop'
 import './Color.scss'
 
-
-const Color = React.memo(function Color({
-    match,
-    location,
-    handleFavorites,
-    favorites,
-    removeFavorite,
-    favoriteSwatches,
-    setFavoriteSwatches
-}) {
+const Color = React.memo(function Color({ match, location }) {
     const [currentColor, setCurrentColor] = useState()
+
+    const { favorites } = useContext(FavoritesContext)
 
     const url = location.pathname
     const urlHex = url.split('/').pop()
@@ -155,7 +149,7 @@ const Color = React.memo(function Color({
     //     //         link.href = dataUrl;
     //     //         link.click();
     //     //     });
-        
+
     // }, [urlHex])
 
     return (
@@ -169,12 +163,7 @@ const Color = React.memo(function Color({
                 <div id="color-jpg" className="color-jpg">
                     <div className="main-swatch">
                         {currentColor ? (
-                            <Swatch
-                                color={currentColor}
-                                handleFavorites={handleFavorites}
-                                removeFavorite={removeFavorite}
-                                isFavorite={found}
-                            />
+                            <Swatch color={currentColor} isFavorite={found} />
                         ) : (
                             location.color && <Swatch color={location.color} />
                         )}
@@ -206,12 +195,7 @@ const Color = React.memo(function Color({
                 <div className="main-swatches">
                     <div className="main-swatch">
                         {currentColor ? (
-                            <Swatch
-                                color={currentColor}
-                                handleFavorites={handleFavorites}
-                                removeFavorite={removeFavorite}
-                                isFavorite={found}
-                            />
+                            <Swatch color={currentColor} isFavorite={found} />
                         ) : (
                             location.color && <Swatch color={location.color} />
                         )}
@@ -220,29 +204,11 @@ const Color = React.memo(function Color({
                     <div className="shades-tints">
                         <div className="shades">
                             <h3>Shades</h3>
-                            {currentColor && (
-                                <SwatchList
-                                    colors={shades}
-                                    handleFavorites={handleFavorites}
-                                    removeFavorite={removeFavorite}
-                                    favorites={favorites}
-                                    favoriteSwatches={favoriteSwatches}
-                                    setFavoriteSwatches={setFavoriteSwatches}
-                                />
-                            )}
+                            {currentColor && <SwatchList colors={shades} />}
                         </div>
                         <div className="tints">
                             <h3>Tints</h3>
-                            {currentColor && (
-                                <SwatchList
-                                    colors={tints}
-                                    favorites={favorites}
-                                    handleFavorites={handleFavorites}
-                                    removeFavorite={removeFavorite}
-                                    favoriteSwatches={favoriteSwatches}
-                                    setFavoriteSwatches={setFavoriteSwatches}
-                                />
-                            )}
+                            {currentColor && <SwatchList colors={tints} />}
                         </div>
                     </div>
                 </div>
@@ -255,96 +221,39 @@ const Color = React.memo(function Color({
             <div className="color-harmonies">
                 <div className="analogous color-harmony">
                     <h3>Analogous</h3>
-                    {analogous && (
-                        <SwatchList
-                            colors={colorArray(analogous)}
-                            favorites={favorites}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            favoriteSwatches={favoriteSwatches}
-                            setFavoriteSwatches={setFavoriteSwatches}
-                        />
-                    )}
+                    {analogous && <SwatchList colors={colorArray(analogous)} />}
                 </div>
                 <div className="triad color-harmony">
                     <h3>Triad</h3>
-                    {triad && (
-                        <SwatchList
-                            colors={colorArray(triad)}
-                            favorites={favorites}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            favoriteSwatches={favoriteSwatches}
-                            setFavoriteSwatches={setFavoriteSwatches}
-                        />
-                    )}
+                    {triad && <SwatchList colors={colorArray(triad)} />}
                 </div>
                 <div className="tetrad color-harmony">
                     <h3>Tetrad</h3>
-                    {tetrad && (
-                        <SwatchList
-                            colors={colorArray(tetrad)}
-                            favorites={favorites}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            favoriteSwatches={favoriteSwatches}
-                            setFavoriteSwatches={setFavoriteSwatches}
-                        />
-                    )}
+                    {tetrad && <SwatchList colors={colorArray(tetrad)} />}
                 </div>
                 <div className="split-complement color-harmony">
                     <h3>Split Complement</h3>
                     {splitComplement && (
-                        <SwatchList
-                            colors={colorArray(splitComplement)}
-                            favorites={favorites}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            favoriteSwatches={favoriteSwatches}
-                            setFavoriteSwatches={setFavoriteSwatches}
-                        />
+                        <SwatchList colors={colorArray(splitComplement)} />
                     )}
                 </div>
                 <div className="complement-inverse">
                     <div className="complement color-harmony">
                         <h3>Complement</h3>
                         {complement && (
-                            <Swatch
-                                color={{ name: '', hex: complement }}
-                                favorites={favorites}
-                                handleFavorites={handleFavorites}
-                                removeFavorite={removeFavorite}
-                                favoriteSwatches={favoriteSwatches}
-                                setFavoriteSwatches={setFavoriteSwatches}
-                            />
+                            <Swatch color={{ name: '', hex: complement }} />
                         )}
                     </div>
                     <div className="inverse color-harmony">
                         <h3>Inverse</h3>
                         {inverse && (
-                            <Swatch
-                                color={{ name: '', hex: inverse }}
-                                favorites={favorites}
-                                handleFavorites={handleFavorites}
-                                removeFavorite={removeFavorite}
-                                favoriteSwatches={favoriteSwatches}
-                                setFavoriteSwatches={setFavoriteSwatches}
-                            />
+                            <Swatch color={{ name: '', hex: inverse }} />
                         )}
                     </div>
                 </div>
                 <div className="spins color-harmony">
                     <h3>Spins</h3>
-                    {spins && (
-                        <SwatchList
-                            colors={spins}
-                            favorites={favorites}
-                            handleFavorites={handleFavorites}
-                            removeFavorite={removeFavorite}
-                            favoriteSwatches={favoriteSwatches}
-                            setFavoriteSwatches={setFavoriteSwatches}
-                        />
-                    )}
+                    {spins && <SwatchList colors={spins} />}
                 </div>
             </div>
         </div>

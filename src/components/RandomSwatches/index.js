@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { FavoritesContext } from '../FavoritesContext'
 import { getRandomColors } from '../../utils/helpers'
 import { ReactComponent as Sync } from '../../images/sync.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import Swatch from '../Swatch'
 
 const RandomSwatches = ({
-    numRandoms,
-    favorites,
-    getFavorites,
-    handleFavorites,
-    removeFavorite
+    numRandoms
+    // favorites,
+    // getFavorites,
+    // handleFavorites,
+    // removeFavorite
 }) => {
     const [randoms, setRandoms] = useState([])
     const [rotate, setRotate] = useState(false)
+
+    const {
+        favorites,
+        getFavorites,
+        handleFavorites,
+        removeFavorite
+    } = useContext(FavoritesContext)
 
     const getRandoms = () => {
         const randoms = getRandomColors(numRandoms)

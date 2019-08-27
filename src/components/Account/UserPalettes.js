@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import Swatch from '../Swatch'
 import PaletteActions from '../PaletteActions'
+import { FavoritesContext } from '../FavoritesContext'
 import Modali, { useModali } from 'modali'
 import * as emailjs from 'emailjs-com'
 import { db } from '../../config/firebaseconfig'
@@ -14,8 +15,6 @@ const UserPalettes = ({
     history,
     swatchInfo,
     currentUser,
-    handleFavorites,
-    removeFavorite,
     deletePalette,
     paletteExported,
     setPaletteExported
@@ -27,6 +26,8 @@ const UserPalettes = ({
     const [paletteLink, setPaletteLink] = useState('')
     const [sharedPalette, setSharedPalette] = useState()
     const [paletteLinkModal, togglePaletteLinkModal] = useModali(false)
+
+    const { favorites } = useContext(FavoritesContext)
 
     const smallAccounts = ['standard', 'pro']
 
@@ -255,6 +256,17 @@ const UserPalettes = ({
 
                                 <ul className="user-palette nostyle">
                                     {palette.palette.map((color, index) => {
+                                        let isFavorite
+                                        if (favorites && favorites.length) {
+                                            isFavorite = favorites.some(
+                                                el => el.hex === color.hex
+                                            )
+                                        } else if (
+                                            !favorites ||
+                                            favorites.length === 0
+                                        ) {
+                                            isFavorite = false
+                                        }
                                         return (
                                             <Swatch
                                                 key={
@@ -263,10 +275,7 @@ const UserPalettes = ({
                                                 }
                                                 color={color}
                                                 index={index}
-                                                handleFavorites={
-                                                    handleFavorites
-                                                }
-                                                removeFavorite={removeFavorite}
+                                                isFavorite={isFavorite}
                                             />
                                         )
                                     })}

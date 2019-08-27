@@ -19,13 +19,22 @@
     }
 }
 
+.account-page.no-user {
+    .loading {
+        padding: 1.5em;
+    }
+}
+
 .account-page {
     .page-account {
         // width: 80%;
         // padding: 1.5em;
+        background: #f5f5f5;
         .not-logged-in {
             max-width: 600px;
             margin: 2em auto;
+            padding: 1.5em;
+            background: #f5f5f5;
             .login-tabs {
             }
         }
@@ -544,6 +553,9 @@
                             padding: 2px;
                             width: 50px;
                             height: 50px;
+                            .favorite-heart {
+                                display: none;
+                            }
                             .add-favorite,
                             .remove-favorite {
                                 top: 3px;

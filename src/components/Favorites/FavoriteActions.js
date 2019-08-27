@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { FavoritesContext } from '../FavoritesContext'
 import FavoritesPDF from './FavoritesPDF'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
@@ -8,8 +9,6 @@ import { ReactComponent as Eye } from '../../images/eye.svg'
 
 const FavoriteActions = React.memo(
     ({
-        favorites,
-        clearFavorites,
         user,
         currentUser,
         paletteName,
@@ -24,6 +23,8 @@ const FavoriteActions = React.memo(
         setActions
     }) => {
         const node = useRef()
+
+        const { clearFavorites } = useContext(FavoritesContext)
 
         const leaveActions = () => {
             setTimeout(() => {
@@ -78,7 +79,6 @@ const FavoriteActions = React.memo(
                 <ul className="actions-list nostyle">
                     <li>
                         <FavoritesPDF
-                            favorites={favorites && favorites}
                             currentUser={currentUser}
                             paletteName={paletteName && paletteName}
                             paletteWasExported={paletteWasExported}

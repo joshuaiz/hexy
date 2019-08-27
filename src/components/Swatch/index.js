@@ -7,14 +7,7 @@ import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import { getReadableColor, getNamedColor } from '../../utils/helpers'
 import './Swatch.scss'
 
-const Swatch = ({
-    color,
-    index,
-    handleFavorites,
-    isFavorite,
-    removeFavorite,
-    getFavorites
-}) => {
+const Swatch = ({ color, index, isFavorite }) => {
     const [namedColor, setNamedColor] = useState()
     const [actions, setActions] = useState(false)
     const readableColor = getReadableColor(color)
@@ -91,8 +84,6 @@ const Swatch = ({
             {actions && (
                 <div className="actions-wrap">
                     <SwatchActions
-                        handleFavorites={handleFavorites}
-                        removeFavorite={removeFavorite}
                         isFavorite={isFavorite}
                         readableColor={readableColor}
                         namedColor={namedColor}

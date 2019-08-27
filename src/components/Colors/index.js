@@ -1,36 +1,108 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { withRouter } from 'react-router-dom'
 import { ReactComponent as Sync } from '../../images/sync.svg'
 import { ReactComponent as Palette } from '../../images/palette.svg'
-import SwatchList from '../SwatchList'
-import { getNumberOfNamedColors, getSessionStorage } from '../../utils/helpers'
+import ColorsWrapper from './ColorsWrapper'
+import {
+    getNumberOfNamedColors,
+    getSessionStorage,
+    setSessionStorage,
+    getRandomColors,
+    getAllColors,
+    sortLightness
+} from '../../utils/helpers'
 import './Colors.scss'
 
 const Colors = React.memo(
-    ({
-        colors,
-        searchInput,
-        searchSubmitted,
-        noMatch,
-        handleFavorites,
-        removeFavorite,
-        getFavorites,
-        favorites,
-        handleBright,
-        sortBright,
-        setSortBright,
-        history,
-        getRandoms,
-        handleAllColors,
-        loadMoreColors,
-        currentUser
-    }) => {
+    ({ searchColors, searchInput, searchSubmitted, noMatch, currentUser }) => {
+        const [colors, setColors] = useState()
+        const [sortBright, setSortBright] = useState(false)
         const [rotate, setRotate] = useState(false)
         const [isLoading, setIsLoading] = useState(false)
         const [pro, setPro] = useState(false)
 
         const hexyAll = getSessionStorage('hexy_all')
         const numColors = getNumberOfNamedColors()
+
+        // Get 1000 random colors to show on home page
+        const getRandoms = event => {
+            const hexyAll = getSessionStorage('hexy_all')
+            // console.log(hexyAll)
+            if (hexyAll && !event) {
+                // console.log('getRandoms in hexyAll')
+                handleAllColors(hexyAll)
+                return
+            }
+            if (event) {
+                sessionStorage.removeItem('hexy_all')
+                event.preventDefault()
+                const randoms = getRandomColors(1000)
+                setColors(randoms)
+                setSessionStorage('hexy_randoms', randoms)
+                return
+            }
+            const cachedRandoms = getSessionStorage('hexy_randoms')
+
+            if (!cachedRandoms) {
+                const randoms = getRandomColors(1000)
+                setColors(randoms)
+                setSessionStorage('hexy_randoms', randoms)
+            } else {
+                setColors(cachedRandoms)
+            }
+        }
+
+        const handleAllColors = length => {
+            const allColors = getAllColors()
+            const size = length || 1001
+            const items = allColors.slice(0, size).map(item => {
+                return item
+            })
+            setColors(items)
+            setSessionStorage('hexy_all', items.length)
+        }
+
+        const loadMoreColors = start => {
+            // console.log('loadMoreColors: start', start)
+            const allColors = getAllColors()
+            const size = 1001 + start
+            const items = allColors.slice(start, size).map(item => {
+                return item
+            })
+            // console.log('loadMoreColors: items', items)
+
+            // console.log('loadMoreColors', colors)
+            let newColors = [...colors, ...items]
+            // console.log('loadMoreColors: newColors', newColors)
+
+            setColors(newColors)
+            setSessionStorage('hexy_all', size)
+        }
+
+        // clear saved random colors on refresh
+        window.onbeforeunload = e => {
+            sessionStorage.removeItem('hexy_randoms')
+        }
+
+        // Sort colors by brightness
+        const handleBright = useCallback(() => {
+            const hexyAll = getSessionStorage('hexy_all')
+            if (!sortBright) {
+                const brightColors = sortLightness(colors)
+                setColors(brightColors)
+            } else if (searchInput) {
+                const cachedSearchColors = getSessionStorage(
+                    'hexy_searchColors'
+                )
+                setColors(cachedSearchColors)
+            } else if (!searchInput && !hexyAll) {
+                const cachedRandoms = getSessionStorage('hexy_randoms')
+                setColors(cachedRandoms)
+            } else if (!searchInput && hexyAll) {
+                handleAllColors(hexyAll)
+            }
+            setSortBright(!sortBright)
+        }, [sortBright, colors, searchInput])
 
         const handleReload = event => {
             getRandoms(event)
@@ -48,7 +120,14 @@ const Colors = React.memo(
 
         const handleLoading = () => {
             setIsLoading(true)
+            handleAllColors()
         }
+
+        useEffect(() => {
+            if (searchSubmitted) {
+                setColors(searchColors)
+            }
+        }, [searchColors, searchSubmitted])
 
         useEffect(() => {
             if (colors && colors.length > 1000) {
@@ -78,11 +157,19 @@ const Colors = React.memo(
             })
         }
 
-        useEffect(() => {
-            getFavorites()
-        }, [favorites, getFavorites])
+        const handleLoadMoreColors = () => {
+            loadMoreColors(colors.length)
+        }
+
+        // useEffect(() => {
+        //     getFavorites()
+        // }, [favorites, getFavorites])
 
         // console.log('Colors', colors && colors.length)
+
+        useEffect(() => {
+            getRandoms()
+        }, [])
 
         return (
             <div
@@ -119,10 +206,7 @@ const Colors = React.memo(
                                 {!hexyAll && currentUser && pro && (
                                     <button
                                         className="all-colors button"
-                                        onClick={() => {
-                                            handleAllColors()
-                                            handleLoading()
-                                        }}
+                                        onClick={handleLoading}
                                     >
                                         <Palette />
                                         Load all {numColors} colors (slow)
@@ -132,9 +216,7 @@ const Colors = React.memo(
                                     <div className="load-more">
                                         <button
                                             className="button"
-                                            onClick={() =>
-                                                loadMoreColors(colors.length)
-                                            }
+                                            onClick={handleLoadMoreColors}
                                         >
                                             Load More Colors
                                         </button>
@@ -173,12 +255,9 @@ const Colors = React.memo(
                     </div>
                 </div>
                 {!isLoading ? (
-                    <SwatchList
+                    <ColorsWrapper
                         noMatch={noMatch}
                         colors={colors}
-                        handleFavorites={handleFavorites}
-                        removeFavorite={removeFavorite}
-                        favorites={favorites}
                         searchSubmitted={searchSubmitted}
                         sortBright={sortBright}
                     />
@@ -201,18 +280,20 @@ const Colors = React.memo(
                         <div className="load-more">
                             <button
                                 className="button"
-                                onClick={() => loadMoreColors(colors.length)}
+                                onClick={handleLoadMoreColors}
                             >
                                 Load More Colors
                             </button>
                         </div>
                     </div>
                 )}
-                <div className="scroll-to-top">
-                    <button className="button" onClick={handleScroll}>
-                        Scroll to top
-                    </button>
-                </div>
+                {colors && colors.length && (
+                    <div className="scroll-to-top">
+                        <button className="button" onClick={handleScroll}>
+                            Scroll to top
+                        </button>
+                    </div>
+                )}
             </div>
         )
     }

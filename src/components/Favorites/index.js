@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Fragment, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { Droppable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { db } from '../../config/firebaseconfig'
 import * as firebase from 'firebase/app'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -13,7 +13,7 @@ import saveAs from 'file-saver'
 import FavoriteSwatch from '../Swatch/FavoriteSwatch'
 import Logo from '../Logo'
 import FavoriteActions from './FavoriteActions'
-import { FavoritesContext } from '../../App'
+import { FavoritesContext } from '../FavoritesContext'
 import * as Filter from 'bad-words'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import {
@@ -27,16 +27,10 @@ import {
 import './Favorites.scss'
 
 const Favorites = ({
-    // favorites,
     currentUser,
-    removeFavorite,
-    clearFavorites,
-    setFavorites,
-    getFavorites,
     isSidebarVisible,
     handleSidebarToggle,
     transition,
-    dragEnded,
     paletteHasBeenSaved,
     paletteWasExported
 }) => {
@@ -48,15 +42,16 @@ const Favorites = ({
     const [paletteErrorMessage, setPaletteErrorMessage] = useState()
     const [accountLevel, setAccountLevel] = useState()
     const [actions, setActions] = useState()
+    const [dragEnded, setDragEnded] = useState(false)
 
     const width = useWindowWidth() // Our custom Hook
 
     const [paletteLimitModal, togglePaletteLimitModal] = useModali()
     const [upgradeAccountModal, toggleUpgradeAccountModal] = useModali()
 
-    // const cachedFavorites = getLocalStorage('hexy_favorites')
-
-    const favorites = useContext(FavoritesContext)
+    const { favorites, setFavorites, getFavorites } = useContext(
+        FavoritesContext
+    )
 
     const filter = new Filter()
 
@@ -262,8 +257,71 @@ const Favorites = ({
         }
     }, [])
 
+    const onDragStart = () => {
+        setDragEnded(false)
+
+        // disable auto-scrolling of body when dragging
+        document.body.style.overflow = 'hidden'
+    }
+
+    const onDragEnd = result => {
+        const { destination, source, draggableId } = result
+        if (!destination) {
+            return
+        }
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return
+        }
+
+        // copy our current favorites array
+        const faves = [...favorites]
+
+        let id = ''
+        // split off extra chars from favorite squares draggableId if necessary
+        if (draggableId.length === 7) {
+            id = draggableId
+        } else {
+            id = draggableId.substring(0, draggableId.indexOf('-'))
+        }
+
+        // match dragged favorite with favorite in array
+        let foundFave = favorites.filter(el => {
+            if (el.hex === id) {
+                return el
+            }
+            return null
+        })
+
+        // from dragged element, create object to insert back in array
+        let movedObj = {
+            name: foundFave[0].name,
+            hex: foundFave[0].hex
+        }
+
+        // splice from source/destination to create new array on drag
+        faves.splice(source.index, 1)
+        faves.splice(destination.index, 0, movedObj)
+
+        // set new favorites in state + localStorage
+        setFavorites(faves)
+        // localStorage.setItem('hexy_favorites', JSON.stringify(faves))
+        setLocalStorage('hexy_favorites', faves)
+
+        setDragEnded(true)
+
+        // resume normal body scroll behavior
+        document.body.style.overflow = 'scroll'
+    }
+
+    // useEffect(() => {
+    //     getFavorites()
+    // }, [favorites])
+
     return (
-        <Fragment>
+        <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
             <div
                 className={`favorites ${
                     isSidebarVisible ? 'active' : 'inactive'
@@ -311,6 +369,7 @@ const Favorites = ({
                                     <span
                                         className="actions-trigger"
                                         aria-haspopup="true"
+                                        // eslint-disable-next-line jsx-a11y/aria-proptypes
                                         aria-expanded={`${
                                             actions ? 'true' : 'false'
                                         }`}
@@ -324,8 +383,6 @@ const Favorites = ({
                             {actions && (
                                 <div className="actions-wrap">
                                     <FavoriteActions
-                                        favorites={favorites}
-                                        clearFavorites={clearFavorites}
                                         user={user && user}
                                         currentUser={currentUser && currentUser}
                                         paletteName={paletteName}
@@ -333,8 +390,6 @@ const Favorites = ({
                                         setPaletteNameError={
                                             setPaletteNameError
                                         }
-                                        // isBright={isBright}
-                                        // handleBright={handleBright}
                                         savePalette={savePalette}
                                         paletteHasBeenSaved={
                                             paletteHasBeenSaved
@@ -394,9 +449,6 @@ const Favorites = ({
                                                         color={color}
                                                         index={index}
                                                         isFavorite={true}
-                                                        removeFavorite={
-                                                            removeFavorite
-                                                        }
                                                     />
                                                 )
                                             })}
@@ -430,9 +482,6 @@ const Favorites = ({
                                                                 index={index}
                                                                 isFavorite={
                                                                     true
-                                                                }
-                                                                removeFavorite={
-                                                                    removeFavorite
                                                                 }
                                                                 isSquare={true}
                                                             />
@@ -501,7 +550,7 @@ const Favorites = ({
                     </div>
                 </Modali.Modal>
             ) : null}
-        </Fragment>
+        </DragDropContext>
     )
 }
 

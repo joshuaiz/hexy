@@ -1,10 +1,11 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, useContext, Fragment } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Modali, { useModali } from 'modali'
+import { FavoritesContext } from '../FavoritesContext'
 import * as Filter from 'bad-words'
 import moment from 'moment'
 import * as jsPDF from 'jspdf'
@@ -16,7 +17,7 @@ import { SFProM } from '../../fonts/SFProM'
 
 const FavoritesPDF = ({
     history,
-    favorites,
+    // favorites,
     currentUser,
     paletteName,
     fromFeed,
@@ -28,6 +29,8 @@ const FavoritesPDF = ({
     const [accountModal, toggleAccountModal] = useModali({
         onHide: () => setAccountError(false)
     })
+
+    const { favorites } = useContext(FavoritesContext)
 
     let now = new Date()
 

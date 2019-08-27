@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import HoverIntent from 'react-hoverintent'
 import SwatchActions from '../Swatch/SwatchActions'
+import { FavoritesContext } from '../FavoritesContext'
 import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
 import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
@@ -11,13 +12,15 @@ import './Swatch.scss'
 const FavoriteSwatch = ({
     color,
     index,
-    handleFavorites,
+    // handleFavorites,
     isFavorite,
-    removeFavorite,
+    // removeFavorite,
     isSquare
 }) => {
     const [actions, setActions] = useState()
     const readableColor = getReadableColor(color)
+
+    const { handleFavorites, removeFavorite } = useContext(FavoritesContext)
 
     let key = ''
     if (!isSquare) {
@@ -92,6 +95,7 @@ const FavoriteSwatch = ({
                             <span
                                 className="actions-trigger"
                                 aria-haspopup="true"
+                                // eslint-disable-next-line jsx-a11y/aria-proptypes
                                 aria-expanded={`${actions ? 'true' : 'false'}`}
                             >
                                 <Ellipsis style={{ fill: readableColor }} />
@@ -100,7 +104,7 @@ const FavoriteSwatch = ({
                         {actions && (
                             <div className="actions-wrap">
                                 <SwatchActions
-                                    removeFavorite={removeFavorite}
+                                    // removeFavorite={removeFavorite}
                                     isFavorite={true}
                                     readableColor={readableColor}
                                     // namedColor={namedColor}

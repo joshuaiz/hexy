@@ -8,7 +8,7 @@ import 'firebase/auth'
 import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
-import { FavoritesContext } from '../../App'
+import { FavoritesContext } from '../FavoritesContext'
 import { login, logout } from '../../utils/user'
 import Login from '../Login'
 import UserMeta from './UserMeta'
@@ -21,10 +21,6 @@ const Account = React.memo(
         onSubmit,
         history,
         location,
-        handleFavorites,
-        removeFavorite,
-        // favorites,
-        getFavorites,
         paletteWasSaved,
         paletteExported,
         setPaletteExported,
@@ -57,7 +53,12 @@ const Account = React.memo(
 
         const [loginModal, toggleLoginModal] = useModali()
 
-        const favorites = useContext(FavoritesContext)
+        const {
+            favorites,
+            getFavorites
+            // handleFavorites,
+            // removeFavorite
+        } = useContext(FavoritesContext)
 
         const inputEl = useRef(null)
         const form = useRef(null)
@@ -338,7 +339,7 @@ const Account = React.memo(
         if (initialising) {
             return (
                 <div className="page-account">
-                    <p>Loading...</p>
+                    <div className="loading">Loading...</div>
                 </div>
             )
         }
@@ -639,9 +640,6 @@ const Account = React.memo(
                                 <UserPalettes
                                     swatchInfo={swatchInfo}
                                     currentUser={currentUser}
-                                    handleFavorites={handleFavorites}
-                                    removeFavorite={removeFavorite}
-                                    // favorites={favorites}
                                     deletePalette={deletePalette}
                                     paletteExported={paletteExported}
                                     setPaletteExported={setPaletteExported}
