@@ -31,8 +31,6 @@ const FavoritesPDF = ({
         onHide: () => setAccountError(false)
     })
 
-    console.log('FavoritesPDF', palette)
-
     const { favorites } = useContext(FavoritesContext)
 
     let now = new Date()

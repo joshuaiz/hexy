@@ -10,6 +10,7 @@ const PalettePDF = ({ palette, paletteName }) => {
     let now = new Date()
 
     let dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
+    let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
 
     let name = paletteName
 
@@ -66,7 +67,7 @@ const PalettePDF = ({ palette, paletteName }) => {
     }
 
     function handlePDF() {
-        doc.save('HexyPalette.pdf')
+        doc.save(`HexyPalette_${name ? name + '_' + dateStringSlug : ''}.pdf`)
     }
 
     return (
