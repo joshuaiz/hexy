@@ -18,6 +18,7 @@ import { SFProM } from '../../fonts/SFProM'
 const FavoritesPDF = ({
     history,
     // favorites,
+    palette,
     currentUser,
     paletteName,
     fromFeed,
@@ -29,6 +30,8 @@ const FavoritesPDF = ({
     const [accountModal, toggleAccountModal] = useModali({
         onHide: () => setAccountError(false)
     })
+
+    console.log('FavoritesPDF', palette)
 
     const { favorites } = useContext(FavoritesContext)
 
@@ -68,7 +71,7 @@ const FavoritesPDF = ({
             setPaletteNameError(true)
             return
         } else {
-            if (Array.isArray(favorites) && favorites.length) {
+            if (Array.isArray(palette) && palette.length) {
                 const doc = new jsPDF({
                     orientation: 'landscape',
                     unit: 'in',
@@ -101,7 +104,7 @@ const FavoritesPDF = ({
 
                 doc.setTextColor(85, 85, 85)
 
-                let n = favorites.length
+                let n = palette.length
 
                 // let i = 0
 
@@ -111,12 +114,16 @@ const FavoritesPDF = ({
                     const x = 1 + (i % 5) * 1.875
                     const y = yValues[Math.floor(i / 5)]
 
-                    doc.setFillColor(favorites[i].hex)
+                    doc.setFillColor(palette[i].hex)
                     doc.rect(x, y, 1.5, 1, 'F')
-                    doc.text(favorites[i].name.toString(), x, y + 1.25)
-                    doc.text(favorites[i].hex.toString(), x, y + 1.5)
+                    doc.text(palette[i].name.toString(), x, y + 1.25)
+                    doc.text(palette[i].hex.toString(), x, y + 1.5)
                 }
-                doc.save('HexyFavorites.pdf')
+                doc.save(
+                    `HexyFavorites_${
+                        name ? name + '_' + dateStringSlug : ''
+                    }.pdf`
+                )
             }
 
             if (

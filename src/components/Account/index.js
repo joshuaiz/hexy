@@ -332,9 +332,9 @@ const Account = React.memo(
                 })
         }
 
-        useEffect(() => {
-            getFavorites()
-        }, [favorites, getFavorites])
+        // useEffect(() => {
+        //     getFavorites()
+        // }, [favorites, getFavorites])
 
         if (initialising) {
             return (

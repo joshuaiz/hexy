@@ -58,7 +58,7 @@ const FeedItem = React.memo(({ item, handleLike }) => {
         } else {
             setAdded(false)
         }
-    }, [localAddedPalettes, setAdded, added])
+    }, [localAddedPalettes, setAdded, added, item.name])
 
     return (
         <li className="feed-item">
@@ -74,7 +74,7 @@ const FeedItem = React.memo(({ item, handleLike }) => {
                         arrow={true}
                     >
                         <FavoritesPDF
-                            favorites={item.palette}
+                            palette={item.palette}
                             paletteName={item.name}
                             fromFeed={true}
                         />

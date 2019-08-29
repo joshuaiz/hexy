@@ -79,12 +79,12 @@ const PaletteActions = ({
         }
     })
 
-
     return (
         <Fragment>
             <span
                 className="actions-trigger"
                 aria-haspopup="true"
+                // eslint-disable-next-line jsx-a11y/aria-proptypes
                 aria-expanded={`${actions ? 'true' : 'false'}`}
                 onMouseEnter={enterActions}
             >
@@ -177,7 +177,7 @@ const PaletteActions = ({
                                     arrow={true}
                                 >
                                     <FavoritesPDF
-                                        favorites={
+                                        palette={
                                             palette.palette && palette.palette
                                         }
                                         paletteName={
