@@ -47,7 +47,7 @@ const Wrapper = ({ children, location, match, user }) => {
                 />
                 <meta
                     property="og:image"
-                    content={`${window.location.origin.toString()}/hexy.jpg`}
+                    content={`${window.location.origin.toString()}/hexy_og.jpg`}
                 />
                 <meta
                     property="og:image:alt"

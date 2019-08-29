@@ -126,13 +126,19 @@
             }
         }
         .user-palette {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            // display: flex;
+            // flex-wrap: wrap;
+            // justify-content: space-between;
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            grid-template-rows: auto;
+            grid-column-gap: 16px;
+            grid-row-gap: 16px; 
+            margin-top: 1.5em;
             li.swatch {
-                width: 18%;
+                // width: 18%;
                 // height: 100px;
-                margin-bottom: 1.5em;
+                // margin-bottom: 1.5em;
                 .actions-wrap {
                     height: initial;
                     .swatch-actions {

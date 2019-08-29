@@ -536,8 +536,13 @@
                     margin-left: -8px;
                 }
                 .user-palette {
-                    display: flex;
-                    // flex-wrap: wrap;
+                    // display: flex;
+                    // // flex-wrap: wrap;
+                    display: grid; 
+                    grid-template-columns: repeat(5, 1fr); 
+                    grid-template-rows: auto;
+                    grid-column-gap: 1px;
+                    grid-row-gap: 1px; 
                     padding: 8px;
                     border: 1px solid #ccc;
                     background: #fff;
