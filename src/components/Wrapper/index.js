@@ -2,12 +2,10 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { withRouter } from 'react-router-dom'
 import { getNumberOfNamedColors, humanize } from '../../utils/helpers'
-import Favorites from '../Favorites'
-import { FavoritesContext } from '../../App'
 
 let num = getNumberOfNamedColors()
 
-const Wrapper = ({ children, location, match, user }) => {
+const Wrapper = ({ children, location, user }) => {
     // console.log(location)
     let key = location.key
     let currentPath = window.location.pathname
@@ -17,8 +15,6 @@ const Wrapper = ({ children, location, match, user }) => {
     } else {
         currentPath = currentPath.substring(1)
     }
-
-    // console.log('Wrapper', currentPath)
 
     return (
         <div

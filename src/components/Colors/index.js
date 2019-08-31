@@ -306,6 +306,6 @@ const Colors = React.memo(
     }
 )
 
-// Colors.whyDidYouRender = true
+Colors.whyDidYouRender = true
 
 export default withRouter(Colors)

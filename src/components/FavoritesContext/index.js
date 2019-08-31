@@ -203,6 +203,11 @@ const FavoritesContextWrapper = ({ currentUser, ...props }) => {
         [favorites]
     )
 
+    // const paletteExists = (palette) => {
+    //     const localAddedPalettes = getLocalStorage('hexy_added_palettes')
+    //     const exists = favorites.some(i => palette.some(j => j.name === i.name))
+    // }
+
     useEffect(() => {
         let errorContent
         let timeout
