@@ -97,7 +97,6 @@ const UserPalettes = ({
 
         const service_id = 'amazon_ses'
         const template_id = 'template_gUmNRWxO'
-        // emailjs.send(service_id, template_id, template_params)
         emailjs.send(
             service_id,
             template_id,
@@ -118,7 +117,6 @@ const UserPalettes = ({
         let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
         let colorArray = palette.map(fav => {
             let name = slugify(fav.name)
-            // console.log(name)
             return '$' + name + ': ' + fav.hex + ';\r'
         })
         colorArray = colorArray.join('')
@@ -149,12 +147,9 @@ const UserPalettes = ({
 
     const shareLink = palette => {
         const id = palette.id
-        // // console.log(randomString)
         let now = new Date()
         let dateStringWithTime = moment(now).format('YYYY-MM-DD h:mm:ssa')
-
         let sharedPalettes = db.collection('shared_palettes')
-        // let sharedPalette = db.collection('shared_palettes').doc(id)
 
         sharedPalettes
             .doc(id)
@@ -174,51 +169,6 @@ const UserPalettes = ({
             })
     }
 
-    // const handleMouseEnter = index => {
-    //     setHover({
-    //         hover: true,
-    //         [index]: true
-    //     })
-    // }
-
-    // useEffect(() => {
-    //     let timeout
-    //     document.onmousemove = function() {
-    //         // console.log('mouse stopped!')
-    //         clearTimeout(timeout)
-    //         timeout = setTimeout(() => {
-    //             // setActions(false)
-    //         }, 5000)
-    //     }
-    // })
-
-    // console.log(actions)
-
-    // hopefully disables modal flash on unmount
-    // useEffect(() => {
-    //     const toggleFalse = () => {
-    //         togglePaletteLinkModal(false)
-    //         togglePaletteModal(false)
-    //         toggleUpgradeAccountModal(false)
-    //     }
-    //     return () => toggleFalse()
-    // })
-
-    // useEffect(() => {
-    //     let didCancel = true
-    //     const toggleFalse = () => {
-    //         togglePaletteLinkModal(false)
-    //         togglePaletteModal(false)
-    //         toggleUpgradeAccountModal(false)
-    //     }
-    //     if (!didCancel) {
-    //         toggleFalse()
-    //     }
-    //     return () => {
-    //         didCancel = false
-    //     }
-    // }, [])
-
     return (
         <div
             className={`nostyle palettes-list ${
@@ -232,7 +182,6 @@ const UserPalettes = ({
                     .slice(0)
                     .reverse()
                     .map(palette => {
-                        // console.log(palette)
                         return (
                             <div
                                 className="palette-wrap"

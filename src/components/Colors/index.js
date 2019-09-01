@@ -17,6 +17,7 @@ const Colors = React.memo(
     ({ searchColors, searchInput, searchSubmitted, noMatch, currentUser }) => {
         const [colors, setColors] = useState()
         const [sortBright, setSortBright] = useState(false)
+        const [isSorting, setIsSorting] = useState(false)
         const [rotate, setRotate] = useState(false)
         const [isLoading, setIsLoading] = useState(false)
         const [pro, setPro] = useState(false)
@@ -26,10 +27,7 @@ const Colors = React.memo(
 
         // Get 1000 random colors to show on home page
         const getRandoms = event => {
-            const hexyAll = getSessionStorage('hexy_all')
-            // console.log(hexyAll)
             if (hexyAll && !event) {
-                // console.log('getRandoms in hexyAll')
                 handleAllColors(hexyAll)
                 return
             }
@@ -85,8 +83,7 @@ const Colors = React.memo(
         }
 
         // Sort colors by brightness
-        const handleBright = useCallback(() => {
-            const hexyAll = getSessionStorage('hexy_all')
+        const handleBright = () => {
             if (!sortBright) {
                 const brightColors = sortLightness(colors)
                 setColors(brightColors)
@@ -95,14 +92,16 @@ const Colors = React.memo(
                     'hexy_searchColors'
                 )
                 setColors(cachedSearchColors)
+                setIsSorting(false)
             } else if (!searchInput && !hexyAll) {
                 const cachedRandoms = getSessionStorage('hexy_randoms')
                 setColors(cachedRandoms)
+                setIsSorting(false)
             } else if (!searchInput && hexyAll) {
                 handleAllColors(hexyAll)
             }
             setSortBright(!sortBright)
-        }, [sortBright, colors, searchInput])
+        }
 
         const handleReload = event => {
             getRandoms(event)
@@ -256,9 +255,13 @@ const Colors = React.memo(
                         <input
                             type="checkbox"
                             onChange={handleBright}
-                            checked={sortBright}
+                            // checked={sortBright}
                         />
-                        <label>Sort by brightness (perceptual)</label>
+                        <label>
+                            {isSorting
+                                ? 'Sorting...'
+                                : 'Sort by brightness (perceptual)'}
+                        </label>
                     </div>
                 </div>
                 {!isLoading ? (
@@ -306,6 +309,6 @@ const Colors = React.memo(
     }
 )
 
-Colors.whyDidYouRender = true
+// Colors.whyDidYouRender = true
 
 export default withRouter(Colors)

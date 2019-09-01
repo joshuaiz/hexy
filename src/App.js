@@ -200,7 +200,7 @@ const App = React.memo(({ history, location, match }) => {
     return (
         <div className="App">
             <FavoritesContextWrapper currentUser={currentUser}>
-                <Wrapper user={user}>
+                <Wrapper>
                     <Header
                         handleSearch={handleSearch}
                         handleSearchInput={handleSearchInput}
@@ -326,7 +326,7 @@ const App = React.memo(({ history, location, match }) => {
                             paletteWasExported={paletteWasExported}
                         />
                     </div>
-                    <Footer currentUser={currentUser} />
+                    <Footer />
                 </Wrapper>
             </FavoritesContextWrapper>
         </div>

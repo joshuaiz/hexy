@@ -8,7 +8,6 @@ const SearchBox = ({ handleSearch, handleSearchInput, searchInput }) => {
                     type="text"
                     value={searchInput}
                     onChange={handleSearchInput}
-                    // onKeyPress={handleKeyPress}
                     placeholder="Search for colors: 'green', '#008b6d', 'wasabi'"
                 />
                 <button type="button" onClick={handleSearch}>

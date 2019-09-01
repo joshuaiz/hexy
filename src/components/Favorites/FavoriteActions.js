@@ -9,7 +9,6 @@ import { ReactComponent as Eye } from '../../images/eye.svg'
 
 const FavoriteActions = React.memo(
     ({
-        user,
         currentUser,
         paletteName,
         paletteWasExported,
@@ -85,7 +84,7 @@ const FavoriteActions = React.memo(
                             setPaletteNameError={setPaletteNameError}
                         />
                     </li>
-                    {user && (
+                    {currentUser && (
                         <li>
                             <div className="save-palette">
                                 <span
@@ -111,7 +110,7 @@ const FavoriteActions = React.memo(
                             </div>
                         </li>
                     )}
-                    {user && (
+                    {currentUser && (
                         <li>
                             <div className="export-code">
                                 <span
@@ -154,7 +153,7 @@ const FavoriteActions = React.memo(
                             </span>
                         </div>
                     </li>
-                    {user && (
+                    {currentUser && (
                         <li className="view-palettes">
                             <div className="account-link">
                                 <Link to="/account">

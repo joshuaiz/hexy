@@ -22,10 +22,10 @@ const FeedItem = React.memo(({ item, handleLike }) => {
     const handleAddPaletteState = item => {
         let favLength = localFavorites && localFavorites.length + 5
 
-        let addedPalette = {
-            name: item.name,
-            pid: item.pid
-        }
+        // let addedPalette = {
+        //     name: item.name,
+        //     pid: item.pid
+        // }
 
         if (favLength > 15 && !added) {
             return
@@ -34,12 +34,12 @@ const FeedItem = React.memo(({ item, handleLike }) => {
         if (localAddedPalettes && localAddedPalettes.length) {
             const found = localAddedPalettes.some(el => el.name === item.name)
             if (!found) {
-                const newPalettes = [...localAddedPalettes, { ...addedPalette }]
+                // const newPalettes = [...localAddedPalettes, { ...addedPalette }]
                 setAdded(true)
             } else {
-                let filteredPalettes = localAddedPalettes.filter(
-                    el => el.name !== item.name
-                )
+                // let filteredPalettes = localAddedPalettes.filter(
+                //     el => el.name !== item.name
+                // )
                 setAdded(false)
             }
         } else if (!localAddedPalettes || localAddedPalettes.length === 0) {

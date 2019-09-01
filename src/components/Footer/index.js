@@ -3,7 +3,7 @@ import { Link, NavLink, withRouter } from 'react-router-dom'
 import SiteID from '../SiteID'
 import './Footer.scss'
 
-const Footer = ({ currentUser }) => {
+const Footer = () => {
     const year = new Date().getFullYear()
 
     return (
