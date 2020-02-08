@@ -16,7 +16,6 @@ const AccountHandler = ({ location, history }) => {
     var auth = firebase.auth()
 
     let accountEmail
-    let newPassword
 
     if (!location.search || location.search === '') {
         history.push('/account')

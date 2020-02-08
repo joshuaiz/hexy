@@ -1,13 +1,11 @@
 import React, { useState, Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import * as firebase from 'firebase/app'
 import ScrollToTop from '../ScrollToTop'
 import { isEmail } from '../../utils/helpers'
 import './ResetPassword.scss'
 
 const ResetPassword = ({ history }) => {
-    const { user } = useAuthState(firebase.auth())
     const [input, setInput] = useState('')
     const [isValid, setIsValid] = useState(null)
     const [isInvalid, setIsInvalid] = useState(null)

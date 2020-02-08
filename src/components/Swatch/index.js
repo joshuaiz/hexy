@@ -76,6 +76,7 @@ const Swatch = ({ color, index, isFavorite }) => {
                 <span
                     className={`actions-trigger action-${color.hex}`}
                     aria-haspopup="true"
+                    // eslint-disable-next-line jsx-a11y/aria-proptypes
                     aria-expanded={`${actions ? 'true' : 'false'}`}
                 >
                     <Ellipsis style={{ fill: readableColor }} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext, Fragment } from 'react'
+import React, { useState, useEffect, useRef, Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../../config/firebaseconfig'
@@ -8,7 +8,6 @@ import 'firebase/auth'
 import Modali, { useModali } from 'modali'
 import Toggle from 'react-toggle'
 import FileUploader from 'react-firebase-file-uploader'
-import { FavoritesContext } from '../FavoritesContext'
 import { login, logout } from '../../utils/user'
 import Login from '../Login'
 import UserMeta from './UserMeta'
@@ -18,8 +17,8 @@ import './Account.scss'
 
 const Account = React.memo(
     ({
+        currentUser,
         onSubmit,
-        history,
         location,
         paletteWasSaved,
         paletteExported,
@@ -28,37 +27,25 @@ const Account = React.memo(
         setProfileUpdated
     }) => {
         const { initialising, user } = useAuthState(firebase.auth())
-        const [currentUser, setCurrentUser] = useState()
         const [active, setActive] = useState({
             viewInfo: true,
             changeAvatar: false,
             updateProfile: false
         })
         const [avatar, setAvatar] = useState()
-        const [avatarURL, setAvatarURL] = useState()
         const [isUploading, setIsUploading] = useState(false)
         const [progress, setProgress] = useState(0)
-        // const [userPalettes, setUserPalettes] = useState([])
         const [swatchInfo, setSwatchInfo] = useState(true)
         const [avatarUpdated, setAvatarUpdated] = useState(false)
-        // const [profileUpdated, setProfileUpdated] = useState(false)
         const [paletteRemoved, setPaletteRemoved] = useState(false)
         const [showUpdate, setShowUpdate] = useState(false)
         const [updateError, setUpdateError] = useState()
-        const [loginError, setLoginError] = useState()
         const [usernameError, setUsernameError] = useState()
         const [authSuccess, setAuthSuccess] = useState()
         const [updating, setUpdating] = useState()
         const [emailSent, setEmailSent] = useState(false)
 
         const [loginModal, toggleLoginModal] = useModali()
-
-        const {
-            favorites,
-            getFavorites
-            // handleFavorites,
-            // removeFavorite
-        } = useContext(FavoritesContext)
 
         const inputEl = useRef(null)
         const form = useRef(null)
@@ -70,32 +57,6 @@ const Account = React.memo(
         }
 
         // console.log(user && emailVerified)
-
-        useEffect(() => {
-            // used to cancel async fetch on unmount
-            // see here: https://github.com/facebook/react/issues/14326
-            let didCancel = false
-
-            if (user) {
-                var userRef = db.collection('users').doc(user.uid)
-
-                userRef
-                    .get()
-                    .then(function(doc) {
-                        if (doc.exists) {
-                            // console.log('Document data:', doc.data())
-
-                            setCurrentUser(doc.data())
-                        }
-                    })
-                    .catch(err => {
-                        console.log('Error getting documents', err)
-                    })
-            }
-            return () => {
-                didCancel = true
-            }
-        }, [user, profileUpdated, paletteWasSaved, paletteRemoved])
 
         const handleActions = action => {
             console.log('handleActions', action)
@@ -152,7 +113,6 @@ const Account = React.memo(
                 .child(filename)
                 .getDownloadURL()
                 .then(url => {
-                    setAvatarURL(url)
                     updateUserProfile(currentUser.displayName, url)
                 })
                 .catch(function(error) {

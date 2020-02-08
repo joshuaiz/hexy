@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import ScrollAnimation from 'react-animate-on-scroll'
 import ScrollableAnchor from 'react-scrollable-anchor'
@@ -19,15 +19,7 @@ import Testimonials from '../Testimonials'
 
 import './Home.scss'
 
-const Home = ({
-    location,
-    history,
-    colors,
-    favorites,
-    handleFavorites,
-    removeFavorite,
-    getFavorites
-}) => {
+const Home = () => {
     const [random, setRandom] = useState()
     const { scrollY, scrollDirection } = useScroll()
     const [scrolledTo, setScrolledTo] = useState({

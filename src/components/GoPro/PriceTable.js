@@ -1,41 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Modali, { useModali } from 'modali'
 import { withRouter } from 'react-router-dom'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { db } from '../../config/firebaseconfig'
-import * as firebase from 'firebase/app'
 
-const PriceTable = ({ cart, addToCart, history }) => {
-    const { user } = useAuthState(firebase.auth())
-    const [currentUser, setCurrentUser] = useState()
+const PriceTable = ({ cart, currentUser, addToCart, history }) => {
     const [accountType, setAccountType] = useState()
     const [modal, toggleModal] = useModali()
-
-    useEffect(() => {
-        // used to cancel async fetch on unmount
-        // see here: https://github.com/facebook/react/issues/14326
-        let didCancel = false
-
-        if (user) {
-            var userRef = db.collection('users').doc(user.uid)
-
-            userRef
-                .get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        // console.log('Document data:', doc.data())
-
-                        setCurrentUser(doc.data())
-                    }
-                })
-                .catch(err => {
-                    console.log('Error getting documents', err)
-                })
-        }
-        return () => {
-            didCancel = true
-        }
-    }, [user])
 
     const triggerModal = account => {
         toggleModal(true)

@@ -42,7 +42,7 @@ const CardForm = ({
                         .doc(currentCoupon.code)
 
                     // Set the coupon to used
-                    let updateCoupon = couponRef.update({ used: true })
+                    couponRef.update({ used: true })
                     setCurrentCoupon(null)
                 }
             } else {
@@ -89,7 +89,7 @@ const CardForm = ({
                         .doc(currentCoupon.code)
 
                     // Set the coupon to used
-                    let updateCoupon = couponRef.update({ used: true })
+                    couponRef.update({ used: true })
                     setCurrentCoupon(null)
                 }
             } else {
