@@ -1,13 +1,14 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import { withRouter } from 'react-router-dom'
+import * as firebase from 'firebase/app'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { getNumberOfNamedColors, humanize } from '../../utils/helpers'
-import Favorites from '../Favorites'
-import { FavoritesContext } from '../../App'
 
 let num = getNumberOfNamedColors()
 
-const Wrapper = ({ children, location, match, user }) => {
+const Wrapper = ({ children, location }) => {
+    const { user } = useAuthState(firebase.auth())
     // console.log(location)
     let key = location.key
     let currentPath = window.location.pathname
@@ -17,8 +18,6 @@ const Wrapper = ({ children, location, match, user }) => {
     } else {
         currentPath = currentPath.substring(1)
     }
-
-    // console.log('Wrapper', currentPath)
 
     return (
         <div
@@ -95,5 +94,7 @@ const Wrapper = ({ children, location, match, user }) => {
         </div>
     )
 }
+
+// Wrapper.whyDidYouRender = true
 
 export default withRouter(Wrapper)

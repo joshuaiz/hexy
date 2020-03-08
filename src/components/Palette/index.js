@@ -1,22 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import Tippy from '@tippy.js/react'
 import { Tooltip } from 'react-tippy'
 import { db } from '../../config/firebaseconfig'
-import * as firebase from 'firebase/app'
+import { FavoritesContext } from '../FavoritesContext'
+// import * as firebase from 'firebase/app'
 import Swatch from '../Swatch'
 import PalettePDF from './PalettePDF'
-import { getPalettes } from '../../utils/user'
+// import { getPalettes } from '../../utils/user'
 import { getLocalStorage, setLocalStorage } from '../../utils/helpers'
 import { ReactComponent as Copy } from '../../images/copy.svg'
 import { ReactComponent as AddFavorites } from '../../images/add_favorites.svg'
 import { ReactComponent as RemoveFavorites } from '../../images/remove_favorites.svg'
 import './Palette.scss'
 
-const Palette = React.memo(({ location, handleAddPaletteToFavorites }) => {
+const Palette = React.memo(({ location }) => {
     const [currentPalette, setCurrentPalette] = useState()
     const [copySuccess, setCopySuccess] = useState(false)
     const [added, setAdded] = useState(false)
+
+    const { handleAddPaletteToFavorites } = useContext(FavoritesContext)
 
     const localAddedPalettes = getLocalStorage('hexy_added_palettes')
     const localFavorites = getLocalStorage('hexy_favorites')
@@ -102,23 +105,6 @@ const Palette = React.memo(({ location, handleAddPaletteToFavorites }) => {
         }
     }, [localAddedPalettes, setAdded, added, currentPalette])
 
-    // const getPalette = () => {
-    //     let getDoc = sharedPalette
-    //         .get()
-    //         .then(doc => {
-    //             if (!doc.exists) {
-    //                 console.log('No such document!')
-    //             } else {
-    //                 // console.log('Document data:', doc.data())
-
-    //                 setCurrentPalette(doc.data())
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log('Error getting document', err)
-    //         })
-    // }
-
     useEffect(() => {
         getPalette()
     }, [])
@@ -126,6 +112,8 @@ const Palette = React.memo(({ location, handleAddPaletteToFavorites }) => {
     // useEffect(() => {
     //     getFavorites()
     // }, [favorites, getFavorites])
+
+    // console.log(currentPalette && currentPalette.palette.palette)
 
     return (
         <div className="palette-page">
@@ -200,8 +188,7 @@ const Palette = React.memo(({ location, handleAddPaletteToFavorites }) => {
                             }`}
                             onClick={() => {
                                 handleAddPaletteToFavorites(
-                                    currentPalette &&
-                                        currentPalette.palette.palette
+                                    currentPalette && currentPalette.palette
                                 )
                                 handleAddPaletteState(currentPalette)
                             }}

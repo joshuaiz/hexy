@@ -7,7 +7,6 @@ import 'firebase/auth'
 import { format } from 'date-fns'
 import { setLocalStorage } from '../../utils/helpers'
 import { login, signup } from '../../utils/user'
-// import Modal from '../Modal'
 import Modali, { useModali } from 'modali'
 import ScrollToTop from '../ScrollToTop'
 
@@ -70,7 +69,6 @@ const Login = ({ setProfileUpdated, history, location }) => {
                 toggleLoginErrorModal(true)
             })
     }
-    
 
     return (
         <div className="login-tabs">

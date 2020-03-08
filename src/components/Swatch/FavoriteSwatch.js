@@ -1,26 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import HoverIntent from 'react-hoverintent'
 import SwatchActions from '../Swatch/SwatchActions'
-import { FavoritesContext } from '../FavoritesContext'
-import { ReactComponent as PlusCircle } from '../../images/plus_circle.svg'
-import { ReactComponent as TimesCircle } from '../../images/times_circle.svg'
 import { ReactComponent as Ellipsis } from '../../images/ellipsis.svg'
 import { getReadableColor } from '../../utils/helpers'
 import './Swatch.scss'
 
-const FavoriteSwatch = ({
-    color,
-    index,
-    // handleFavorites,
-    isFavorite,
-    // removeFavorite,
-    isSquare
-}) => {
+const FavoriteSwatch = ({ color, index, isFavorite, isSquare }) => {
     const [actions, setActions] = useState()
     const readableColor = getReadableColor(color)
-
-    const { handleFavorites, removeFavorite } = useContext(FavoritesContext)
 
     let key = ''
     if (!isSquare) {
@@ -104,10 +92,8 @@ const FavoriteSwatch = ({
                         {actions && (
                             <div className="actions-wrap">
                                 <SwatchActions
-                                    // removeFavorite={removeFavorite}
                                     isFavorite={true}
                                     readableColor={readableColor}
-                                    // namedColor={namedColor}
                                     color={color}
                                     setActions={setActions}
                                 />

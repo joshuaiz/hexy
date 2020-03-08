@@ -30,11 +30,6 @@ const RandomSwatches = ({ numRandoms }) => {
         }, 500)
     }
 
-    // don't think I need this
-    // useEffect(() => {
-    //     getFavorites()
-    // }, [favorites, getFavorites])
-
     return (
         <div className="random-swatches">
             <div className="swatches-header">

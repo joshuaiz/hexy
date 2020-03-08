@@ -6,31 +6,31 @@ import * as firebase from 'firebase/app'
 import 'firebase/storage'
 import 'firebase/auth'
 import { stripe } from 'react-stripe-elements'
-import Modali, { useModali } from 'modali'
 import nearestColor from 'nearest-color'
-import Wrapper from './components/Wrapper'
-import Home from './components/Home'
-import Colors from './components/Colors'
-import Favorites from './components/Favorites'
 import { FavoritesContextWrapper } from './components/FavoritesContext'
-import Color from './components/Color'
-// import CurrentUser from './components/CurrentUser'
-import Account from './components/Account'
-import ResetPassword from './components/Account/ResetPassword'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import Feed from './components/Feed'
-import GoPro from './components/GoPro'
-import Checkout from './components/Checkout'
-import Palette from './components/Palette'
-import FAQ from './components/FAQ'
-import AccountHandler from './components/AccountHandler'
-import Terms from './components/Terms'
-import Privacy from './components/Privacy'
-import Contact from './components/Contact'
-import Success from './components/Contact/Success'
-import Unsubscribe from './components/Unsubscribe'
-import NoMatch from './components/NoMatch'
+import {
+    Account,
+    AccountHandler,
+    Checkout,
+    Color,
+    Colors,
+    Contact,
+    FAQ,
+    Favorites,
+    Feed,
+    Footer,
+    GoPro,
+    Header,
+    Home,
+    NoMatch,
+    Palette,
+    Privacy,
+    ResetPassword,
+    Success,
+    Terms,
+    Unsubscribe,
+    Wrapper
+} from './components/Components'
 
 import {
     filterColorsBySearchText,
@@ -38,12 +38,11 @@ import {
     getSessionStorage,
     setLocalStorage,
     getLocalStorage,
-    favoritesErrorContent,
     getColorByHex,
     hexColors,
     getCurrentDateTime
 } from './utils/helpers'
-import { createID, getUser } from './utils/user'
+import { createID } from './utils/user'
 import 'react-tippy/dist/tippy.css'
 import './App.scss'
 
@@ -53,8 +52,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const App = React.memo(({ history, location, match }) => {
-    // const [colors, setColors] = useState()
-    // const [sortBright, setSortBright] = useState(false)
     const [searchColors, setSearchColors] = useState()
     const [searchInput, setSearchInput] = useState('')
     const [searchSubmitted, setSearchSubmitted] = useState(false)
@@ -68,14 +65,6 @@ const App = React.memo(({ history, location, match }) => {
     const [profileUpdated, setProfileUpdated] = useState(false)
     const [cart, setCart] = useState()
     const [currentUser, setCurrentUser] = useState()
-    // const [favoritesError, setFavoritesError] = useState(false)
-    // const [favErrorContent, setFavErrorContent] = useState()
-
-    const [errorModal, toggleErrorModal] = useModali()
-
-    window.onbeforeunload = e => {
-        toggleErrorModal(false)
-    }
 
     // SearchBox input is a controlled component
     const handleSearchInput = event => {
@@ -91,12 +80,9 @@ const App = React.memo(({ history, location, match }) => {
 
             const validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
 
-            // console.log('handleSearch', filterList)
-
             if (text && text.length && filterList && filterList.length) {
                 setNoMatch(false)
                 // if we have a search, reset brightness sort
-                // setSortBright(false)
                 setSearchColors(filterList)
                 setSessionStorage('hexy_searchColors', filterList)
                 setSearchSubmitted(true)
@@ -107,12 +93,10 @@ const App = React.memo(({ history, location, match }) => {
                 const nearestString = nearest(text)
                 const nc = getColorByHex(nearestString)
                 setNoMatch(true)
-                // setSortBright(false)
                 setSearchColors(nc)
                 setSearchSubmitted(true)
                 history.push('/colors')
             } else {
-                // setSortBright(false)
                 setSearchColors(null)
                 setSearchSubmitted(false)
                 setNoMatch(true)
@@ -122,47 +106,10 @@ const App = React.memo(({ history, location, match }) => {
         [history, searchInput]
     )
 
-    // handle returning search results and updating color list
-    // const handleSearch = event => {
-    //     event.preventDefault()
-    //     const text = searchInput.toLowerCase()
-    //     const filterList = filterColorsBySearchText(text)
-
-    //     const validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
-
-    //     // console.log('handleSearch', filterList)
-
-    //     if (text && text.length && filterList && filterList.length) {
-    //         setNoMatch(false)
-    //         // if we have a search, reset brightness sort
-    //         // setSortBright(false)
-    //         setSearchColors(filterList)
-    //         setSessionStorage('hexy_searchColors', filterList)
-    //         setSearchSubmitted(true)
-    //         // if not on colors page, go there to see search results
-    //         history.push('/colors')
-    //     } else if (validHex) {
-    //         const nearest = nearestColor.from(hexColors)
-    //         const nearestString = nearest(text)
-    //         const nc = getColorByHex(nearestString)
-    //         setNoMatch(true)
-    //         // setSortBright(false)
-    //         setSearchColors(nc)
-    //         setSearchSubmitted(true)
-    //         history.push('/colors')
-    //     } else {
-    //         // setSortBright(false)
-    //         setSearchSubmitted(false)
-    //         setNoMatch(true)
-    //         // getRandoms()
-    //         history.push('/colors')
-    //     }
-    // }
-
     const handleSidebarToggle = () => {
         setTimeout(() => {
             setIsSidebarVisible(!isSidebarVisible)
-        }, 200)
+        }, 300)
         setTransition(true)
 
         // needed to reenable drag-and-drop
@@ -197,14 +144,10 @@ const App = React.memo(({ history, location, match }) => {
 
     const addToCart = useCallback((accountType, price, dateAdded) => {
         let date = getCurrentDateTime()
-        // console.log('addToCart', date)
-
-        // const sessionID = sessionStorage.getItem('hexy_session_id')
         const sessionID = getSessionStorage('hexy_session_id')
 
         if (!sessionID) {
             const ID = createID()
-            // sessionStorage.setItem('hexy_session_id', JSON.stringify(ID))
             setSessionStorage('hexy_session_id', ID)
         }
 
@@ -216,15 +159,11 @@ const App = React.memo(({ history, location, match }) => {
         }
 
         setCart(localCart)
-        // localStorage.setItem('hexy_cart', JSON.stringify(localCart))
         setLocalStorage('hexy_cart', localCart)
     }, [])
 
     useEffect(() => {
-        // const currentCart = JSON.parse(localStorage.getItem('hexy_cart'))
-        const currentCart = getLocalStorage('hexy_cart')
-        setCart(currentCart)
-        // console.log(currentCart)
+        setCart(getLocalStorage('hexy_cart'))
     }, [])
 
     useEffect(() => {
@@ -232,10 +171,9 @@ const App = React.memo(({ history, location, match }) => {
         // see here: https://github.com/facebook/react/issues/14326
         let didCancel = false
 
-        // const thisUser = JSON.parse(localStorage.getItem('hexy_user'))
         const thisUser = getLocalStorage('hexy_user')
 
-        if (user) {
+        if (user && !didCancel) {
             var userRef = db.collection('users').doc(user.uid)
 
             userRef
@@ -243,12 +181,7 @@ const App = React.memo(({ history, location, match }) => {
                 .then(function(doc) {
                     if (doc.exists) {
                         // console.log('Document data:', doc.data())
-
                         setCurrentUser(doc.data())
-                        // localStorage.setItem(
-                        //     'hexy_user',
-                        //     JSON.stringify(doc.data())
-                        // )
                         setLocalStorage('hexy_user', doc.data())
                     }
                 })
@@ -267,7 +200,7 @@ const App = React.memo(({ history, location, match }) => {
     return (
         <div className="App">
             <FavoritesContextWrapper currentUser={currentUser}>
-                <Wrapper user={user}>
+                <Wrapper>
                     <Header
                         handleSearch={handleSearch}
                         handleSearchInput={handleSearchInput}
@@ -310,7 +243,11 @@ const App = React.memo(({ history, location, match }) => {
                                 exact
                                 path="/pro"
                                 render={() => (
-                                    <GoPro addToCart={addToCart} cart={cart} />
+                                    <GoPro
+                                        addToCart={addToCart}
+                                        cart={cart}
+                                        currentUser={currentUser}
+                                    />
                                 )}
                             />
 
@@ -338,6 +275,7 @@ const App = React.memo(({ history, location, match }) => {
                                 path="/account"
                                 render={() => (
                                     <Account
+                                        currentUser={currentUser}
                                         paletteWasSaved={paletteWasSaved}
                                         paletteExported={paletteExported}
                                         setPaletteExported={setPaletteExported}
@@ -377,12 +315,6 @@ const App = React.memo(({ history, location, match }) => {
                                 path="/unsubscribe"
                                 component={Unsubscribe}
                             />
-                            {/*<Route
-                            exact
-                            path="/user"
-                            render={props => <CurrentUser {...props} />}
-                        />*/}
-
                             <Route component={NoMatch} />
                         </Switch>
                         <Favorites
@@ -394,14 +326,9 @@ const App = React.memo(({ history, location, match }) => {
                             paletteWasExported={paletteWasExported}
                         />
                     </div>
-                    <Footer currentUser={currentUser} />
+                    <Footer />
                 </Wrapper>
             </FavoritesContextWrapper>
-            {toggleErrorModal && (
-                <Modali.Modal {...errorModal} animated={true} centered={true}>
-                    {null}
-                </Modali.Modal>
-            )}
         </div>
     )
 })

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
 import PriceTable from './PriceTable'
 import './GoPro.scss'
 import ScrollToTop from '../ScrollToTop'
 
-const GoPro = ({ cart, addToCart }) => {
+const GoPro = ({ cart, addToCart, currentUser }) => {
     return (
         <div className="gopro">
             <ScrollToTop />
@@ -15,7 +15,11 @@ const GoPro = ({ cart, addToCart }) => {
                 <br />
                 whether you're a design pro or just having fun.
             </p>
-            <PriceTable cart={cart} addToCart={addToCart} />
+            <PriceTable
+                cart={cart}
+                addToCart={addToCart}
+                currentUser={currentUser}
+            />
         </div>
     )
 }
