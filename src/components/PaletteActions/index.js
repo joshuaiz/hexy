@@ -175,6 +175,7 @@ const PaletteActions = ({
                                     position="top"
                                     trigger="mouseenter"
                                     arrow={true}
+                                    open={true}
                                 >
                                     <FavoritesPDF
                                         palette={
