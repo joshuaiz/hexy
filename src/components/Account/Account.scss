@@ -81,8 +81,6 @@ div[id*='tippy-tooltip-'] {
                         }
                     }
                     li.current {
-                        // font-weight: 600;
-
                         span {
                             color: #111;
                             padding-bottom: 2px;
@@ -105,7 +103,6 @@ div[id*='tippy-tooltip-'] {
                     img {
                         width: 96px;
                         height: 96px;
-                        // margin: 1em 0;
                         border-radius: 150px;
                     }
                 }
@@ -123,9 +120,7 @@ div[id*='tippy-tooltip-'] {
                 border-radius: 4px;
                 background: #fff;
                 margin-right: 1.5em;
-                // align-self: start;
                 min-width: 250px;
-                // min-height: 142px;
                 h3 {
                     margin: 0;
                 }
@@ -138,12 +133,10 @@ div[id*='tippy-tooltip-'] {
             }
 
             .file-uploader {
-                // margin: 1em 0 1.5em;
                 padding: 1em;
                 border: 1px solid #ddd;
                 background: #fefefe;
                 border-radius: 4px;
-                // align-self: start;
                 p {
                     margin-top: 0;
                     font-size: 13px;
@@ -178,7 +171,6 @@ div[id*='tippy-tooltip-'] {
                     padding: 2em 1.5em;
                     background: #fefefe;
                     border: 1px solid #efefef;
-                    // width: 400px;
                     position: relative;
                     .close-update {
                         position: absolute;
@@ -244,15 +236,12 @@ div[id*='tippy-tooltip-'] {
         padding-top: 1.5em;
         border-top: 1px dotted #ccc;
         background: #fff;
-        // padding: 1em;
-        // border: 1px solid #ccc;
         .user-palettes-header {
             display: flex;
             h3 {
                 margin-right: 1.5em;
             }
             .feed-toggle {
-                // margin-left: auto;
                 label {
                     display: flex;
                     align-items: center;
@@ -269,11 +258,6 @@ div[id*='tippy-tooltip-'] {
             margin-top: 0;
         }
         .palettes-list {
-            // display: flex;
-            // justify-content: space-between;
-            // align-items: flex-start;
-            // flex-wrap: wrap;
-
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(305px, 1fr));
             grid-template-rows: auto;
@@ -283,7 +267,6 @@ div[id*='tippy-tooltip-'] {
             .palette-wrap {
                 padding: 5px 10px 10px;
                 background: #f2f2f2;
-                // margin: 5px;
                 margin-bottom: 10px;
                 max-width: 300px;
                 width: 300px;
@@ -296,20 +279,13 @@ div[id*='tippy-tooltip-'] {
                         font-weight: 600;
                         padding-bottom: 5px;
                     }
-                    // .palette-utilities-top {
-                    //     display: flex;
-                    //     align-items: center;
-                    //     justify-content: flex-end;
-                    // }
                     .actions-trigger {
                         position: absolute;
-                        // top: 5px;
                         right: 0;
                         top: -1px;
                         z-index: 98;
                         cursor: pointer;
                         transition: all 0.3s ease-in-out;
-                        // opacity: 0;
                         &:hover {
                         }
                         svg {
@@ -337,7 +313,6 @@ div[id*='tippy-tooltip-'] {
                         align-items: center;
                         height: 100%;
                         width: 100%;
-                        // position: relative;
                     }
                     .palette-actions {
                         opacity: 0.96;
@@ -358,7 +333,6 @@ div[id*='tippy-tooltip-'] {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-
                         .actions-list {
                             width: 90%;
                             display: flex;
