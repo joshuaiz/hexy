@@ -10,7 +10,7 @@
     "babel-jest": "24.7.1",
     "bad-words": "^3.0.2",
     "color-convert": "^2.0.0",
-    "color-name-list": "^4.7.1",
+    "color-name-list": "^5.4.1",
     "date-fns": "^2.0.0-alpha.27",
     "dom-to-image": "^2.6.0",
     "emailjs-com": "^2.3.2",
