@@ -372,61 +372,6 @@ a, .like-link {
     }
 }
 
-// /* Used to detect in JavaScript if apps have loaded styles or not. */
-// :root {
-//     --reach-dialog: 1;
-//   }
-  
-//   [data-reach-dialog-overlay] {
-//     background: hsla(0, 0%, 0%, 0.33);
-//     position: fixed;
-//     top: 0;
-//     right: 0;
-//     bottom: 0;
-//     left: 0;
-//     overflow: auto;
-//   }
-  
-//   [data-reach-dialog-content] {
-//     width: 50vw;
-//     max-width: 600px;
-//     margin: 30vh auto;
-//     background: white;
-//     padding: 1.5em;
-//     outline: none;
-//     position: relative;
-//     border-radius: 4px;
-//     .modal-close {
-//         position: absolute;
-//         top: 0;
-//         right: 15px;
-//         font-size: 36px;
-//         color: #aaa;
-//         cursor: pointer;
-//         &:hover, &:focus {
-//             color: #555;
-//         }
-//     }
-//     .error-message {
-//         padding: 1.5em;
-//     }
-//     .modal-content {
-//         a {
-//             border: 0;
-//             text-decoration: none;
-//             font-weight: 600;
-//             &:hover {
-//                 padding-bottom: 2px;
-//                 border-bottom: 1px solid #0088cc;
-//                 cursor: pointer;
-//             }
-//             &:active {
-//                 color: #0088cc;
-//             }
-//         }
-//     }
-// }
-
 .modali-wrapper {
     .modali {
         // minheight: 60vh;
@@ -530,6 +475,10 @@ a, .like-link {
     
 }
 
+@media only screen and (max-width: 599px) {
+
+}
+
 
 @media only screen and (max-width: 899px) {
     .sidebar-toggle {
@@ -548,6 +497,21 @@ a, .like-link {
                 }
                 .favorites {
                     // display: none;
+                    min-height: auto !important;
+                }
+            }
+        }
+        .colors-page {
+            .colors {
+                .colors-header  {
+                    .colors-header-text {
+                        .colors-header-wrap {
+                            flex-wrap: wrap;
+                            button {
+                                margin: 10px 0 0;
+                            }
+                        }
+                    }
                 }
             }
         }
