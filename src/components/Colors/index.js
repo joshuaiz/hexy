@@ -13,17 +13,18 @@ import {
 } from '../../utils/helpers'
 import './Colors.scss'
 
-const Colors = React.memo(
-    ({ searchColors, searchInput, searchSubmitted, noMatch, currentUser }) => {
+const Colors = ({ searchColors, searchInput, searchSubmitted, noMatch, currentUser }) => {
         const [colors, setColors] = useState()
         const [sortBright, setSortBright] = useState(false)
         const [isSorting, setIsSorting] = useState(false)
         const [rotate, setRotate] = useState(false)
-        const [isLoading, setIsLoading] = useState(false)
+        const [isLoading, setIsLoading] = useState(true)
         const [pro, setPro] = useState(false)
 
         const hexyAll = getSessionStorage('hexy_all')
         const numColors = getNumberOfNamedColors()
+
+        // console.log('searchColors', searchColors)
 
         // Get 1000 random colors to show on home page
         const getRandoms = event => {
@@ -123,11 +124,23 @@ const Colors = React.memo(
         }
 
         useEffect(() => {
-            if (searchSubmitted) {
-                setColors(searchColors)
-                setSortBright(false)
+            // console.log('in useEffect searchColors', searchColors)
+            setIsLoading(true)
+            if (searchColors) {
+                
+                setTimeout(() => {
+                    setColors(searchColors)
+                    setSortBright(false)
+                    // console.log('colors in useEffect', colors)
+                    setIsLoading(false)
+                }, 0);
             }
-        }, [searchColors, searchSubmitted])
+            return () => {
+                setColors(colors)
+                setIsLoading(true)
+            }
+            
+        }, [searchColors])
 
         useEffect(() => {
             if (noMatch && !searchSubmitted) {
@@ -174,8 +187,13 @@ const Colors = React.memo(
         // console.log('Colors', colors && colors.length)
 
         useEffect(() => {
-            getRandoms()
-        }, [])
+            if (!searchColors) {
+                getRandoms()
+            }
+            
+        }, [searchColors])
+
+        // console.log('isLoading', isLoading)
 
         return (
             <div
@@ -187,7 +205,7 @@ const Colors = React.memo(
             >
                 <div className="colors-header">
                     <div className="colors-header-text">
-                        {!searchSubmitted ? (
+                        {!searchColors ? (
                             <div className="colors-header-wrap">
                                 <p>
                                     Showing{' '}
@@ -229,7 +247,7 @@ const Colors = React.memo(
                                     </div>
                                 )}
                             </div>
-                        ) : searchSubmitted ? (
+                        ) : searchColors ? (
                             <p className="search-results-text">
                                 Search results for{' '}
                                 <span className="search-term">
@@ -274,8 +292,7 @@ const Colors = React.memo(
                 ) : (
                     <div className="loading">
                         <h3>
-                            Loading all {getNumberOfNamedColors()}{' '}
-                            colors...please be patient.
+                            Loading colors...
                         </h3>
                     </div>
                 )}
@@ -307,7 +324,6 @@ const Colors = React.memo(
             </div>
         )
     }
-)
 
 // Colors.whyDidYouRender = true
 

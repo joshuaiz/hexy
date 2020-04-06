@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Route, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter, useLocation } from 'react-router-dom'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { db } from '../src/config/firebaseconfig'
 import * as firebase from 'firebase/app'
@@ -66,22 +66,35 @@ const App = React.memo(({ history, location, match }) => {
     const [cart, setCart] = useState()
     const [currentUser, setCurrentUser] = useState()
 
+    // console.log('loation in App', location)
+
+    // useEffect(() => {
+    //     console.log('route has been changed', location.pathname);
+    //     if (location.pathname !== '/colors') {
+    //         setSearchInput('')
+    //         setSearchSubmitted(false)
+    //     }
+       
+    // },[location.pathname]);
+
     // SearchBox input is a controlled component
     const handleSearchInput = event => {
-        setSearchSubmitted(false)
+        // setSearchSubmitted(false)
         setSearchInput(event.target.value)
     }
 
-    const handleSearch = useCallback(
-        event => {
+    const handleSearch = (event) => {
             event.preventDefault()
             const text = searchInput.toLowerCase()
             const filterList = filterColorsBySearchText(text)
 
+            console.log('in search', text, filterList)
+
             const validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
 
-            if (text && text.length && filterList && filterList.length) {
+            if (text && filterList) {
                 setNoMatch(false)
+                console.log('in text + filterList')
                 // if we have a search, reset brightness sort
                 setSearchColors(filterList)
                 setSessionStorage('hexy_searchColors', filterList)
@@ -102,9 +115,8 @@ const App = React.memo(({ history, location, match }) => {
                 setNoMatch(true)
                 history.push('/colors')
             }
-        },
-        [history, searchInput]
-    )
+        
+        }
 
     const handleSidebarToggle = () => {
         setTimeout(() => {
