@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import HoverIntent from 'react-hoverintent'
 import Modali, { useModali } from 'modali'
 import Tippy from '@tippy.js/react'
+import { Tooltip } from 'react-tippy'
 import useWindowWidth from '../../hooks/useWindowWidth'
 import moment from 'moment'
 import saveAs from 'file-saver'
@@ -22,7 +23,7 @@ import {
     checkInputChars,
     setLocalStorage,
     getLocalStorage,
-    makeid
+    makeid,
 } from '../../utils/helpers'
 import './Favorites.scss'
 
@@ -32,7 +33,7 @@ const Favorites = ({
     handleSidebarToggle,
     transition,
     paletteHasBeenSaved,
-    paletteWasExported
+    paletteWasExported,
 }) => {
     const [isBright, setIsBright] = useState(false)
     const [paletteSaved, setPaletteSaved] = useState(false)
@@ -138,8 +139,8 @@ const Favorites = ({
                         date: date,
                         name: paletteName,
                         palette: favorites,
-                        id: id
-                    })
+                        id: id,
+                    }),
                 })
                 .then(() => {
                     // savePaletteToFeed(date, paletteName, favorites)
@@ -152,13 +153,13 @@ const Favorites = ({
                         setPaletteSaved(false)
                     }, 4000)
                 )
-                .catch(err => {
+                .catch((err) => {
                     console.log('Error saving palette', err)
                 })
         }
     }
 
-    const handlePaletteName = event => {
+    const handlePaletteName = (event) => {
         setPaletteName(event.target.value)
     }
 
@@ -195,14 +196,14 @@ const Favorites = ({
         } else {
             let now = new Date()
             let dateStringSlug = moment(now).format('YYYY-MM-DD_hmmss')
-            let colorArray = favorites.map(fav => {
+            let colorArray = favorites.map((fav) => {
                 let name = slugify(fav.name)
                 // console.log(name)
                 return '$' + name + ': ' + fav.hex + ';\r'
             })
             colorArray = colorArray.join('')
             let blob = new Blob([colorArray], {
-                type: 'text/plain;charset=utf-8'
+                type: 'text/plain;charset=utf-8',
             })
             let paletteTitle = slugify(paletteName)
             saveAs(blob, `${paletteTitle}_${dateStringSlug}.txt`)
@@ -264,7 +265,7 @@ const Favorites = ({
         document.body.style.overflow = 'hidden'
     }
 
-    const onDragEnd = result => {
+    const onDragEnd = (result) => {
         const { destination, source, draggableId } = result
         if (!destination) {
             return
@@ -288,7 +289,7 @@ const Favorites = ({
         }
 
         // match dragged favorite with favorite in array
-        let foundFave = favorites.filter(el => {
+        let foundFave = favorites.filter((el) => {
             if (el.hex === id) {
                 return el
             }
@@ -298,7 +299,7 @@ const Favorites = ({
         // from dragged element, create object to insert back in array
         let movedObj = {
             name: foundFave[0].name,
-            hex: foundFave[0].hex
+            hex: foundFave[0].hex,
         }
 
         // splice from source/destination to create new array on drag
@@ -349,14 +350,12 @@ const Favorites = ({
                                 />
                                 <label>Sort by brightness</label>
                             </span>
-                            <Tippy
+
+                            <Tooltip
                                 // options
-                                content="Favorites Actions"
-                                placement="top"
+                                title="Favorites Actions"
+                                position="top"
                                 trigger="mouseenter"
-                                size="small"
-                                offset="0, 10"
-                                sticky={true}
                                 arrow={true}
                             >
                                 <HoverIntent
@@ -379,7 +378,7 @@ const Favorites = ({
                                         <Ellipsis />
                                     </span>
                                 </HoverIntent>
-                            </Tippy>
+                            </Tooltip>
                             {actions && (
                                 <div className="actions-wrap">
                                     <FavoriteActions
@@ -433,7 +432,7 @@ const Favorites = ({
                                 direction="vertical"
                                 droppableId="favorites-droppable"
                             >
-                                {provided => (
+                                {(provided) => (
                                     <ul
                                         className="nostyle favorites-list"
                                         ref={provided.innerRef}
@@ -443,9 +442,7 @@ const Favorites = ({
                                             favorites.map((color, index) => {
                                                 return (
                                                     <FavoriteSwatch
-                                                        key={`${
-                                                            color.hex
-                                                        }-favorite`}
+                                                        key={`${color.hex}-favorite`}
                                                         color={color}
                                                         index={index}
                                                         isFavorite={true}
@@ -464,7 +461,7 @@ const Favorites = ({
                                     direction="horizontal"
                                     droppableId="favorite-squares-droppable"
                                 >
-                                    {provided => (
+                                    {(provided) => (
                                         <ul
                                             className="nostyle favorite-squares-list"
                                             ref={provided.innerRef}
@@ -475,9 +472,7 @@ const Favorites = ({
                                                     (color, index) => {
                                                         return (
                                                             <FavoriteSwatch
-                                                                key={`${
-                                                                    color.hex
-                                                                }-favorite-square`}
+                                                                key={`${color.hex}-favorite-square`}
                                                                 color={color}
                                                                 index={index}
                                                                 isFavorite={

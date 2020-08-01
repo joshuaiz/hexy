@@ -21,11 +21,12 @@ const Login = ({ setProfileUpdated, history, location }) => {
 
     // console.log('Login location', location.search)
 
-    const handleLogin = async event => {
+    const handleLogin = async (event) => {
+        console.log('handleLogin called')
         event.preventDefault()
         const { email, password } = event.target.elements
-        login(email.value, password.value).catch(error => {
-            // console.log(error)
+        login(email.value, password.value).catch((error) => {
+            console.log(error)
             setError(error)
             setModalContent(() => {
                 return <div className="error-message">{error.message}</div>
@@ -38,20 +39,20 @@ const Login = ({ setProfileUpdated, history, location }) => {
         setTab1Active(!tab1Active)
     }
 
-    const handleSignUp = async event => {
+    const handleSignUp = async (event) => {
         toggleLoginErrorModal(false)
         event.preventDefault()
         const { email, password, username } = event.target.elements
 
         const date = format(Date.now(), 'yyyy-MM-dd', {
-            awareOfUnicodeTokens: true
+            awareOfUnicodeTokens: true,
         })
 
         signup({
             email: email.value,
             password: password.value,
             displayName: username.value,
-            startDate: date
+            startDate: date,
         })
             .then(
                 setTimeout(() => {
@@ -60,7 +61,7 @@ const Login = ({ setProfileUpdated, history, location }) => {
                 setLocalStorage('hexy_user', null),
                 toggleLoginErrorModal(false)
             )
-            .catch(error => {
+            .catch((error) => {
                 // console.log(error)
                 setError(error)
                 setModalContent(() => {
