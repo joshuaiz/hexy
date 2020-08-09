@@ -29,7 +29,7 @@ import {
     Success,
     Terms,
     Unsubscribe,
-    Wrapper
+    Wrapper,
 } from './components/Components'
 
 import {
@@ -40,7 +40,7 @@ import {
     getLocalStorage,
     getColorByHex,
     hexColors,
-    getCurrentDateTime
+    getCurrentDateTime,
 } from './utils/helpers'
 import { createID } from './utils/user'
 import 'react-tippy/dist/tippy.css'
@@ -57,7 +57,8 @@ const App = React.memo(({ history, location, match }) => {
     const [searchSubmitted, setSearchSubmitted] = useState(false)
 
     const [noMatch, setNoMatch] = useState(false)
-    const { user } = useAuthState(firebase.auth())
+    // const { user } = useAuthState(firebase.auth())
+    const [user, loading, error] = useAuthState(firebase.auth())
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const [transition, setTransition] = useState(false)
     const [paletteWasSaved, setPaletteWasSaved] = useState(false)
@@ -74,49 +75,48 @@ const App = React.memo(({ history, location, match }) => {
     //         setSearchInput('')
     //         setSearchSubmitted(false)
     //     }
-       
+
     // },[location.pathname]);
 
     // SearchBox input is a controlled component
-    const handleSearchInput = event => {
+    const handleSearchInput = (event) => {
         // setSearchSubmitted(false)
         setSearchInput(event.target.value)
     }
 
     const handleSearch = (event) => {
-            event.preventDefault()
-            const text = searchInput.toLowerCase()
-            const filterList = filterColorsBySearchText(text)
+        event.preventDefault()
+        const text = searchInput.toLowerCase()
+        const filterList = filterColorsBySearchText(text)
 
-            console.log('in search', text, filterList)
+        console.log('in search', text, filterList)
 
-            const validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
+        const validHex = /(^#?[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(text)
 
-            if (text && filterList) {
-                setNoMatch(false)
-                console.log('in text + filterList')
-                // if we have a search, reset brightness sort
-                setSearchColors(filterList)
-                setSessionStorage('hexy_searchColors', filterList)
-                setSearchSubmitted(true)
-                // if not on colors page, go there to see search results
-                history.push('/colors')
-            } else if (validHex) {
-                const nearest = nearestColor.from(hexColors)
-                const nearestString = nearest(text)
-                const nc = getColorByHex(nearestString)
-                setNoMatch(true)
-                setSearchColors(nc)
-                setSearchSubmitted(true)
-                history.push('/colors')
-            } else {
-                setSearchColors(null)
-                setSearchSubmitted(false)
-                setNoMatch(true)
-                history.push('/colors')
-            }
-        
+        if (text && filterList) {
+            setNoMatch(false)
+            console.log('in text + filterList')
+            // if we have a search, reset brightness sort
+            setSearchColors(filterList)
+            setSessionStorage('hexy_searchColors', filterList)
+            setSearchSubmitted(true)
+            // if not on colors page, go there to see search results
+            history.push('/colors')
+        } else if (validHex) {
+            const nearest = nearestColor.from(hexColors)
+            const nearestString = nearest(text)
+            const nc = getColorByHex(nearestString)
+            setNoMatch(true)
+            setSearchColors(nc)
+            setSearchSubmitted(true)
+            history.push('/colors')
+        } else {
+            setSearchColors(null)
+            setSearchSubmitted(false)
+            setNoMatch(true)
+            history.push('/colors')
         }
+    }
 
     const handleSidebarToggle = () => {
         setTimeout(() => {
@@ -167,7 +167,7 @@ const App = React.memo(({ history, location, match }) => {
             accountType,
             price: price.toFixed(2),
             dateAdded: date,
-            total: price.toFixed(2)
+            total: price.toFixed(2),
         }
 
         setCart(localCart)
@@ -190,14 +190,14 @@ const App = React.memo(({ history, location, match }) => {
 
             userRef
                 .get()
-                .then(function(doc) {
+                .then(function (doc) {
                     if (doc.exists) {
-                        // console.log('Document data:', doc.data())
+                        console.log('Document data:', doc.data())
                         setCurrentUser(doc.data())
                         setLocalStorage('hexy_user', doc.data())
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log('Error getting documents', err)
                 })
         }

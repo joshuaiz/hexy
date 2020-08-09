@@ -2,6 +2,7 @@ import React from 'react'
 import { humanize, getExpirationDate } from '../../utils/helpers'
 
 const UserMeta = ({ currentUser, active }) => {
+    console.log('currentUser', currentUser)
     return (
         <div className={`user-meta ${active ? 'active' : 'inactive'}`}>
             <h3>Hexy Account:</h3>
@@ -11,7 +12,7 @@ const UserMeta = ({ currentUser, active }) => {
             </div>
             <div className="start-date">
                 <strong>Account created:</strong>{' '}
-                {currentUser && currentUser.startDate}
+                {currentUser && currentUser.accountStartDate}
             </div>
             <div className="account-level">
                 <strong>Account Level:</strong>{' '}

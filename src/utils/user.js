@@ -1,6 +1,6 @@
 // import React from 'react'
 import { db, auth } from '../config/firebaseconfig'
-// import firebase from 'firebase/app'
+import firebase from 'firebase/app'
 // import { format } from 'date-fns'
 
 // const formatDate = format
@@ -21,10 +21,14 @@ import { db, auth } from '../config/firebaseconfig'
 
 export function login(email, password) {
     return new Promise((resolve, reject) => {
-        auth()
+        firebase
+            .auth()
             .signInWithEmailAndPassword(email, password)
-            .then(res => resolve(res))
-            .catch(error => {
+            .then((res) => {
+                console.log('res', res)
+                resolve(res)
+            })
+            .catch((error) => {
                 console.log(error)
                 reject(error)
             })
@@ -41,7 +45,7 @@ export async function signup({
     password,
     displayName,
     photoURL = 'https://studio.bio/images/avatar2.png',
-    startDate
+    startDate,
 }) {
     try {
         const { user } = await auth().createUserWithEmailAndPassword(
@@ -52,11 +56,11 @@ export async function signup({
 
         await user
             .sendEmailVerification()
-            .then(function() {
+            .then(function () {
                 // Email sent.
                 console.log('Verification email sent.')
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 // An error happened.
                 console.log('Verification email could not be sent.')
             })
@@ -67,15 +71,15 @@ export async function signup({
             email: email,
             photoURL: photoURL,
             startDate: startDate,
-            accountType: 'standard'
+            accountType: 'standard',
         })
 
         let response = await fetch('/.netlify/functions/welcome', {
             method: 'POST',
             body: JSON.stringify({
                 email: email,
-                displayName: displayName
-            })
+                displayName: displayName,
+            }),
         })
 
         if (response.ok) {
@@ -91,10 +95,10 @@ export async function signup({
 
 export function getUser(uid) {
     const users = db.collection('users').doc(uid)
-    return users.get().then(function(snapshot) {
+    return users.get().then(function (snapshot) {
         let userData = snapshot.data() && snapshot.data()
         // ...
-        // console.log('userData', userData)
+        console.log('userData', userData)
         return userData
     })
 }
@@ -105,7 +109,7 @@ export function getUserCart(uid) {
 
     docRef
         .get()
-        .then(function(doc) {
+        .then(function (doc) {
             if (doc.exists) {
                 var cart = doc.get('cart')
                 // console.log(cart)
@@ -116,15 +120,13 @@ export function getUserCart(uid) {
                 console.log('No such document!')
             }
         })
-        .catch(function(error) {
+        .catch(function (error) {
             console.log('Error getting document:', error)
         })
 }
 
 export function createID() {
-    return Math.random()
-        .toString(36)
-        .substr(2, 9)
+    return Math.random().toString(36).substr(2, 9)
 }
 
 export function fetchUser(uid) {
@@ -135,7 +137,7 @@ export function fetchDoc(path) {
     return db
         .doc(path)
         .get()
-        .then(doc => {
+        .then((doc) => {
             doc.data()
             return getDataFromDoc(doc)
         })
@@ -156,7 +158,7 @@ export function getDataFromDoc(doc) {
 
 function getDocsFromSnapshot(snapshot) {
     const docs = []
-    snapshot.forEach(doc => {
+    snapshot.forEach((doc) => {
         docs.push(getDataFromDoc(doc))
     })
     return docs
@@ -166,8 +168,8 @@ export async function createPalette(palette) {
     return db
         .collection('palettes')
         .add({ createdAt: Date.now(), ...palette })
-        .then(ref => ref.get())
-        .then(doc => ({ ...doc.data(), id: doc.id }))
+        .then((ref) => ref.get())
+        .then((doc) => ({ ...doc.data(), id: doc.id }))
 }
 
 export function deletePalettes(id) {

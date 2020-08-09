@@ -24,13 +24,13 @@ const Account = React.memo(
         paletteExported,
         setPaletteExported,
         profileUpdated,
-        setProfileUpdated
+        setProfileUpdated,
     }) => {
-        const { initialising, user } = useAuthState(firebase.auth())
+        const [user, loading, error] = useAuthState(firebase.auth())
         const [active, setActive] = useState({
             viewInfo: true,
             changeAvatar: false,
-            updateProfile: false
+            updateProfile: false,
         })
         const [avatar, setAvatar] = useState()
         const [isUploading, setIsUploading] = useState(false)
@@ -58,33 +58,33 @@ const Account = React.memo(
 
         // console.log(user && emailVerified)
 
-        const handleActions = action => {
+        const handleActions = (action) => {
             console.log('handleActions', action)
             console.log('clicked')
             if (action === 'viewInfo') {
                 setActive({
                     viewInfo: true,
                     changeAvatar: false,
-                    updateProfile: false
+                    updateProfile: false,
                 })
             } else if (action === 'changeAvatar') {
                 setActive({
                     viewInfo: false,
                     changeAvatar: true,
-                    updateProfile: false
+                    updateProfile: false,
                 })
             } else if (action === 'updateProfile') {
                 setActive({
                     viewInfo: false,
                     changeAvatar: false,
-                    updateProfile: true
+                    updateProfile: true,
                 })
                 // setShowUpdate(!showUpdate)
             } else if (action === 'close') {
                 setActive({
                     viewInfo: true,
                     changeAvatar: false,
-                    updateProfile: false
+                    updateProfile: false,
                 })
             }
         }
@@ -94,16 +94,16 @@ const Account = React.memo(
             setProgress(0)
         }
 
-        const handleUploadError = error => {
+        const handleUploadError = (error) => {
             setIsUploading(false)
             console.error(error)
         }
 
-        const handleProgress = progress => {
+        const handleProgress = (progress) => {
             setProgress(progress)
         }
 
-        const handleUploadSuccess = filename => {
+        const handleUploadSuccess = (filename) => {
             setAvatar(filename)
             setProgress(100)
             setIsUploading(false)
@@ -112,26 +112,26 @@ const Account = React.memo(
                 .ref('avatars')
                 .child(filename)
                 .getDownloadURL()
-                .then(url => {
+                .then((url) => {
                     updateUserProfile(currentUser.displayName, url)
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log(error)
                 })
         }
 
         const updateUserProfile = (displayName, url) => {
             setAvatarUpdated(false)
-            let activeUser = firebase.auth().currentUser
+            let activeUser = firebase.auth().user
 
             // console.log('activeUser', displayName, activeUser, url)
 
             activeUser
                 .updateProfile({
                     displayName: displayName,
-                    photoURL: url
+                    photoURL: url,
                 })
-                .then(function() {
+                .then(function () {
                     setAvatarUpdated(true)
                     setProfileUpdated(true)
                     setTimeout(() => {
@@ -140,24 +140,24 @@ const Account = React.memo(
 
                     db.doc(`users/${user.uid}`).update({
                         displayName: displayName,
-                        photoURL: url
+                        photoURL: url,
                     })
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log(error)
                 })
         }
 
-        const deletePalette = paletteName => {
+        const deletePalette = (paletteName) => {
             const userPalettes = currentUser.palettes
 
             const newPalettes = userPalettes.filter(
-                palette => palette.name !== paletteName
+                (palette) => palette.name !== paletteName
             )
 
             var userRef = db.collection('users').doc(user.uid)
             userRef.update({
-                palettes: newPalettes
+                palettes: newPalettes,
             })
 
             setPaletteRemoved(true)
@@ -172,30 +172,30 @@ const Account = React.memo(
             localStorage.removeItem('hexy_user')
         }
 
-        const handleUpdate = event => {
+        const handleUpdate = (event) => {
             event.preventDefault()
             const { username, email, password } = event.target.elements
 
             console.log(email.value, password.value, username.value)
 
             setProfileUpdated(false)
-            let activeUser = firebase.auth().currentUser
+            let activeUser = firebase.auth().user
 
             if (username.value) {
                 const re = /^\w+$/
                 if (re.test(username.value)) {
                     activeUser
                         .updateProfile({
-                            displayName: username.value
+                            displayName: username.value,
                         })
-                        .then(function() {
+                        .then(function () {
                             setProfileUpdated(true)
 
                             db.doc(`users/${user.uid}`).update({
-                                displayName: username.value
+                                displayName: username.value,
                             })
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             console.log(error)
                         })
                 } else {
@@ -208,15 +208,15 @@ const Account = React.memo(
             if (email.value) {
                 activeUser
                     .updateEmail(email.value)
-                    .then(function() {
+                    .then(function () {
                         setProfileUpdated(true)
                     })
-                    .then(function() {
+                    .then(function () {
                         db.doc(`users/${user.uid}`).update({
-                            email: email.value
+                            email: email.value,
                         })
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         console.log(error)
                         setUpdateError(true)
                         toggleLoginModal(true)
@@ -226,10 +226,10 @@ const Account = React.memo(
             if (password.value) {
                 activeUser
                     .updatePassword(password.value)
-                    .then(function() {
+                    .then(function () {
                         setProfileUpdated(true)
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         console.log(error)
                         setUpdateError(true)
                         toggleLoginModal(true)
@@ -251,7 +251,7 @@ const Account = React.memo(
             }
         }, [profileUpdated, setProfileUpdated])
 
-        const handleLogin = async event => {
+        const handleLogin = async (event) => {
             setAuthSuccess(false)
             setUpdating(true)
             event.preventDefault()
@@ -264,7 +264,7 @@ const Account = React.memo(
                     setUpdateError(false),
                     toggleLoginModal(false)
                 )
-                .catch(error => {
+                .catch((error) => {
                     console.log(error)
                     // setLoginError(error)
                     setUpdateError(true)
@@ -278,7 +278,7 @@ const Account = React.memo(
 
             thisUser
                 .sendEmailVerification()
-                .then(function() {
+                .then(function () {
                     // Email sent.
                     console.log('Verification email sent')
                     setEmailSent(true)
@@ -286,7 +286,7 @@ const Account = React.memo(
                         setEmailSent(false)
                     }, 5000)
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     // An error happened.
                     console.log('Could not send verification email')
                 })
@@ -296,7 +296,7 @@ const Account = React.memo(
         //     getFavorites()
         // }, [favorites, getFavorites])
 
-        if (initialising) {
+        if (loading) {
             return (
                 <div className="page-account">
                     <div className="loading">Loading...</div>
@@ -330,7 +330,7 @@ const Account = React.memo(
                                 </p>
                             </div>
                         )}
-                        {currentUser ? (
+                        {user ? (
                             <div className="user-content-wrap">
                                 <div className="user-avatar">
                                     <div className="avatar">
