@@ -22,9 +22,9 @@ const Header = ({
     searchInput,
     handleSidebarToggle,
     isSidebarVisible,
-    cart
+    cart,
 }) => {
-    const { user } = useAuthState(firebase.auth())
+    const [user, loading, error] = useAuthState(firebase.auth())
     const [iconHover, setIconHover] = useState(false)
 
     const handleLogout = () => {
@@ -48,7 +48,7 @@ const Header = ({
         let timeout
         let didCancel = false
         if (!didCancel) {
-            document.onmousemove = function() {
+            document.onmousemove = function () {
                 // console.log('mouse stopped!')
                 clearTimeout(timeout)
                 timeout = setTimeout(() => {
@@ -61,7 +61,6 @@ const Header = ({
             clearTimeout(timeout)
         }
     })
-
 
     return (
         <div id="top" className="header">
