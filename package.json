@@ -18,7 +18,7 @@
     "history": "^5.0.0",
     "http-proxy-middleware": "^1.0.5",
     "import": "^0.0.6",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "lambda": "^0.10.3",
     "mailgun-js": "^0.22.0",
     "mailgun.js": "^2.0.1",
