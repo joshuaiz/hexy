@@ -6,4 +6,4 @@ publish = "build"
 [[headers]]
   for = "/color/*"
   [headers.values]
-    X-Robots-Tag: "noindex"
+    X-Robots-Tag: noindex
