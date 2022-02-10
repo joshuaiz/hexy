@@ -27,7 +27,7 @@
     "nearest-color": "^0.4.4",
     "netlify": "^4.3.10",
     "netlify-lambda": "^2.0.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "react": "^16.8.6",
     "react-animate-on-scroll": "^2.1.5",
     "react-beautiful-dnd": "^13.0.0",
