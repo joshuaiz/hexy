@@ -23,7 +23,7 @@
     "mailgun-js": "^0.22.0",
     "mailgun.js": "^2.0.1",
     "modali": "^1.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "nearest-color": "^0.4.4",
     "netlify": "^4.3.10",
     "netlify-lambda": "^2.0.1",
