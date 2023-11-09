@@ -1,6 +1,6 @@
 # What is Hexy? 🌈 ✨
 
-### https://hexy.io
+
 
 ### Hexy is a fantastic compendium of all named hex colors. 
 
